@@ -16,7 +16,7 @@ abstract class Controllers {
 
     #Definición de templates
     $this->template = new Twig_Environment(new Twig_Loader_Filesystem('templates'), array(
-      'cache' => '.compiler',
+      'cache' => 'templates/.compiler',
       'auto_reload' => true
     ));
     $this->template->addGlobal('session', $_SESSION);
