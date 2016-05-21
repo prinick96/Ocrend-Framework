@@ -1,6 +1,6 @@
 <?php
 
-require('core/core.php');
+require('core/app_core.php');
 
 if(isset($_GET['view'])) {
   $Controller = strtolower($_GET['view']) . 'Controller';

@@ -1,5 +1,8 @@
 <?php
 
+#tipado estricto para PHP 7
+declare(strict_types=1);
+
 #control global de sesiones
 session_start();
 

@@ -1,10 +1,7 @@
 <?php
 
-#tipado estricto para PHP 7
-declare(strict_types=1);
-
 #carga de constantes
-require('core/constants.php');
+require('core/config.php');
 
 #implementación de autoloaders
 require('core/kernel/Ocrend.php');
