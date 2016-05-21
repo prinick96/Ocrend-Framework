@@ -13,7 +13,9 @@ abstract class Models {
 
   protected function __construct() {
     $this->db = new Conexion();
-    $this->id = intval($_GET['id']) ?? null;
+
+    $this->id = $_GET['id'] ?? null;
+    $this->id = intval($this->id);
   }
 
   protected function __destruct() {

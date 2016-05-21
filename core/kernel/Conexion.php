@@ -8,19 +8,19 @@ class Conexion extends mysqli {
     $this->set_charset('utf8');
   }
 
-  public function liberar($query) {
+  final public function liberar($query) {
     return mysqli_free_result($query);
   }
 
-  public function rows($query) : int {
+  final public function rows($query) : int {
     return mysqli_num_rows($query);
   }
 
-  public function recorrer($query) {
+  final public function recorrer($query) {
     return mysqli_fetch_array($query);
   }
 
-  public function assoc($query) {
+  final public function assoc($query) {
     return mysqli_fetch_assoc($query);
   }
 

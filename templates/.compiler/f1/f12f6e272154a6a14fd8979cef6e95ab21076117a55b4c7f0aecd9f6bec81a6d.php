@@ -16,7 +16,24 @@ class __TwigTemplate_35066cded854603663fddfe26af4ec1addb5ec3cc66f7fbff258051b880
     protected function doDisplay(array $context, array $blocks = array())
     {
         // line 1
-        echo "</body>
+        echo "<script src=\"views/app/js/jquery.js\"></script>
+<script>
+  \$.ajax({
+    url : 'api/login',
+    type : 'GET',
+    data : {
+      user : 'prinick',
+      pass : '123456'
+    },
+    success : function(json) {
+      window.alert(json);
+    },
+    error : function(xhr, status) {
+      window.alert('ERROR');
+    }
+  });
+</script>
+</body>
 </html>
 ";
     }
@@ -31,6 +48,23 @@ class __TwigTemplate_35066cded854603663fddfe26af4ec1addb5ec3cc66f7fbff258051b880
         return array (  19 => 1,);
     }
 }
+/* <script src="views/app/js/jquery.js"></script>*/
+/* <script>*/
+/*   $.ajax({*/
+/*     url : 'api/login',*/
+/*     type : 'GET',*/
+/*     data : {*/
+/*       user : 'prinick',*/
+/*       pass : '123456'*/
+/*     },*/
+/*     success : function(json) {*/
+/*       window.alert(json);*/
+/*     },*/
+/*     error : function(xhr, status) {*/
+/*       window.alert('ERROR');*/
+/*     }*/
+/*   });*/
+/* </script>*/
 /* </body>*/
 /* </html>*/
 /* */

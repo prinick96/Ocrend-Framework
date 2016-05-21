@@ -1,2 +1,19 @@
+<script src="views/app/js/jquery.js"></script>
+<script>
+  $.ajax({
+    url : 'api/login',
+    type : 'GET',
+    data : {
+      user : 'prinick',
+      pass : '123456'
+    },
+    success : function(json) {
+      window.alert(json);
+    },
+    error : function(xhr, status) {
+      window.alert('ERROR');
+    }
+  });
+</script>
 </body>
 </html>
