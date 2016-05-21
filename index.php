@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * OCREND Framework - MVC Architecture for Web Applications
+ * PHP Version 7.0.2
+ * @package OCREND Framework
+ * @link http://www.ocrend.com/
+ * @author Brayan Narváez (Prinick) <princk093@gmail.com> <prinick@ocrend.com>
+ * @copyright 2016 - Ocrend Software
+ */
+
 require('core/app_core.php');
 
 if(isset($_GET['view'])) {

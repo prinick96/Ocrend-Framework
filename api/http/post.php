@@ -7,5 +7,12 @@ $app->post('/',function($request, $response){
   return $response;
 });
 
+$app->post('/register',function($request, $response){
+  $reg = new Register();
+  $response->withJson($reg->SignUp($_POST));
+
+  return $response;
+});
+
 
 ?>

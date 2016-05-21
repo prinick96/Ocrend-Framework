@@ -16,11 +16,13 @@ final class Login extends Models implements OCREND {
     if($this->db->rows($sql) > 0) {
       $_SESSION['app_id'] = $this->db->recorrer($sql)[0];
       $success = 1;
+      $message = 'Conectado, estamos redireccionando.';
     } else {
       $success = 0;
+      $message = 'ERROR: Credenciales incorrectas.';
     }
 
-    return array('success' => $success);
+    return array('success' => $success, 'message' => $message);
   }
 
   public function __destruct() {
