@@ -1,6 +1,6 @@
 <?php
 
-function redir(string $url) {
+function redir(string $url = 'index.php') {
   header('location: ' . $url);
 }
 

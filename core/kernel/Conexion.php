@@ -9,19 +9,19 @@ class Conexion extends mysqli {
   }
 
   final public function liberar($query) {
-    return mysqli_free_result($query);
+    return $query->free();
   }
 
   final public function rows($query) : int {
-    return mysqli_num_rows($query);
+    return $query->num_rows;
   }
 
   final public function recorrer($query) {
-    return mysqli_fetch_array($query);
+    return $query->fetch_array(MYSQLI_NUM);
   }
 
   final public function assoc($query) {
-    return mysqli_fetch_assoc($query);
+    return $query->fetch_assoc();
   }
 
 }

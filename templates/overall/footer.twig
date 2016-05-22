@@ -1,19 +1,10 @@
 <script src="views/app/js/jquery.js"></script>
+<script src="views/app/js/jquery.numeric.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+{% if session.app_id is not defined %}
+<script src="views/app/js/login.js"></script>
+<script src="views/app/js/register.js"></script>
+{% endif %}
 <script>
-  $.ajax({
-    url : 'api/login',
-    type : 'GET',
-    data : {
-      user : 'prinick',
-      pass : '123456'
-    },
-    success : function(json) {
-      window.alert(json);
-    },
-    error : function(xhr, status) {
-      window.alert('ERROR');
-    }
-  });
+  $('.numeric').numeric();
 </script>
-</body>
-</html>

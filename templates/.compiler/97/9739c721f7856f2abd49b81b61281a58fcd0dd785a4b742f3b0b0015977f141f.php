@@ -31,8 +31,18 @@ class __TwigTemplate_57179fadda0b6324f6fbe23ee0638dda8f6cf3d1663e4290d5c5096b188
         echo "\" />
   <meta name=\"author\" content=\"www.ocrend.com\" />
   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />
+  <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css\" integrity=\"sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7\" crossorigin=\"anonymous\">
+  <link rel=\"stylesheet\" href=\"views/app/css/app.css\" />
+  <link rel=\"stylesheet\" href=\"views/app/css/font-awesome.min.css\" />
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+   <!--[if lt IE 9]>
+     <script src=\"https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js\"></script>
+     <script src=\"https://oss.maxcdn.com/respond/1.4.2/respond.min.js\"></script>
+   <![endif]-->
+
   <title>";
-        // line 10
+        // line 20
         echo twig_escape_filter($this->env, twig_constant("APP"), "html", null, true);
         echo "</title>
 </head>
@@ -51,7 +61,7 @@ class __TwigTemplate_57179fadda0b6324f6fbe23ee0638dda8f6cf3d1663e4290d5c5096b188
 
     public function getDebugInfo()
     {
-        return array (  36 => 10,  30 => 7,  24 => 4,  19 => 1,);
+        return array (  46 => 20,  30 => 7,  24 => 4,  19 => 1,);
     }
 }
 /* <!DOCTYPE html>*/
@@ -63,6 +73,16 @@ class __TwigTemplate_57179fadda0b6324f6fbe23ee0638dda8f6cf3d1663e4290d5c5096b188
 /*   <meta name="application-name" content="{{ constant('APP') }}" />*/
 /*   <meta name="author" content="www.ocrend.com" />*/
 /*   <meta name="viewport" content="width=device-width, initial-scale=1.0" />*/
+/*   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">*/
+/*   <link rel="stylesheet" href="views/app/css/app.css" />*/
+/*   <link rel="stylesheet" href="views/app/css/font-awesome.min.css" />*/
+/*   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->*/
+/*    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->*/
+/*    <!--[if lt IE 9]>*/
+/*      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>*/
+/*      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>*/
+/*    <![endif]-->*/
+/* */
 /*   <title>{{ constant('APP') }}</title>*/
 /* </head>*/
 /* */

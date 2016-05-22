@@ -19,8 +19,9 @@ final class Login extends Models implements OCREND {
       $message = 'Conectado, estamos redireccionando.';
     } else {
       $success = 0;
-      $message = 'ERROR: Credenciales incorrectas.';
+      $message = 'Credenciales incorrectas.';
     }
+    $this->db->liberar($sql);
 
     return array('success' => $success, 'message' => $message);
   }

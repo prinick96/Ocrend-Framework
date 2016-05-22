@@ -1,0 +1,10 @@
+#ocrend {
+  margin: 0 auto;
+  max-width: 900px!important;
+}
+.show {
+  display: block!important;
+}
+.hide {
+  display: none!important;
+}

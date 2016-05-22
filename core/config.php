@@ -16,4 +16,10 @@ define('DB_NAME','ocrend');
 define('URL','http://prinick-notebook/Ocrend-Framework/');
 define('APP','Ocrend-Framework');
 
+#Constantes de PHPMailer
+define('PHPMAILER_HOST','p3plcpnl0173.prod.phx3.secureserver.net');
+define('PHPMAILER_USER','ocrend@ocrend.com');
+define('PHPMAILER_PASS','CaX5487B!89');
+define('PHPMAILER_PORT',465);
+
 ?>

@@ -1,4 +1,21 @@
 {% include 'overall/header.twig' %}
 <body>
-  <h1>OCREND SOFTWARE</h1>
+  <div id="ocrend">
+    <div class="row">
+      <div class="col-sm-12" style="text-align: center;">
+        <h2>{{ constant('APP') }}</h2>
+      </div>
+      <div class="col-sm-12">
+        {% if session.app_id is not defined %}
+          {% include 'overall/login.twig' %}
+          <hr />
+          {% include 'overall/register.twig' %}
+        {% else %}
+          <a href="?view=logout" class="btn btn-primary">Cerrar Sesión id : {{ session.app_id }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 {% include 'overall/footer.twig' %}
+</body>
+</html>
