@@ -23,7 +23,7 @@ function send_mail(string $email, string $name, string $HTML, string $titulo) {
       )
   );
   $mail->Port = PHPMAILER_PORT;
-  $mail->setFrom(PHPMAILER_USER, APP_TITLE);
+  $mail->setFrom(PHPMAILER_USER, APP);
   $mail->addAddress($email, $name);
   $mail->isHTML(true);
   $mail->Subject = $titulo;

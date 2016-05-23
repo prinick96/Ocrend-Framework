@@ -49,7 +49,7 @@ final class Register extends Models implements OCREND {
         $this->db->liberar($sql);
       } else {
         $success = 0;
-        $message = 'La dirección ' . $this->email .' no tiene un formato válido.';
+        $message = 'La dirección <b>' . $this->email .'</b> no tiene un formato válido.';
       }
     } else {
       $success = 0;

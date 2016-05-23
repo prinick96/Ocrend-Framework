@@ -10,10 +10,6 @@ class logoutController extends Controllers {
     redir();
   }
 
-  public function __destruct() {
-    parent::__destruct();
-  }
-
 }
 
 ?>
