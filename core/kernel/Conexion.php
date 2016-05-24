@@ -17,7 +17,7 @@ class Conexion extends mysqli {
   }
 
   final public function recorrer($query) {
-    return $query->fetch_array(MYSQLI_NUM);
+    return $query->fetch_array();
   }
 
   final public function assoc($query) {
