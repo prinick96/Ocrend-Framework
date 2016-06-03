@@ -10,7 +10,4 @@ require('../core/config.php');
 require('../core/kernel/Ocrend.php');
 require('../vendor/autoload.php');
 
-#implementación de funciones
-require('../core/functions/general_functions.php');
-
 ?>

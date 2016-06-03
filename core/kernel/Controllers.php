@@ -10,7 +10,7 @@ abstract class Controllers {
   protected function __construct(bool $LOGED = false) {
 
     if($LOGED and !isset($_SESSION['app_id'])) {
-      redir('index.php');
+      Func::redir('index.php');
       exit;
     }
 

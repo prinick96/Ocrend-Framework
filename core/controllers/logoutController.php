@@ -7,7 +7,7 @@ class logoutController extends Controllers {
     unset($_SESSION['app_id']);
     session_write_close();
     session_unset();
-    redir();
+    Func::redir();
   }
 
 }
