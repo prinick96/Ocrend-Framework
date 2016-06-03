@@ -10,7 +10,7 @@ final class Login extends Models implements OCREND {
   }
 
   final public function SignIn(string $user, string $pass) : array {
-    $this->user = $this->db->real_escape_string($user);
+    $this->user = $this->db->scape($user);
     $this->pass = md5(md5($pass) . 'ocrend');
     $sql = $this->db->query("SELECT id FROM users WHERE user='$this->user' AND pass='$this->pass' LIMIT 1;");
     if($this->db->rows($sql) > 0) {

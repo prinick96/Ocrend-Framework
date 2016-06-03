@@ -18,18 +18,18 @@ final class Register extends Models implements OCREND {
   final public function SignUp(array $data) : array {
 
     if($this->AllFull($data)) {
-      $this->user = $this->db->real_escape_string($data['user']);
-      $this->email = $this->db->real_escape_string($data['email']);
+      $this->user = $this->db->scape($data['user']);
+      $this->email = $this->db->scape($data['email']);
 
       if(filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
         $sql = $this->db->query("SELECT user FROM users WHERE user='$this->user' OR email='$this->email' LIMIT 1;");
         if($this->db->rows($sql) == 0) {
           $this->pass = md5(md5($data['pass']) . 'ocrend');
-          $this->dni = $this->db->real_escape_string($data['dni']);
-          $this->nombre = $this->db->real_escape_string($data['nombre']);
-          $this->pais = $this->db->real_escape_string($data['pais']);
-          $this->nacimiento = $this->db->real_escape_string($data['nacimiento']);
-          $this->telefono = $this->db->real_escape_string(str_replace([',','+','.',' '],'',$data['telefono']));
+          $this->dni = $this->db->scape($data['dni']);
+          $this->nombre = $this->db->scape($data['nombre']);
+          $this->pais = $this->db->scape($data['pais']);
+          $this->nacimiento = $this->db->scape($data['nacimiento']);
+          $this->telefono = $this->db->scape(str_replace([',','+','.',' '],'',$data['telefono']));
 
           $this->db->query("INSERT INTO users (user,email,pass,dni,nombre,pais,nacimiento,telefono)
           VALUES ('$this->user','$this->email','$this->pass','$this->dni','$this->nombre','$this->pais',

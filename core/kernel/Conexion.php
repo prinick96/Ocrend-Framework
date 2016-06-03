@@ -28,6 +28,15 @@ class Conexion extends mysqli {
     $this->query("DELETE FROM $table WHERE $where $limit;");
   }
 
+  final public function scape($e) {
+    if(is_int($e)) {
+      return intval($e);
+    } else if (is_float($e)) {
+      return floatval($e);
+    }
+    return $this->real_escape_string($e);
+  }
+
 }
 
 ?>
