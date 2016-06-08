@@ -13,10 +13,17 @@ final class Func extends Models implements OCREND {
     parent::__construct();
   }
 
+  #devuelve un hash muy seguro
+  final public static function hash(string $passw) : string {
+    return crypt($password, '$2a$10$' . substr(sha1(mt_rand()),0,22));
+  }
+
+  #redirecciona
   final public static function redir(string $url = 'index.php') {
     header('location: ' . $url);
   }
 
+  #envia un correo electrónico a $email, con el nombre $name, con el contenido $HTML y el asunto $titulo
   final public static function send_mail(string $email, string $name, string $HTML, string $titulo) {
     $mail = new PHPMailer;
     $mail->CharSet = "UTF-8";
@@ -48,6 +55,7 @@ final class Func extends Models implements OCREND {
     }
   }
 
+  #comprueba si un elemento es una imagen o no
   final public static function IsImage(string $file_name) : bool {
     $formats = ['jpg','png','jpeg','gif','JPG','PNG','JPEG','GIF'];
     $file_name = explode('.',$file_name);
@@ -58,19 +66,7 @@ final class Func extends Models implements OCREND {
     return false;
   }
 
-  final public function CheckExists(int $id, string $table) {
-    $sql = $this->db->query("SELECT * FROM $table WHERE id='$id' LIMIT 1;");
-    if($this->db->rows($sql) > 0) {
-      $exist = $this->db->recorrer($sql);
-    } else {
-      $exist = false;
-    }
-    $this->db->liberar($sql);
-    $this->db->close();
-
-    return $exist;
-  }
-
+  #convierte codigo BBcode en HTML
   final public static function BBCode(string $string) : string {
     $BBcode = array(
         '/\[i\](.*?)\[\/i\]/is',
@@ -119,6 +115,7 @@ final class Func extends Models implements OCREND {
     return nl2br(preg_replace($BBcode,$HTML,$string));
   }
 
+  #uso private para el paginador
   final private static function GetNumberPags(string $link, string $total_pags) : string {
     $paginador = '';
     $max_show = 9;
@@ -164,6 +161,7 @@ final class Func extends Models implements OCREND {
     return $paginador;
   }
 
+  #devuelve un paginador con la lógica implementada directamente para la vista
   final public static function Paginador(string $link, string $total_pags) {
 
     $paginador = '<div class="pagination pagination-sm"><ul>'; //Varía de acuerdo a si utiliza bootstrap o materialize
@@ -201,62 +199,19 @@ final class Func extends Models implements OCREND {
     return $paginador;
   }
 
-  final public static function URLAmigable(string $string) : string {
-    $string = trim($string);
+  #chequea si un elemento existe en una tabla, si existe devuelve todo el contenido elegido
+  final public function CheckExists(int $id, string $table, string $e = '*') {
+    $sql = $this->db->query("SELECT $e FROM $table WHERE id='$id' LIMIT 1;");
+    if($this->db->rows($sql) > 0) {
+      $exist = $this->db->recorrer($sql);
+    } else {
+      $exist = false;
+    }
+    $this->db->liberar($sql);
+    $this->db->close();
 
-    $string = str_replace(
-        array('á', 'à', 'ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä'),
-        array('a', 'a', 'a', 'a', 'a', 'A', 'A', 'A', 'A'),
-        $string
-    );
-
-    $string = str_replace(
-        array('é', 'è', 'ë', 'ê', 'É', 'È', 'Ê', 'Ë'),
-        array('e', 'e', 'e', 'e', 'E', 'E', 'E', 'E'),
-        $string
-    );
-
-    $string = str_replace(
-        array('í', 'ì', 'ï', 'î', 'Í', 'Ì', 'Ï', 'Î'),
-        array('i', 'i', 'i', 'i', 'I', 'I', 'I', 'I'),
-        $string
-    );
-
-    $string = str_replace(
-        array('ó', 'ò', 'ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô'),
-        array('o', 'o', 'o', 'o', 'O', 'O', 'O', 'O'),
-        $string
-    );
-
-    $string = str_replace(
-        array('ú', 'ù', 'ü', 'û', 'Ú', 'Ù', 'Û', 'Ü'),
-        array('u', 'u', 'u', 'u', 'U', 'U', 'U', 'U'),
-        $string
-    );
-
-    $string = str_replace(
-        array('ñ', 'Ñ', 'ç', 'Ç'),
-        array('n', 'N', 'c', 'C',),
-        $string
-    );
-
-    //Esta parte se encarga de eliminar cualquier caracter extraño
-    $string = str_replace(
-        array("\\", "¨", "º", "-", "~",
-             "@", "|", "!", "\"",
-             "·", "$", "%", "&", "/",
-             "(", ")", "?", "'", "¡",
-             "¿", "[", "^", "<code>", "]",
-             "+", "}", "{", "¨", "´",
-             ">", "< ", ";", ",", ":",
-             ".", " "),
-        '-',
-        $string
-    );
-
-    return $string;
+    return $exist;
   }
-
 
   public function __destruct() {
     parent::__destruct();
