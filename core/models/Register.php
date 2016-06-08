@@ -24,7 +24,7 @@ final class Register extends Models implements OCREND {
       if(filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
         $sql = $this->db->query("SELECT user FROM users WHERE user='$this->user' OR email='$this->email' LIMIT 1;");
         if($this->db->rows($sql) == 0) {
-          $this->pass = md5(md5($data['pass']) . 'ocrend');
+          $this->pass = Func::hash($data['pass']);
           $this->dni = $this->db->scape($data['dni']);
           $this->nombre = $this->db->scape($data['nombre']);
           $this->pais = $this->db->scape($data['pais']);
