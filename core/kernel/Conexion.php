@@ -24,7 +24,7 @@ class Conexion extends mysqli {
     return $query->fetch_assoc();
   }
 
-  final public function delete(string $table, string $where, string $limit = "") {
+  final public function delete(string $table, string $where, string $limit = 'LIMIT 1') {
     $this->query("DELETE FROM $table WHERE $where $limit;");
   }
 
