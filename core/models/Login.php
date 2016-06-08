@@ -11,12 +11,19 @@ final class Login extends Models implements OCREND {
 
   final public function SignIn(string $user, string $pass) : array {
     $this->user = $this->db->scape($user);
-    $this->pass = Func::hash($pass);
-    $sql = $this->db->query("SELECT id FROM users WHERE user='$this->user' AND pass='$this->pass' LIMIT 1;");
+    $this->pass = $pass;
+    #Atención: este login imposibilita conexión para usuarios con el mismo user, por eso se pone la restricción previa en Reg
+    $sql = $this->db->query("SELECT id,pass FROM users WHERE user='$this->user' LIMIT 1;");
     if($this->db->rows($sql) > 0) {
-      $_SESSION['app_id'] = $this->db->recorrer($sql)[0];
-      $success = 1;
-      $message = 'Conectado, estamos redireccionando.';
+      $u = $this->db->recorrer($sql);
+      if(Func::chash($u[1],$this->pass)) { #comparamos el hash dinámico con el estático de la base de datos
+        $_SESSION['app_id'] = $u[0];
+        $success = 1;
+        $message = 'Conectado, estamos redireccionando.';
+      } else {
+        $success = 0;
+        $message = 'Credenciales incorrectas.';
+      }
     } else {
       $success = 0;
       $message = 'Credenciales incorrectas.';

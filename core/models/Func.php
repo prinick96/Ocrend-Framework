@@ -13,7 +13,18 @@ final class Func extends Models implements OCREND {
     parent::__construct();
   }
 
-  #devuelve un hash muy seguro
+  /*
+    #Func::hash es dinámico, SI o SI hay que usar esta llave para comparar
+    ejemplo-> Func::chash('$2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G','123456');
+    Si imprimimos Func::hash('123456'); Veremos que SIEMPRE cambia, por eso sí o sí hay que verificar
+  */
+  final public static function chash(string $hash, string $s2) : bool {
+    $full_salt = substr($hash, 0, 29);
+    $new_hash = crypt($s2, $full_salt);
+    return ($hash == $new_hash);
+   }
+
+  #devuelve un hash muy seguro (ES DINÁMICO, NUNCA ES EL MISMO)
   final public static function hash(string $p) : string {
     return crypt($p, '$2a$10$' . substr(sha1(mt_rand()),0,22));
   }

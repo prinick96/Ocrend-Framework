@@ -9,6 +9,14 @@ session_start();
 #idioma base
 setlocale(LC_ALL,"es_ES"); //comentar si servidor no soporta setlocale
 
+try {
+  if(0 == CRYPT_BLOWFISH) {
+    throw new Exception(true);
+  }
+} catch (Exception $e) {
+  die('CRYPT_BLOWFISH no soportado, encriptado de hash actual no funcional.');
+}
+
 #configuración de conxión con base de datos
 define('DB_HOST','localhost');
 define('DB_USER','root');
