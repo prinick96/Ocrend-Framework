@@ -14,8 +14,8 @@ final class Func extends Models implements OCREND {
   }
 
   #devuelve un hash muy seguro
-  final public static function hash(string $passw) : string {
-    return crypt($password, '$2a$10$' . substr(sha1(mt_rand()),0,22));
+  final public static function hash(string $p) : string {
+    return crypt($p, '$2a$10$' . substr(sha1(mt_rand()),0,22));
   }
 
   #redirecciona
