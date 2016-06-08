@@ -6,6 +6,9 @@ declare(strict_types=1);
 #control global de sesiones
 session_start();
 
+#idioma base
+setlocale(LC_ALL,"es_ES"); //comentar si servidor no soporta setlocale
+
 #configuración de conxión con base de datos
 define('DB_HOST','localhost');
 define('DB_USER','root');
