@@ -19,4 +19,6 @@ function __models_autoload(string $model) {
   }
 }
 
+!FIREWALL ?: new Firewall; 
+
 ?>

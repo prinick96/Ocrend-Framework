@@ -13,8 +13,7 @@ abstract class Models {
 
   protected function __construct($DATABASE = DB_NAME) {
     $this->db = new Conexion($DATABASE);
-    $this->id = $_GET['id'] ?? null;
-    $this->id = intval($this->id);
+    $this->id = isset($_GET['id']) ? intval($_GET['id']) : null;
   }
 
   #Analiza todo un arreglo en busca de posibles elementos vacíos, si todos están llenos devuelve true

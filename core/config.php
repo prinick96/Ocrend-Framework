@@ -33,4 +33,7 @@ define('PHPMAILER_USER','ocrend@ocrend.com');
 define('PHPMAILER_PASS','CaX5487B!89');
 define('PHPMAILER_PORT',465);
 
+#Activación del Firewall
+define('FIREWALL',true);
+
 ?>
