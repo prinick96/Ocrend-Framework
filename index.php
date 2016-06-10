@@ -25,4 +25,6 @@ if(isset($_GET['view'])) {
 require('core/controllers/' . $Controller . '.php');
 new $Controller;
 
+(!DEBUG and !IS_API) ?: new Debug($startime);
+
 ?>

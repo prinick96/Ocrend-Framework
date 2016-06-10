@@ -8,3 +8,23 @@
 .hide {
   display: none!important;
 }
+#debug {
+  font-family: sans-serif!important;
+  max-width: 900px!important;
+  background: #282c34!important;
+  border-radius: 4px!important;
+  color: #55ab79!important;
+  padding: 5px!important;
+  margin: 0 auto!important;
+}
+.variable {
+  font-weight: 900!important;
+  color: #e06a60!important;
+}
+.cab {
+  font-weight: 900!important;
+  color: #f3a638!important;
+}
+.b {
+  color: #9eb2a9!important;
+}

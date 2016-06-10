@@ -391,10 +391,10 @@ final class Firewall {
 
     if(self::FCONF['PROTECTION_UNION_SQL']) {
       $stop = 0;
-      $ct_rules = ['*/from/*', '*/insert/*', '+into+', '%20into%20', '*/into/*', ' into ', 'into', '*/limit/*',
+      $CT = ['*/from/*', '*/insert/*', '+into+', '%20into%20', '*/into/*', ' into ', 'into', '*/limit/*',
       'not123exists*', '*/radminsuper/*', '*/select/*', '+select+', '%20select%20', ' select ',
       '+union+', '%20union%20', '*/union/*', ' union ', '*/update/*', '*/where/*'];
-      $check  = str_replace($ct_rules, '*', $GET_QUERY_STRING );
+      $check  = str_replace($CT, '*', $GET_QUERY_STRING );
       !$GET_QUERY_STRING != $check ?: $stop++;
       !preg_match($REGEX_UNION, $GET_QUERY_STRING) ?: $stop++;
       !preg_match('/([OdWo5NIbpuU4V2iJT0n]{5}) /', rawurldecode($GET_QUERY_STRING)) ?: $stop++;
@@ -406,7 +406,7 @@ final class Firewall {
     }
 
     if (self::FCONF['PROTECTION_CLICK_ATTACK'] and $GET_QUERY_STRING != str_replace(['/*', 'c2nyaxb0', '/*'], '*', $GET_QUERY_STRING)) {
-      $this->Logs('Union attack',$GET_IP,$USER_AGENT,$GET_REFERER);
+      $this->Logs('Click attack',$GET_IP,$USER_AGENT,$GET_REFERER);
       die(self::MSG_PROTECTION_CLICK);
   	}
 

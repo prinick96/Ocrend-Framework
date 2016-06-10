@@ -10,4 +10,8 @@ require('core/config.php');
 require('core/kernel/Ocrend.php');
 require('vendor/autoload.php');
 
+$startime = microtime();
+$startime = explode(" ",$startime);
+$startime = $startime[0] + $startime[1];
+
 ?>
