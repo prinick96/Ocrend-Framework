@@ -11,6 +11,7 @@
 
 #Si existe algún tipo de error de permisos derivado al Firewall ó Twig
 #~$ sudo chmod -R 777 /ruta/en/donde/esta/el/framework
+#Falta integrar sistema de plugins
 require('core/app_core.php');
 
 if(isset($_GET['view'])) {

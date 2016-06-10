@@ -23,7 +23,7 @@ final class Debug {
     echo '<ul>';
     foreach ($VAR as $key => $value) {
       if($_GET and $key == 'view') {
-        echo '<li><strong class="cab">Controller:</strong> <span class="variable">', $variable ,'</span><span class="b">[\'</span>', $key ,'<span class="b">\']</span> = ', nl2br(var_dump($value)) ,'</li>';
+        echo '<li><strong class="cab">Controller:</strong> <span class="variable">', $variable ,'</span><span class="b">[\'</span>', $key ,'<span class="b">\']</span> = ', $this->showinfo($value) ,'</li>';
       } else if ($key != 'dbug_querys') {
         echo '<li><span class="variable">', $variable ,'</span><span class="b">[\'</span>', $key ,'<span class="b">\']</span> = ', $this->showinfo($value) ,'</li>';
       }
