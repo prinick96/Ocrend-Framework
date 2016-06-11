@@ -1,5 +1,5 @@
 <?php
-
+#based in http://www.php-firewall.info/
 final class Firewall {
 
   const FCONF = array(

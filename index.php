@@ -14,7 +14,6 @@
   ~$ sudo chmod -R 777 /ruta/en/donde/esta/el/framework
 */
 
-#Falta integrar sistema de plugins
 require('core/app_core.php');
 
 if(isset($_GET['view'])) {

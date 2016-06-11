@@ -24,7 +24,7 @@ final class Debug {
     foreach ($VAR as $key => $value) {
       if($_GET and $key == 'view') {
         echo '<li><strong class="cab">Controller:</strong> <span class="variable">', $variable ,'</span><span class="b">[\'</span>', $key ,'<span class="b">\']</span> = ', $this->showinfo($value) ,'</li>';
-      } else if ($key != 'dbug_querys') {
+      } else {
         echo '<li><span class="variable">', $variable ,'</span><span class="b">[\'</span>', $key ,'<span class="b">\']</span> = ', $this->showinfo($value) ,'</li>';
       }
     }
@@ -61,19 +61,6 @@ final class Debug {
     } else {
       echo 'Sin variables <span class="variable">$_FILES</span><br />';
     }
-
-    echo '<span class="cab">Querys</span>: ';
-    if(isset($_SESSION['dbug_querys']) and sizeof($_SESSION['dbug_querys']) > 0) {
-      $x = 0;
-      echo '<br /><ul>';
-      foreach ($_SESSION['dbug_querys'] as $query) {
-        echo '<li><span class="variable">Query '. ++$x,':</span> ', $this->showinfo($query),'</li>';
-      }
-      echo '</ul>';
-    } else {
-      echo 'Sin querys realizadas.<br />';
-    }
-    unset($_SESSION['dbug_querys']);
 
     $endtime = microtime();
     $endtime = explode(" ",$endtime);

@@ -12,7 +12,7 @@ abstract class Models {
   protected $id;
 
   protected function __construct($DATABASE = DB_NAME) {
-    $this->db = new Conexion($DATABASE);
+    $this->db = Conexion::Start($DATABASE);
     $this->id = isset($_GET['id']) ? intval($_GET['id']) : null;
   }
 
