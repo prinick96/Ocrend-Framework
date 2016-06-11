@@ -1,5 +1,7 @@
 <?php
 
+defined('INDEX_DIR') OR exit('Ocrend software says .i.');
+
 final class Debug {
 
   const HEAD = '<br /><div id="debug">';

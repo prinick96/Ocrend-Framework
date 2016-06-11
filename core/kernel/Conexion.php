@@ -1,18 +1,16 @@
 <?php
 
+defined('INDEX_DIR') OR exit('Ocrend software says .i.');
+
 final class Conexion extends mysqli {
 
   private static $inst;
 
-  final public function Start($DATABASE = DB_NAME) {
+  final public static function Start($DATABASE = DB_NAME) {
     if(!self::$inst instanceof self) {
       self::$inst = new self($DATABASE);
     }
     return self::$inst;
-  }
-
-  final public function __clone() {
-    trigger_error('Estás intentando clonar la Conexión', E_USER_ERROR);
   }
 
   final public function __construct($DATABASE = DB_NAME) {
@@ -46,11 +44,9 @@ final class Conexion extends mysqli {
     return $this->real_escape_string($e);
   }
 
-  final public function delete(string $table, string $where, string $limit = 'LIMIT 1') {
-    $this->query("DELETE FROM $table WHERE $where $limit;");
+  final public function delete(string $table, string $where, string $limit = 'LIMIT 1') : bool {
+    return $this->query("DELETE FROM $table WHERE $where $limit;");
   }
-
-
 
   final public function insert(string $table, array $e) : bool {
     if (sizeof($e) == 0) {
@@ -90,7 +86,7 @@ final class Conexion extends mysqli {
     return $this->query($query);
   }
 
-  final public function select(string $e = '*', string $table, string $where = '1 = 1', string $limit = "") {
+  final public function select(string $e, string $table, string $where = '1 = 1', string $limit = "") {
     $sql = $this->query("SELECT $e FROM $table WHERE $where $limit;");
     if($this->rows($sql) > 0) {
       while ($d = $this->recorrer($sql)) {
@@ -108,6 +104,14 @@ final class Conexion extends mysqli {
     if(!self::$inst instanceof self) {
       return parent::close();
     }
+  }
+
+  final public function __clone() {
+    trigger_error('Estás intentando clonar la Conexión', E_USER_ERROR);
+  }
+
+  final public function __wakeup() {
+    trigger_error('Estás intentando deserializar la Conexión', E_USER_ERROR);
   }
 
 }

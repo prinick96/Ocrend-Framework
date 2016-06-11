@@ -3,6 +3,8 @@
 spl_autoload_register('__kernel_autoload');
 spl_autoload_register('__models_autoload');
 
+defined('INDEX_DIR') OR exit('Ocrend software says .i.');
+
 define('ROOT_DIR', IS_API ? '../' : '');
 
 function __kernel_autoload(string $exec) {

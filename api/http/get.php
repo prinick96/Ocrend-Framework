@@ -1,5 +1,7 @@
 <?php
 
+defined('INDEX_DIR') OR exit('Ocrend software says .i.');
+
 $app->get('/',function($request, $response){
   $response->write('GET Respuesta');
   return $response;

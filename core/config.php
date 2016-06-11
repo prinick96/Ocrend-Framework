@@ -3,6 +3,9 @@
 #tipado estricto para PHP 7
 declare(strict_types=1);
 
+#security
+defined('INDEX_DIR') OR exit('Ocrend software says .i.');
+
 #control global de sesiones
 session_start();
 

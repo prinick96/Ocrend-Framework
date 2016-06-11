@@ -6,7 +6,7 @@
 
 >**@author** Brayan Narváez (Prinick) - <prinick@ocrend.com>
 
->**@copyright** 2016 Brayan Narváez
+>**@copyright** 2016 Ocrend Software
 
 >**@license** Private code
 
@@ -88,4 +88,6 @@ Crear __./templates/hola.twig__
 </body>
 </html>
 ```
+Acceder a __http://urlendondeestainstalado/index.php?view=hola__
+
 > Y listo, el framework utiliza el motor de templates Twig, el mismo que se utiliza en Symfony. Todo lo que esté en hola.twig es HTML y algunas implementaciones de Twig como la inclusión de header.twig el archivo que contiene el <head> y footer.twig que tiene la carga de scripts. El framework viene con boostrap presintalado y jquery.

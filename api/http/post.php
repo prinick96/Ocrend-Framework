@@ -1,5 +1,7 @@
 <?php
 
+defined('INDEX_DIR') OR exit('Ocrend software says .i.');
+
 $app->post('/',function($request, $response){
   $data = array('peticion' => 'POST');
   $response->withJson($data);

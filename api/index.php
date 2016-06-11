@@ -1,5 +1,6 @@
 <?php
 
+define('INDEX_DIR',true);
 require('../core/api_core.php');
 
 $app = new \Slim\App;

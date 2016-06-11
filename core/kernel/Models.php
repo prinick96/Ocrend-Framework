@@ -1,5 +1,7 @@
 <?php
 
+defined('INDEX_DIR') OR exit('Ocrend software says .i.');
+
 #INTERFACE implementada EN TODOS los modelos SIN EXCEPCIÓN
 interface OCREND {
   public function __construct();

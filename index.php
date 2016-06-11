@@ -5,7 +5,7 @@
  * PHP Version 7.0.2
  * @package OCREND Framework
  * @link http://www.ocrend.com/
- * @author Brayan Narváez (Prinick) <princk093@gmail.com> <prinick@ocrend.com>
+ * @author Brayan Narváez (Prinick) <prinick@ocrend.com>
  * @copyright 2016 - Ocrend Software
  */
 
@@ -14,6 +14,7 @@
   ~$ sudo chmod -R 777 /ruta/en/donde/esta/el/framework
 */
 
+define('INDEX_DIR',true);
 require('core/app_core.php');
 
 if(isset($_GET['view'])) {

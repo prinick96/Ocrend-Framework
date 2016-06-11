@@ -1,4 +1,7 @@
 <?php
+
+defined('INDEX_DIR') OR exit('Ocrend software says .i.');
+
 #based in http://www.php-firewall.info/
 final class Firewall {
 
