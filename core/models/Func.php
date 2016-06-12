@@ -175,34 +175,37 @@ final class Func extends Models implements OCREND {
   #devuelve un paginador con la lógica implementada directamente para la vista
   final public static function Paginador(string $link, string $total_pags) {
 
+    $lng_prev = 'Anterior';
+    $lng_next = 'Siguiente';
+
     $paginador = '<div class="pagination pagination-sm"><ul>'; //Varía de acuerdo a si utiliza bootstrap o materialize
         if(!isset($_GET['pag']) or !is_numeric($_GET['pag'])) {
-          $paginador .= '<li class="disabled"> <a>'.$_LNG['prev'].'</a> </li>';
+          $paginador .= '<li class="disabled"> <a>'.$lng_prev.'</a> </li>';
           $paginador .= self::GetNumberPags($link,$total_pags);
           if($total_pags > 1) {
-            $paginador .= '<li> <a href="'. $link .'&pag=2"> '.$_LNG['next'].'</a> </li>';
+            $paginador .= '<li> <a href="'. $link .'&pag=2"> '.$lng_next.'</a> </li>';
           } else {
-            $paginador .= '<li class="disabled"> <a> '.$_LNG['next'].' </a> </li>';
+            $paginador .= '<li class="disabled"> <a> '.$lng_next.' </a> </li>';
           }
         } else {
           if($total_pags > 1) {
             if($_GET['pag'] > 1 and $_GET['pag'] < $total_pags) {
-              $paginador .= '<li> <a href="'. $link .'&pag='. ($_GET['pag'] - 1) .'">'.$_LNG['prev'].'</a> </li>'; //Atrás
+              $paginador .= '<li> <a href="'. $link .'&pag='. ($_GET['pag'] - 1) .'">'.$lng_prev.'</a> </li>'; //Atrás
               $paginador .= self::GetNumberPags($link,$total_pags);
-              $paginador .= '<li> <a href="'. $link .'&pag='. ($_GET['pag'] + 1) .'"> '.$_LNG['next'].' </a> </li>'; //Siguiente
+              $paginador .= '<li> <a href="'. $link .'&pag='. ($_GET['pag'] + 1) .'"> '.$lng_next.' </a> </li>'; //Siguiente
             } else if($_GET['pag'] == 1) {
-              $paginador .= '<li class="disabled"> <a>'.$_LNG['prev'].'</a> </li>'; //Atrás
+              $paginador .= '<li class="disabled"> <a>'.$lng_prev.'</a> </li>'; //Atrás
               $paginador .= self::GetNumberPags($link,$total_pags);
-              $paginador .= '<li> <a href="'. $link .'&pag='. ($_GET['pag'] + 1) .'"> '.$_LNG['next'].' </a> </li>'; //Siguiente
+              $paginador .= '<li> <a href="'. $link .'&pag='. ($_GET['pag'] + 1) .'"> '.$lng_next.' </a> </li>'; //Siguiente
             } else {
-              $paginador .= '<li> <a href="'. $link .'&pag='. ($_GET['pag'] - 1) .'">'.$_LNG['prev'].'</a> </li>'; //Atrás
+              $paginador .= '<li> <a href="'. $link .'&pag='. ($_GET['pag'] - 1) .'">'.$lng_prev.'</a> </li>'; //Atrás
               $paginador .= self::GetNumberPags($link,$total_pags);
-              $paginador .= '<li class="disabled"> <a> '.$_LNG['next'].' </a> </li>'; //Siguiente
+              $paginador .= '<li class="disabled"> <a> '.$lng_next.' </a> </li>'; //Siguiente
             }
           } else {
-            $paginador .= '<li class="disabled"> <a> '.$_LNG['prev'].'</a> </li>'; //Atrás
+            $paginador .= '<li class="disabled"> <a> '.$lng_prev.'</a> </li>'; //Atrás
             $paginador .= '<li class="disabled"><a>1</a></li>';
-            $paginador .= '<li class="disabled"> <a> '.$_LNG['next'].'  </a> </li>'; //Siguiente
+            $paginador .= '<li class="disabled"> <a> '.$lng_next.'  </a> </li>'; //Siguiente
           }
         }
     $paginador .= '</ul></div>';

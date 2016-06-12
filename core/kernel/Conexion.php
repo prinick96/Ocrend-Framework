@@ -81,7 +81,7 @@ final class Conexion extends mysqli {
       $query .= $campo . '=\'' . $this->scape($valor) . '\',';
     }
     $query[strlen($query) - 1] = ' ';
-    $query = "WHERE $where $limit;";
+    $query .= "WHERE $where $limit;";
 
     return $this->query($query);
   }
