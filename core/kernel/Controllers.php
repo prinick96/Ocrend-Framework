@@ -9,7 +9,7 @@ abstract class Controllers {
   protected $mode;
 
   //Pasar TRUE en el constructor del controlador que será exlusivo para entidades LOGEADAS
-  protected function __construct(bool $LOGED = false) {
+  protected function __construct(bool $LOGED = false, bool $CACHE = false) {
 
     if($LOGED and !isset($_SESSION['app_id'])) {
       Func::redir('index.php');
@@ -19,7 +19,7 @@ abstract class Controllers {
     #Definición de templates
     $this->template = new Twig_Environment(new Twig_Loader_Filesystem('templates'), array(
       'cache' => 'templates/.compiler',
-      'auto_reload' => true
+      'auto_reload' => !$CACHE
     ));
     $this->template->addGlobal('session', $_SESSION);
     $this->template->addGlobal('get', $_GET);

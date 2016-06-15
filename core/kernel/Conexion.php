@@ -1,5 +1,7 @@
 <?php
 
+//hacer method select_i al tipo a[id] = array
+
 defined('INDEX_DIR') OR exit('Ocrend software says .i.');
 
 final class Conexion extends mysqli {
