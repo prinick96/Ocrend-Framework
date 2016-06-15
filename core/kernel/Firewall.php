@@ -195,7 +195,7 @@ final class Firewall {
 
     if(self::FCONF['PROTECTION_SERVER_OVH_BY_IP']) {
       $ip = explode('.', $GET_IP);
-      if(in_array($ip[0].'.'.$ip[1],['87.98','91.121','94.23','213.186','213.251'])) {
+      if(sizeof($ip) > 1 and in_array($ip[0].'.'.$ip[1],['87.98','91.121','94.23','213.186','213.251'])) {
         $this->Logs('OVH Server IP',$GET_IP,$USER_AGENT,$GET_REFERER);
         die(self::MSG_PROTECTION_OVH);
       }
@@ -213,7 +213,7 @@ final class Firewall {
 
     if(self::FCONF['PROTECTION_SERVER_DEDIBOX_BY_IP']) {
       $ip = explode('.', $GET_IP);
-      if($ip[0].'.'.$ip[1] == '88.191') {
+      if(sizeof($ip) > 1 and $ip[0].'.'.$ip[1] == '88.191') {
         $this->Logs('DEDIBOX server IP',$GET_IP,$USER_AGENT,$GET_REFERER);
         die(self::MSG_PROTECTION_DEDIBOX_IP);
       }
@@ -226,7 +226,7 @@ final class Firewall {
 
     if(self::FCONF['PROTECTION_SERVER_DIGICUBE_BY_IP']) {
       $ip = explode('.',$GET_IP);
-      if ($ip[0].'.'.$ip[1] == '95.130') {
+      if (sizeof($ip) > 1 and $ip[0].'.'.$ip[1] == '95.130') {
         $this->Logs('DIGICUBE Server IP',$GET_IP,$USER_AGENT,$GET_REFERER);
         die(self::MSG_PROTECTION_DIGICUBE_IP);
       }

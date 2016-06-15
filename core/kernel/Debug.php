@@ -9,7 +9,7 @@ final class Debug {
 
   final private function convert(int $size)  {
       $unit = array('b','kb','mb','gb','tb','pb');
-      return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
+      return round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
   }
 
   final private function showinfo($var) : string {
