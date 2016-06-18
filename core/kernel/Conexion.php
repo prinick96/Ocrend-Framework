@@ -107,7 +107,7 @@ final class Conexion extends mysqli {
     if(DEBUG) {
       $i = (int) memory_get_usage();
       $query = parent::query($q);
-      $f = memory_get_usage();
+      $f = (int) memory_get_usage();
 
       $_SESSION['___QUERY_DEBUG___'][] = [
         (string) $q,
