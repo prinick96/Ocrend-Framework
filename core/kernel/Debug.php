@@ -7,11 +7,13 @@ final class Debug {
   const HEAD = '<br /><div id="debug">';
   const FOOT = '</div>';
 
-  final private function convert(int $size)  {
-      $unit = array('bytes','kb','mb','gb','tb','pb');
-      return round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
-  }
-
+  /**
+    * Muestra información acerca de una variable
+    *
+    * @param type $var: variable a desglosar
+    *
+    * @return string de la variable correctamente desglosada
+  */
   final private function showinfo($var) : string {
     $var = print_r($var, true);
     $var = str_replace('=>','<span class="b">=></span>',$var);
@@ -20,6 +22,14 @@ final class Debug {
     return $var;
   }
 
+  /**
+    * Lista un arreglo, mostrando la información que contiene
+    *
+    * @param array $VAR: Variable a desglosar
+    * @param string $variable: Forma escrita de la variable que se está desglosando
+    *
+    * @return void
+  */
   final private function listVar(array $VAR, string $variable) {
     echo '<strong class="cab">',$variable,':</strong> <br />';
     echo '<ul>';
@@ -35,12 +45,19 @@ final class Debug {
     echo '</ul>';
   }
 
+  /**
+    * Constructor, inicializa el modo Debug
+    *
+    * @param int $startime: Start-Time, tiempo de inicio de ejecución del código
+    *
+    * @return void
+  */
   final public function __construct(int $startime) {
 
     $endtime = microtime();
     $endtime = explode(" ",$endtime);
     $endtime = $endtime[0] + $endtime[1];
-    $memory = $this->convert(memory_get_usage());
+    $memory = Func::convert(memory_get_usage());
 
     echo self::HEAD;
 
@@ -75,7 +92,7 @@ final class Debug {
       echo '<br /><strong class="cab">QUERYS:</strong><br />';
       echo '<ul style="list-style:none;padding:0;">';
       foreach ($_SESSION['___QUERY_DEBUG___'] as $query) {
-        echo '<li><ul><li><span class="variable">query: </span>',$query[0],'</li><li><span class="variable">memoria: </span>',$this->convert($query[1]),'</li></ul></li>';
+        echo '<li><ul><li><span class="variable">query: </span>',$query[0],'</li><li><span class="variable">memoria: </span>',Func::convert($query[1]),'</li></ul></li>';
       }
       echo '</ul>';
     }
@@ -88,10 +105,15 @@ final class Debug {
     echo '<br /><b class="cab">DB_NAME:</b> ', DB_NAME,'<br />';
     echo '<br /><b class="cab">Firewall:</b> ', FIREWALL ? 'True' : 'False';
     echo '<br /><b class="cab">Tiempo de ejecución total:</b> ',$endtime - $startime,' segundos ';
-    echo '<br /><b class="cab">RAM consumida por cada usuario:</b> ',$memory;
+    echo '<br /><b class="cab">RAM consumida por cada usuario:</b> ', $memory;
 
   }
 
+  /**
+    * Finaliza el modo Debug
+    *
+    * @return void
+  */
   final public function __destruct() {
     echo self::FOOT;
   }

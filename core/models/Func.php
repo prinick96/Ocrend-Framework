@@ -1,10 +1,10 @@
 <?php
 
-/*
-  Las funciones que requiren conexión con la base de datos o heredar algo del modelo, su previa llamda debe realizarse
-  instanciando primero la clase Func, y llamarse a través de un objeto.
-
-  Las que no, son static y utilizan Func::nombrefuncion()
+/**
+  * Las funciones que requiren conexión con la base de datos o heredar algo del modelo, su previa llamda debe realizarse
+  * instanciando primero la clase Func, y llamarse a través de un objeto.
+  *
+  * Las que no, son static y utilizan Func::nombrefuncion()
 */
 
 final class Func extends Models implements OCREND {
@@ -13,10 +13,27 @@ final class Func extends Models implements OCREND {
     parent::__construct();
   }
 
-  /*
-    #Func::hash es dinámico, SI o SI hay que usar esta llave para comparar
-    ejemplo-> Func::chash('$2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G','123456');
-    Si imprimimos Func::hash('123456'); Veremos que SIEMPRE cambia, por eso sí o sí hay que verificar
+  /**
+    * Da unidades de peso a un integer según sea su tamaño asumida en bytes
+    *
+    * @param int $size: Un entero que representa el tamaño a convertir
+    *
+    * @return string del tamaño $size convertido a la unidad más adecuada
+  */
+  final public static function convert(int $size) : string {
+      $unit = array('bytes','kb','mb','gb','tb','pb');
+      return round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
+  }
+
+  /**
+    * Compara un string hash con un string sin hash, si el string sin hash al encriptar posee la misma llave que hash, son iguales
+    *
+    * @param string $hash: Hash con la forma $2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G
+    * @param string $s2: Cadena de texto a comparar
+    *
+    * @example Func::chash('$2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G','123456'); //return true
+    *
+    * @return true si $s2 contiene la misma llave que $hash, por tanto el contenido de $hash es $s2, de lo contrario false
   */
   final public static function chash(string $hash, string $s2) : bool {
     $full_salt = substr($hash, 0, 29);
@@ -24,22 +41,43 @@ final class Func extends Models implements OCREND {
     return ($hash == $new_hash);
    }
 
-  #devuelve un hash muy seguro (ES DINÁMICO, NUNCA ES EL MISMO)
+  /**
+    * Devuelve un hash DINÁMICO, para comparar un hash con un elemento se utiliza chash
+    *
+    * @param string $p: Cadena de texto a encriptar
+    *
+    * @return string Hash, con la forma $2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G
+  */
   final public static function hash(string $p) : string {
     return crypt($p, '$2a$10$' . substr(sha1(mt_rand()),0,22));
   }
 
-  #redirecciona
+  /**
+    * Redirecciona a una URL
+    *
+    * @param string $url: Sitio a donde redireccionará
+    *
+    * @return void
+  */
   final public static function redir(string $url = 'index.php') {
     header('location: ' . $url);
   }
 
-  #envia un correo electrónico a $email, con el nombre $name, con el contenido $HTML y el asunto $titulo
+  /**
+    * Envía un correo electrónico utilizando PHPMailer
+    *
+    * @param string $email: Destinatario
+    * @param string $name: Nombre del destinatario
+    * @param string $HTML: Contenido en HTML del email
+    * @param string $titulo: Asunto del email
+    *
+    * @return true si fue enviado correctamente, string con el Error descrito por PHPMailer
+  */
   final public static function send_mail(string $email, string $name, string $HTML, string $titulo) {
     $mail = new PHPMailer;
     $mail->CharSet = "UTF-8";
     $mail->Encoding = "quoted-printable";
-    $mail->isSendMail();
+    $mail->isSendMail(); # Comentar y descomentar la línea de abajo si da problemas #
     //$mail->isSMTP();
     $mail->Host = PHPMAILER_HOST;
     $mail->SMTPAuth = true;
@@ -66,7 +104,13 @@ final class Func extends Models implements OCREND {
     }
   }
 
-  #comprueba si un elemento es una imagen o no
+  /**
+    * Dice si un elemento es una imagen o no según su extensión
+    *
+    * @param string $file_name: Nombre del archivo, da igual si es solo el nombre o la ruta con el nombre
+    *
+    * @return true si es una imagen, false si no lo es
+  */
   final public static function IsImage(string $file_name) : bool {
     $formats = ['jpg','png','jpeg','gif','JPG','PNG','JPEG','GIF'];
     $file_name = explode('.',$file_name);
@@ -77,7 +121,13 @@ final class Func extends Models implements OCREND {
     return false;
   }
 
-  #convierte codigo BBcode en HTML
+  /**
+    * Convierte código BBCode en su equivalente HTML
+    *
+    * @param string $string: Código con formato BBCode dentro
+    *
+    * @return string del código BBCode transformado en HTML
+  */
   final public static function BBCode(string $string) : string {
     $BBcode = array(
         '/\[i\](.*?)\[\/i\]/is',
@@ -126,12 +176,20 @@ final class Func extends Models implements OCREND {
     return nl2br(preg_replace($BBcode,$HTML,$string));
   }
 
-  #uso private para el paginador
-  final private static function GetNumberPags(string $link, string $total_pags) : string {
+  /**
+    * Método privado, su uso está reservado para Func::Paginador(...), devuelve un listado de números por izquierda y derecha según
+    * la posición de la página actual en el <ul> del paginador
+    *
+    * @param string $link: Formato de URL de continuidad para el paginador, ejemplo ?view=buscar&categoria=1
+    * @param int $total_pags: Número de páginas totales
+    *
+    * @return string con los números de las páginas para el paginador
+  */
+  final private static function GetNumberPags(string $link, int $total_pags) : string {
     $paginador = '';
-    $max_show = 9;
-    $izquierda = 4;
-    $derecha = 4;
+    $max_show = 9; #max_show SIEMPRE debe ser izquierda + derecha + 1
+    $izquierda = 4; #numeros máximos a mostrar por la izquierda
+    $derecha = 4; #numeros máximos a mostrar por la derecha
 
     if($max_show >= $total_pags) {
       for($x = 1; $x <= $total_pags; $x++) {
@@ -172,13 +230,21 @@ final class Func extends Models implements OCREND {
     return $paginador;
   }
 
-  #devuelve un paginador con la lógica implementada directamente para la vista
-  final public static function Paginador(string $link, string $total_pags) {
+  /**
+    * Devuelve un paginador numérico de la forma [<< anterior - 1 - 2 - 3 - *4* - 5 - 6 - 7 - siguiente >>]
+    * Para que este funcione, el identificador GET para pasar entre páginas debe ser $_GET['pag'], es decir &pag=numero
+    *
+    * @param string $link: Formato de URL de continuidad para el paginador, ejemplo ?view=buscar&categoria=1
+    * @param int $total_pags: Número de páginas totales
+    *
+    * @return string con el paginador compatible con bootstrap
+  */
+  final public static function Paginador(string $link, int $total_pags) {
 
     $lng_prev = 'Anterior';
     $lng_next = 'Siguiente';
 
-    $paginador = '<div class="pagination pagination-sm"><ul>'; //Varía de acuerdo a si utiliza bootstrap o materialize
+    $paginador = '<div class="pagination pagination-sm"><ul>';
         if(!isset($_GET['pag']) or !is_numeric($_GET['pag'])) {
           $paginador .= '<li class="disabled"> <a>'.$lng_prev.'</a> </li>';
           $paginador .= self::GetNumberPags($link,$total_pags);
@@ -213,18 +279,19 @@ final class Func extends Models implements OCREND {
     return $paginador;
   }
 
-  #chequea si un elemento existe en una tabla, si existe devuelve todo el contenido elegido
+  /**
+    * Prueba la existencia de un elemento en la base de datos
+    * Para que este funcione, el identificador GET para pasar entre páginas debe ser $_GET['pag'], es decir &pag=numero
+    * IMPORTANTE: Debe estar INSTANCIADA, la clase Func y a través de un objeto se invoca esta función
+    *
+    * @param int $id: Id del elemento en la base de datos
+    * @param string $table: Tabla en donde se quiere verificar
+    * @param string $e: Elementos a seleccionar
+    *
+    * @return si existe devuelve el contenido en un arreglo asociativo/numérico, si no deveuvel false
+  */
   final public function CheckExists(int $id, string $table, string $e = '*') {
-    $sql = $this->db->query("SELECT $e FROM $table WHERE id='$id' LIMIT 1;");
-    if($this->db->rows($sql) > 0) {
-      $exist = $this->db->recorrer($sql);
-    } else {
-      $exist = false;
-    }
-    $this->db->liberar($sql);
-    $this->db->close();
-
-    return $exist;
+    return $this->db->select($e,$table,"id='$id','LIMIT 1'");
   }
 
   public function __destruct() {

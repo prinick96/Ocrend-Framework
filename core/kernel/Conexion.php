@@ -227,7 +227,7 @@ final class Conexion extends mysqli {
   }
 
   /**
-    * Alert, para evitar clonaciones
+    * Alert para evitar clonaciones
     *
     * @return void
   */

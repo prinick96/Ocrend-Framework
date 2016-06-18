@@ -18,10 +18,12 @@ abstract class Controllers {
   */
   protected function __construct(bool $LOGED = false, bool $CACHE = false) {
 
+    #Debug mode
     if(DEBUG) {
       $_SESSION['___QUERY_DEBUG___'] = array();
     }
 
+    #Restricción para usuarios logeados
     if($LOGED and !isset($_SESSION[SESS_APP_ID])) {
       Func::redir();
       exit;
@@ -32,6 +34,8 @@ abstract class Controllers {
       'cache' => 'templates/.compiler',
       'auto_reload' => !$CACHE
     ));
+
+    #Definición de globales disponibles en templates
     $this->template->addGlobal('session', $_SESSION);
     $this->template->addGlobal('get', $_GET);
     $this->template->addGlobal('post', $_POST);
@@ -44,6 +48,7 @@ abstract class Controllers {
       $this->template->addFunction($function);
     */
 
+    #Utilidades
     $this->mode = $_GET['mode'] ?? null;
     $this->isset_id = isset($_GET['id']) and is_numeric($_GET['id']) and $_GET['id'] >= 1;
   }

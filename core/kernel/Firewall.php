@@ -6,7 +6,7 @@ defined('INDEX_DIR') OR exit('Ocrend software says .i.');
 final class Firewall {
 
   const FCONF = array(
-    'WEBMASTER_EMAIL' => 'prinick@ocrend.com',
+    'WEBMASTER_EMAIL' => 'test@ocrend.com',
     'PUSH_MAIL' => false,
     'LOG_FILE' => '__logs__',
     'PROTECTION_UNSET_GLOBALS' => true,
@@ -33,6 +33,12 @@ final class Firewall {
     'PROTECTION_SERVER_DIGICUBE_BY_IP' => true
    );
 
+
+  /**
+    * Elimina todas las variables globales no permitidas
+    *
+    * @return void
+  */
   private function unset_globals() {
     if(ini_get('register_globals')) {
         $allow = array(
@@ -53,8 +59,14 @@ final class Firewall {
     }
   }
 
+  /**
+    * Sana las variables gloables retirando PHP y HTML de su contenido
+    *
+    * @param string $s: index de la variable a sanar
+    *
+    * @return retorna $r sanada
+  */
   private function getEnv(string $s) {
-    global $HTTP_SERVER_VARS;
 
     if(isset($_SERVER[$s])) {
       return strip_tags($_SERVER[$s]);
@@ -69,10 +81,20 @@ final class Firewall {
     return '';
   }
 
+  /**
+    * Obtiene dirección de la página que emplea el agente de usuario para la pagina actual
+    *
+    * @return devuelve $_SERVER['HTTP_REFERER'] sanado
+  */
   private function getReferer() {
     return $this->getEnv('HTTP_REFERER');
 	}
 
+  /**
+    * Obtiene ip
+    *
+    * @return devuelve la IP
+  */
   private function getIp() {
   	if ($this->getEnv('HTTP_X_FORWARDED_FOR') ) {
   		return $this->getEnv('HTTP_X_FORWARDED_FOR');
@@ -83,6 +105,11 @@ final class Firewall {
     return $this->getEnv('REMOTE_ADDR');
   }
 
+  /**
+    * Obtiene agente de usuario
+    *
+    * @return devuelve el agente de usuario
+  */
   private function getUserAgent() {
 		if($this->getEnv('HTTP_USER_AGENT')) {
       return $this->getEnv('HTTP_USER_AGENT');
@@ -90,6 +117,11 @@ final class Firewall {
 		return '-';
 	}
 
+  /**
+    * Obtiene la query de la petición de la página
+    *
+    * @return devuelve la cadena de la consulta de la petición de la página.
+  */
   private function getQueryString() {
     if($this->getEnv('QUERY_STRING')) {
       return str_replace('%09', '%20', $this->getEnv('QUERY_STRING'));
@@ -97,10 +129,20 @@ final class Firewall {
 		return '';
 	}
 
+  /**
+    * Obtiene 'GET', 'HEAD', 'POST', 'PUT'.
+    *
+    * @return devuelve el método de petición actual.
+  */
   private function getRequestMethod() {
     return $this->getEnv('REQUEST_METHOD');
   }
 
+  /**
+    * Obtiene nombre del host de Internet
+    *
+    * @return devuelve el host de Internet según la IP actual
+  */
   private function getHostByAddr() {
     if(self::FCONF['PROTECTION_SERVER_OVH'] or self::FCONF['PROTECTION_SERVER_KIMSUFI'] or self::FCONF['PROTECTION_SERVER_DEDIBOX'] or self::FCONF['PROTECTION_SERVER_DIGICUBE']) {
       if(!isset($_SESSION['app_firewall_gethostbyaddr']) or empty($_SESSION['app_firewall_gethostbyaddr'])) {
@@ -111,6 +153,14 @@ final class Firewall {
     return '';
   }
 
+  /**
+    * Envía un email de alerta por un ataque, SIN utilizar phpmailer
+    *
+    * @param string $subject: Asunto
+    * @param string $msg: Mensaje
+    *
+    * @return void
+  */
   private function pushEmail(string $subject, string $msg) {
     $headers = "From: Ocrend Software Firewall: ". self::FCONF['WEBMASTER_EMAIL'] ." <".self::FCONF['WEBMASTER_EMAIL'].">\r\n"
 			."Reply-To: ".self::FCONF['WEBMASTER_EMAIL']."\r\n"
@@ -131,6 +181,16 @@ final class Firewall {
     }
   }
 
+  /**
+    * Crea un historial de Log por un ataque actual, además envía un email si está activa la acción
+    *
+    * @param string $type: Tipo de ataque
+    * @param string $ip: Ip atacante
+    * @param string $user_agent: Agente de usuario atacante
+    * @param string $referer: Referer
+    *
+    * @return void
+  */
   private function Logs( string $type, string $ip, string $user_agent, string $referer) {
     $f = fopen('./'. self::FCONF['LOG_FILE'] .'.txt', 'a');
     $msg = date('j-m-Y H:i:s')." | $type | IP: ". $ip ." ] | DNS: ". gethostbyaddr($ip)." | Agent: ". $user_agent ." | Referer: ". $referer == '' ? '/' : $referer."\n\n";
@@ -178,6 +238,11 @@ final class Firewall {
   'onselectstart', 'onstart', 'onstop', 'onsubmit', 'onunload',
   'script', 'style', 'title', 'vbscript', 'xml'];
 
+  /**
+    * Inicializador del Firewall
+    *
+    * @return void
+  */
   public function __construct() {
 
     $GET_QUERY_STRING = strtolower($this->getQueryString());
