@@ -88,6 +88,27 @@ Crear __./templates/hola.twig__
 </body>
 </html>
 ```
-Acceder a __http://urlendondeestainstalado/index.php?view=hola__
+Acceder a http://url.com/?view=hola
 
 > Y listo, el framework utiliza el motor de templates Twig, el mismo que se utiliza en Symfony. Todo lo que esté en hola.twig es HTML y algunas implementaciones de Twig como la inclusión de header.twig el archivo que contiene el <head> y footer.twig que tiene la carga de scripts. El framework viene con boostrap presintalado y jquery.
+
+## Generador de código PHP
+
+__Requiere Python 2.* instalado para funcionar__
+
+El generador de código PHP, es muy sencillo y está escrito en Python, se encuentra en __./gen.py__ y es de libre edición como todo el framework, la idea de este generador es tener una pequeña herramienta para agilizar el proceso de escribir muchas veces el mismo molde al momento de crear Modelos, Vistas o Controladores para empezar a programar.
+
+Ir a la consola, sea en Windows, Linux o Mac y escribir:
+```
+  ~$ cd /ruta/en/donde/esta/el/framework/
+```
+A continuación escribir el comando para generar un módulo completo (Modelo,Vista y Controlador):
+```
+  ~$ python gen.py mvc Ejemplo
+```
+Debería de aparecer en consola, tres mensajes que indican la creación de tres archivos, entonces ya podríamos entrar a http://url.com/?view=ejemplo
+
+Para __más información acerca de los comandos__ escribir:
+```
+  ~$ python gen.py -ayuda
+```
