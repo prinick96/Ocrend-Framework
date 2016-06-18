@@ -2,16 +2,11 @@
 
 /**
  * OCREND Framework - MVC Architecture for Web Applications
- * PHP Version 7.0.2
+ * PHP Version 7.0.3
  * @package OCREND Framework
- * @link http://www.ocrend.com/
+ * @link http://www.ocrend.com/framework
  * @author Brayan Narváez (Prinick) <prinick@ocrend.com>
  * @copyright 2016 - Ocrend Software
- */
-
-/*
-  Si existe algún tipo de error de permisos derivado al Firewall ó Twig
-  ~$ sudo chmod -R 777 /ruta/en/donde/esta/el/framework
 */
 
 define('INDEX_DIR',true);
@@ -23,7 +18,7 @@ if(isset($_GET['view'])) {
     $Controller = 'errorController';
   }
 } else {
-  $Controller = 'indexController';
+  $Controller = 'homeController';
 }
 
 require('core/controllers/' . $Controller . '.php');

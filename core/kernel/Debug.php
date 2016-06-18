@@ -8,7 +8,7 @@ final class Debug {
   const FOOT = '</div>';
 
   final private function convert(int $size)  {
-      $unit = array('b','kb','mb','gb','tb','pb');
+      $unit = array('bytes','kb','mb','gb','tb','pb');
       return round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
   }
 
@@ -26,6 +26,8 @@ final class Debug {
     foreach ($VAR as $key => $value) {
       if($_GET and $key == 'view') {
         echo '<li><strong class="cab">Controller:</strong> <span class="variable">', $variable ,'</span><span class="b">[\'</span>', $key ,'<span class="b">\']</span> = ', $this->showinfo($value) ,'</li>';
+      } else if($key == '___TWIG_DEBUG___' or $key == '___QUERY_DEBUG___') {
+        null;
       } else {
         echo '<li><span class="variable">', $variable ,'</span><span class="b">[\'</span>', $key ,'<span class="b">\']</span> = ', $this->showinfo($value) ,'</li>';
       }
@@ -34,7 +36,12 @@ final class Debug {
   }
 
   final public function __construct(int $startime) {
+
+    $endtime = microtime();
+    $endtime = explode(" ",$endtime);
+    $endtime = $endtime[0] + $endtime[1];
     $memory = $this->convert(memory_get_usage());
+
     echo self::HEAD;
 
     echo '<b class="cab">Archivo:</b> "' , $_SERVER['PHP_SELF'], '"<br />';
@@ -64,11 +71,19 @@ final class Debug {
       echo 'Sin variables <span class="variable">$_FILES</span><br />';
     }
 
-    $endtime = microtime();
-    $endtime = explode(" ",$endtime);
-    $endtime = $endtime[0] + $endtime[1];
+    if(isset($_SESSION['___QUERY_DEBUG___']) and sizeof($_SESSION['___QUERY_DEBUG___']) > 0) {
+      echo '<br /><strong class="cab">QUERYS:</strong><br />';
+      echo '<ul style="list-style:none;padding:0;">';
+      foreach ($_SESSION['___QUERY_DEBUG___'] as $query) {
+        echo '<li><ul><li><span class="variable">query: </span>',$query[0],'</li><li><span class="variable">memoria: </span>',$this->convert($query[1]),'</li></ul></li>';
+      }
+      echo '</ul>';
+    }
 
-    #QUERYS, TIEMPO DE CADA QUERY, PLANTILLAS TWIG EN VISTA, CLASSES INSTANCIADAS
+    if(isset($_SESSION['___TWIG_DEBUG___']) and null != $_SESSION['___TWIG_DEBUG___']) {
+      echo '<strong class="cab">TWIG TEMPLATE:</strong> ', $_SESSION['___TWIG_DEBUG___'], ' <br />';
+    }
+
     echo '<br /><b class="cab">DB_HOST:</b> ', DB_HOST;
     echo '<br /><b class="cab">DB_NAME:</b> ', DB_NAME,'<br />';
     echo '<br /><b class="cab">Firewall:</b> ', FIREWALL ? 'True' : 'False';

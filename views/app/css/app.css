@@ -9,7 +9,6 @@
   display: none!important;
 }
 #debug {
-  font-family: sans-serif!important;
   max-width: 900px!important;
   background: #282c34!important;
   border-radius: 4px!important;
@@ -18,11 +17,11 @@
   margin: 0 auto!important;
 }
 .variable {
-  font-weight: 900!important;
+  font-weight: bold!important;
   color: #e06a60!important;
 }
 .cab {
-  font-weight: 900!important;
+  font-weight: bold!important;
   color: #f3a638!important;
 }
 .b {

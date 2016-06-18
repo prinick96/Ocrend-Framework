@@ -8,11 +8,22 @@ abstract class Controllers {
   protected $isset_id;
   protected $mode;
 
-  //Pasar TRUE en el constructor del controlador que será exlusivo para entidades LOGEADAS
+  /**
+    * Constructor, inicializa los alcances de todos los Controladores
+    *
+    * @param bool $LOGED: Si el controlador en cuestión será solamente para usuarios logeados, se pasa TRUE
+    * @param bool $CACHE: Si la VISTA para el controlador en cuestión se quiere compilar una única sin detectar futuros cambios vez se pasa TRUE
+    *
+    * @return void
+  */
   protected function __construct(bool $LOGED = false, bool $CACHE = false) {
 
-    if($LOGED and !isset($_SESSION['app_id'])) {
-      Func::redir('index.php');
+    if(DEBUG) {
+      $_SESSION['___QUERY_DEBUG___'] = array();
+    }
+
+    if($LOGED and !isset($_SESSION[SESS_APP_ID])) {
+      Func::redir();
       exit;
     }
 
@@ -24,6 +35,7 @@ abstract class Controllers {
     $this->template->addGlobal('session', $_SESSION);
     $this->template->addGlobal('get', $_GET);
     $this->template->addGlobal('post', $_POST);
+
     /*
       #AGREGAR FUNCIÓN A TWIG
       $function = new Twig_SimpleFunction('MiFuncionDesdeTwig',function($parametros) {

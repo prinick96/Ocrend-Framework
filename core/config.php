@@ -29,8 +29,10 @@ define('DB_PASS','');
 define('DB_NAME','ocrend');
 
 #constantes elementales
-define('URL','http://prinick-notebook/Ocrend-Framework/');
+//define('URL','http://prinick-notebook/Ocrend-Framework/');
+define('URL','http://localhost/Ocrend-Framework/');
 define('APP','Ocrend-Framework');
+define('SESS_APP_ID','app_id');
 
 #Constantes de PHPMailer
 define('PHPMAILER_HOST','p3plcpnl0173.prod.phx3.secureserver.net');

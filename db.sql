@@ -45,7 +45,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `user`, `email`, `pass`, `dni`, `nombre`, `pais`, `nacimiento`, `telefono`, `keypass`, `temp_pass`) VALUES
-(1, 'prinick', 'princk093@gmail.com', '$2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G', 'V-24905388', 'Brayan', 'Venezuela', '28/10/1996', '584149392600', '', '');
+(1, 'test', 'test@ocrend.com', '$2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G', 'V-123456789', 'Tester', 'Venezuela', '28/10/1996', '584149392600', '', '');
 
 --
 -- Índices para tablas volcadas

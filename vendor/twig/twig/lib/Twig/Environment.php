@@ -90,6 +90,11 @@ class Twig_Environment
      */
     public function __construct(Twig_LoaderInterface $loader = null, $options = array())
     {
+        #mod from ocrend framework debug
+        if(DEBUG) {
+          $_SESSION['___TWIG_DEBUG___'] = null;
+        }
+
         if (null !== $loader) {
             $this->setLoader($loader);
         } else {
@@ -344,6 +349,10 @@ class Twig_Environment
      */
     public function render($name, array $context = array())
     {
+        #mod for ocrend framework debug
+        if(DEBUG) {
+          $_SESSION['___TWIG_DEBUG___'] = $name;
+        }
         return $this->loadTemplate($name)->render($context);
     }
 

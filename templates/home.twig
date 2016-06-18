@@ -6,12 +6,12 @@
         <h2>{{ constant('APP') }}</h2>
       </div>
       <div class="col-sm-12">
-        {% if session.app_id is not defined %}
+        {% if session[constant('SESS_APP_ID')] is not defined %}
           {% include 'overall/login.twig' %}
           <hr />
           {% include 'overall/register.twig' %}
         {% else %}
-          <a href="?view=logout" class="btn btn-primary">Cerrar Sesión id : {{ session.app_id }}</a>
+          <a href="?view=logout" class="btn btn-primary">Cerrar Sesión id : {{ session[constant('SESS_APP_ID')] }}</a>
         {% endif %}
       </div>
     </div>
