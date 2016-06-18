@@ -68,12 +68,12 @@ Crear __./core/controllers/holaController.php__
 
     public function __construct() {
       parent::__construct();
-      echo $this->template->render('hola.twig');
+      echo $this->template->render('hola/hola.twig');
     }
 
   }
 ```
-Crear __./templates/hola.twig__
+Crear __./templates/hola/hola.twig__
 ```twig
 {% include 'overall/header.twig' %}
 <body>
