@@ -2,14 +2,9 @@
 
 defined('INDEX_DIR') OR exit('Ocrend software says .i.');
 
-$app->get('/',function($request, $response){
-  $response->write('GET Respuesta');
-  return $response;
-});
-
-/*
-  Inicio de sesión.
-  Devuelve un json con información acerca del éxito o posibles errores.
+/**
+  * Inicio de Sesión
+  * @return Devuelve un json con información acerca del éxito o posibles errores.
 */
 $app->get('/login',function($request, $response) {
 
@@ -18,5 +13,3 @@ $app->get('/login',function($request, $response) {
 
   return $response;
 });
-
-?>
