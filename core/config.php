@@ -45,6 +45,6 @@ define('PHPMAILER_PORT',465);
 define('FIREWALL',true);
 
 #Activación del DEBUG, solo para desarrollo
-define('DEBUG',true);
+define('DEBUG',false);
 
 ?>

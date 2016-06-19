@@ -1,21 +1,22 @@
 {% include 'overall/header.twig' %}
-<body>
-  <div id="ocrend">
-    <div class="row">
-      <div class="col-sm-12" style="text-align: center;">
-        <h2>{{ constant('APP') }}</h2>
-      </div>
-      <div class="col-sm-12">
-        {% if session[constant('SESS_APP_ID')] is not defined %}
-          {% include 'overall/login.twig' %}
-          <hr />
-          {% include 'overall/register.twig' %}
-        {% else %}
-          <a href="?view=logout" class="btn btn-primary">Cerrar Sesión id : {{ session[constant('SESS_APP_ID')] }}</a>
-        {% endif %}
-      </div>
-    </div>
-  </div>
+<body id="page-top" class="index">
+
+    {% include 'overall/topnav.twig' %}
+
+    <section id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <h2>¡Hola!</h2>
+                </div>
+                <div class="col-sm-12 text-center">
+                  <br />
+                  <p>Bienvenido a Ocrend-Framework, ya puedes comenzar a programar.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
 {% include 'overall/footer.twig' %}
 </body>
 </html>
