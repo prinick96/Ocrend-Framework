@@ -111,14 +111,74 @@ final class Func extends Models implements OCREND {
     *
     * @return true si es una imagen, false si no lo es
   */
-  final public static function IsImage(string $file_name) : bool {
+  final public static function is_image(string $file_name) : bool {
     $formats = ['jpg','png','jpeg','gif','JPG','PNG','JPEG','GIF'];
     $file_name = explode('.',$file_name);
     $ext = end($file_name);
-    if(in_array($ext,$formats)){
-      return true;
-    }
-    return false;
+
+    return in_array($ext,$formats);
+  }
+
+  /**
+    * Remueve todos los espacios en blanco de un string
+    *
+    * @param string $s: Cadena de texto a convertir
+    *
+    * @return string del texto sin espacios
+  */
+  final public static function remove_spaces(string $s) : string {
+    return str_replace(' ','',$s);
+  }
+
+  /**
+    * Analiza si una cadena de texto es alfanumérica
+    *
+    * @param string $s: Cadena de texto a verificar
+    *
+    * @return bool, verdadero si es alfanumerica, falso si no
+  */
+  final public static function alphanumeric(string $s) : bool {
+    $s = self::remove_spaces($s);
+    return ctype_alnum($s);
+  }
+
+  /**
+    * Analiza si una cadena de texto verificando si sólamente tiene letras
+    *
+    * @param string $s: Cadena de texto a verificar
+    *
+    * @return bool, verdadero si sólamente tiene letras, falso si no
+  */
+  final public static function only_letters(string $s) : bool {
+    $s = self::remove_spaces($s);
+    return ctype_alpha($s);
+  }
+
+  /**
+    * Analiza si una cadena de texto contiene sólamente letras y números
+    *
+    * @param string $s: Cadena de texto a verificar
+    *
+    * @return bool, verdadero si sólamente contiene letras y números, falso si no
+  */
+  final public static function letters_and_numbers(string $s) : string {
+    $s = self::remove_spaces($s);
+    return preg_match('/^[\w.]*$/', $s);
+  }
+
+  /**
+    * Convierte una expresión de texto, a una compatible con url amigables
+    *
+    * @param string $url: Cadena de texto a convertir
+    *
+    * @return string Cadena de texto con formato de url amigable
+  */
+  final public function url_amigable(string $url) : string {
+    $url = strtolower($url);
+    $url = str_replace (['á', 'é', 'í', 'ó', 'ú', 'ñ'],['a', 'e', 'i', 'o', 'u', 'n'], $url);
+    $url = str_replace([' ', '&', '\r\n', '\n', '+', '%'],'-',$url);
+
+    return preg_replace (['/[^a-z0-9\-<>]/', '/[\-]+/', '/<[^>]*>/'],['', '-', ''], $url);
   }
 
   /**
@@ -128,7 +188,7 @@ final class Func extends Models implements OCREND {
     *
     * @return string del código BBCode transformado en HTML
   */
-  final public static function BBCode(string $string) : string {
+  final public static function bbcode(string $string) : string {
     $BBcode = array(
         '/\[i\](.*?)\[\/i\]/is',
         '/\[b\](.*?)\[\/b\]/is',
@@ -185,7 +245,7 @@ final class Func extends Models implements OCREND {
     *
     * @return string con los números de las páginas para el paginador
   */
-  final private static function GetNumberPags(string $link, int $total_pags) : string {
+  final private static function get_number_pags(string $link, int $total_pags) : string {
     $paginador = '';
     $max_show = 9; #max_show SIEMPRE debe ser izquierda + derecha + 1
     $izquierda = 4; #numeros máximos a mostrar por la izquierda
@@ -239,7 +299,7 @@ final class Func extends Models implements OCREND {
     *
     * @return string con el paginador compatible con bootstrap
   */
-  final public static function Paginador(string $link, int $total_pags) {
+  final public static function pager(string $link, int $total_pags) {
 
     $lng_prev = 'Anterior';
     $lng_next = 'Siguiente';
@@ -247,7 +307,7 @@ final class Func extends Models implements OCREND {
     $paginador = '<div class="pagination pagination-sm"><ul>';
         if(!isset($_GET['pag']) or !is_numeric($_GET['pag'])) {
           $paginador .= '<li class="disabled"> <a>'.$lng_prev.'</a> </li>';
-          $paginador .= self::GetNumberPags($link,$total_pags);
+          $paginador .= self::get_number_pags($link,$total_pags);
           if($total_pags > 1) {
             $paginador .= '<li> <a href="'. $link .'&pag=2"> '.$lng_next.'</a> </li>';
           } else {
@@ -257,15 +317,15 @@ final class Func extends Models implements OCREND {
           if($total_pags > 1) {
             if($_GET['pag'] > 1 and $_GET['pag'] < $total_pags) {
               $paginador .= '<li> <a href="'. $link .'&pag='. ($_GET['pag'] - 1) .'">'.$lng_prev.'</a> </li>'; //Atrás
-              $paginador .= self::GetNumberPags($link,$total_pags);
+              $paginador .= self::get_number_pags($link,$total_pags);
               $paginador .= '<li> <a href="'. $link .'&pag='. ($_GET['pag'] + 1) .'"> '.$lng_next.' </a> </li>'; //Siguiente
             } else if($_GET['pag'] == 1) {
               $paginador .= '<li class="disabled"> <a>'.$lng_prev.'</a> </li>'; //Atrás
-              $paginador .= self::GetNumberPags($link,$total_pags);
+              $paginador .= self::get_number_pags($link,$total_pags);
               $paginador .= '<li> <a href="'. $link .'&pag='. ($_GET['pag'] + 1) .'"> '.$lng_next.' </a> </li>'; //Siguiente
             } else {
               $paginador .= '<li> <a href="'. $link .'&pag='. ($_GET['pag'] - 1) .'">'.$lng_prev.'</a> </li>'; //Atrás
-              $paginador .= self::GetNumberPags($link,$total_pags);
+              $paginador .= self::get_number_pags($link,$total_pags);
               $paginador .= '<li class="disabled"> <a> '.$lng_next.' </a> </li>'; //Siguiente
             }
           } else {
@@ -290,7 +350,7 @@ final class Func extends Models implements OCREND {
     *
     * @return si existe devuelve el contenido en un arreglo asociativo/numérico, si no deveuvel false
   */
-  final public function CheckExists(int $id, string $table, string $e = '*') {
+  final public function check_exists(int $id, string $table, string $e = '*') {
     return $this->db->select($e,$table,"id='$id','LIMIT 1'");
   }
 
