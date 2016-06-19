@@ -16,8 +16,10 @@ R_CONTROLLERS = './core/controllers/'
 R_VIEWS = './templates/'
 
 def create_file(route,filename,ext,api):
-    if ext == '.twig' and not os.path.isdir(route + filename + '/'):
-        os.mkdir(route + filename + '/')
+    if ext == '.twig':
+        if not os.path.isdir(route + filename + '/'):
+            os.mkdir(route + filename + '/')
+
         e = open(route + filename + '/' + filename + ext,'a')
     else:
         e = open(route + filename + ext,'a')
@@ -43,15 +45,32 @@ def create_file(route,filename,ext,api):
         e.write('class ' + filename + ' extends Controllers {\n\n')
         e.write('\tpublic function __construct() {\n')
         e.write('\t\tparent::__construct();\n')
-        e.write('\t\techo $this->template->render(\'' + filename.replace('Controller', '.twig') + '\');\n')
+        e.write('\t\techo $this->template->render(\'' + filename.replace('Controller', '/') + filename.replace('Controller', '.twig') + '\');\n')
         e.write('\t}\n');
         e.write('}\n\n');
         e.write('?>')
     else:
         e.write('{% include \'overall/header.twig\' %} \n')
         e.write('<body> \n')
-        e.write('\t' + filename + '\n')
-        e.write('{% include \'overall/footer.twig\' %} \n')
+        e.write('\t<div style="max-width: 900px!important; margin: 0 auto;">\n')
+        e.write('\t<h1>' + filename + '</h1>\n')
+        if api:
+            e.write('\n\t<form id="' + filename.lower() + '_form" role="form">\n')
+            e.write('\n\t\t<div class="alert hide" id="ajax_' + filename.lower() + '"></div>\n\n')
+            e.write('\t\t<div class="form-group">\n')
+            e.write('\t\t\t<label>Ejemplo</label>\n')
+            e.write('\t\t\t<input type="text" class="form-control" name="ejemplo" placeholder="Escribe algo..." />\n')
+            e.write('\t\t</div>\n')
+            e.write('\t\t<div class="form-group">\n')
+            e.write('\t\t\t<button type="button" id="' + filename.lower() + '" class="btn btn-primary">Enviar</button>\n')
+            e.write('\t\t</div>\n\n')
+            e.write('\t</form>\n\n')
+            e.write('\t</div>\n')
+            e.write('{% include \'overall/footer.twig\' %} \n')
+            e.write('<script src="views/app/js/' + filename.lower() + '.js"></script>\n')
+        else:
+            e.write('\t</div>\n')
+            e.write('{% include \'overall/footer.twig\' %} \n')
         e.write('</body> \n')
         e.write('</html> \n')
 
@@ -66,9 +85,7 @@ def check_file(route,filename,ext = '.php',api = False):
 
 def write_api(method,name):
 
-    e = open('./api/http/' + method + '.php','r+')
-    e.read()
-
+    e = open('./api/http/' + method + '.php','a+')
     e.write('\n/**\n')
     e.write('\t* ¿qué hace (el modelo que se invoca desde aqui)?\n')
     e.write('\t* @return ¿qué retorna?, ¡un json por favor! \n')
@@ -140,9 +157,9 @@ def main():
         if view in ['models','controllers','ocrend','firewall','debug','conexion']:
             print u'El módulo existe en el Kernel, no puede crearse.'
         else:
+            api = False
             if 'm' in arg[1]:
                 count += 1
-                api = False
                 if 'a:post' in arg[1]:
                     write_api('post',view)
                     api = True
@@ -154,7 +171,12 @@ def main():
 
             if 'v' in arg[1]:
                 count += 1
-                check_file(R_VIEWS,view,'.twig')
+                if 'm' in arg[1] and 'a:post' in arg[1]:
+                    api = True
+                elif 'm' in arg[1] and 'a:get' in arg[1]:
+                    api = True
+
+                check_file(R_VIEWS,view,'.twig',api)
 
             if 'c' in arg[1]:
                 count += 1
