@@ -193,8 +193,8 @@ final class Firewall {
   */
   private function Logs( string $type, string $ip, string $user_agent, string $referer) {
     $f = fopen('./'. self::FCONF['LOG_FILE'] .'.txt', 'a');
-    $msg = date('j-m-Y H:i:s')." | $type | IP: ". $ip ." ] | DNS: ". gethostbyaddr($ip)." | Agent: ". $user_agent ." | Referer: ". $referer == '' ? '/' : $referer."\n\n";
-    fputs($f, $msg);
+    $msg = date('j-m-Y H:i:s') .' | ' . $type . ' | IP: '. $ip .' ] | DNS: '. gethostbyaddr($ip).' | Agent: '. $user_agent . PHP_EOL;
+    fwrite($f, $msg);
     fclose($f);
     if (self::FCONF['PUSH_MAIL']) {
       $this->pushEmail('Alert Ocrend Software Firewall '.strip_tags( $_SERVER['SERVER_NAME'] ) , " Firewall logs of ".strip_tags( $_SERVER['SERVER_NAME'] )."\n".str_replace('|', "\n", $msg ) );
