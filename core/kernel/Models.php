@@ -24,8 +24,11 @@ abstract class Models {
     * @return void
   */
   protected function __construct($DATABASE = DB_NAME) {
+
+    global $router;
+
     $this->db = Conexion::Start($DATABASE);
-    $this->id = isset($_GET['id']) ? intval($_GET['id']) : null;
+    $this->id = ($router->getId() != null and is_numeric($router->getId()) and $router->getId() >= 1) ? intval($router->getId()) : 0;
     $this->id_user = $_SESSION[SESS_APP_ID] ?? 0;
   }
 

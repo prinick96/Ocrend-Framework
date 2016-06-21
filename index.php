@@ -12,18 +12,15 @@
 define('INDEX_DIR',true);
 require('core/app_core.php');
 
-if(isset($_GET['view'])) {
-  $Controller = strtolower($_GET['view']) . 'Controller';
-  if(!is_readable('core/controllers/' . $Controller . '.php')) {
-    $Controller = 'errorController';
-  }
-} else {
-  $Controller = 'homeController';
+$Controller = $router->getController();
+
+if(!is_readable('core/controllers/' . $Controller . '.php')) {
+  $Controller = 'errorController';
 }
 
 require('core/controllers/' . $Controller . '.php');
 new $Controller;
 
-(!DEBUG and !IS_API) ?: new Debug($startime);
+!DEBUG ?: new Debug($startime);
 
 ?>

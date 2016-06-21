@@ -6,7 +6,8 @@ abstract class Controllers {
 
   protected $template;
   protected $isset_id;
-  protected $mode;
+  protected $method;
+  protected $route;
 
   /**
     * Constructor, inicializa los alcances de todos los Controladores
@@ -17,6 +18,11 @@ abstract class Controllers {
     * @return void
   */
   protected function __construct(bool $LOGED = false, bool $CACHE = false) {
+
+    global $router;
+
+    #Accedemos a el router para URL's amigables
+    $this->route = $router;
 
     #Debug mode
     if(DEBUG) {
@@ -36,9 +42,16 @@ abstract class Controllers {
     ));
 
     #Definición de globales disponibles en templates
+    $this->template->addGlobal('controller', str_replace('Controller','',$router->getController()));
     $this->template->addGlobal('session', $_SESSION);
     $this->template->addGlobal('get', $_GET);
     $this->template->addGlobal('post', $_POST);
+
+    #Añadimos la función para convertir texto común en url amigable
+    $url_amigable = new Twig_SimpleFunction('url_amigable',function(string $s) {
+      return Func::url_amigable($s);
+    });
+    $this->template->addFunction($url_amigable);
 
     /*
       #AGREGAR FUNCIÓN A TWIG
@@ -49,8 +62,9 @@ abstract class Controllers {
     */
 
     #Utilidades
-    $this->mode = $_GET['mode'] ?? null;
-    $this->isset_id = isset($_GET['id']) and is_numeric($_GET['id']) and $_GET['id'] >= 1;
+    $this->method = ($router->getMethod() != null and Func::alphanumeric($router->getMethod())) ? $router->getMethod() : null;
+    $this->isset_id = ($router->getId() != null and is_numeric($router->getId()) and $router->getId() >= 1);
+
   }
 
 }

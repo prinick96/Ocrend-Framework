@@ -59,7 +59,7 @@ final class Func extends Models implements OCREND {
     *
     * @return void
   */
-  final public static function redir(string $url = 'index.php') {
+  final public static function redir(string $url = URL) {
     header('location: ' . $url);
   }
 

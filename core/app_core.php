@@ -12,8 +12,14 @@ require('core/config.php');
 require('core/kernel/Ocrend.php');
 require('vendor/autoload.php');
 
-$startime = microtime();
-$startime = explode(" ",$startime);
-$startime = $startime[0] + $startime[1];
+#test de velocidad para el Debug
+if(DEBUG) {
+  $startime = microtime();
+  $startime = explode(" ",$startime);
+  $startime = $startime[0] + $startime[1];
+}
+
+#router para URL's amigables
+$router = new Router;
 
 ?>

@@ -35,6 +35,13 @@ define('URL','http://localhost/Ocrend-Framework/');
 define('APP','Ocrend-Framework');
 define('SESS_APP_ID','app_id');
 
+/**
+  * Define la carpeta en la cual se encuentra instalado el framework.
+  * @example "/" si para acceder al framework colocamos http://url.com en la URL, ó http://localhost
+  * @example "/Ocrend-Framework/" si para acceder al framework colocamos http://url.com/Ocrend-Framework, ó http://localhost/Ocrend-Framework/
+*/
+define('__ROOT__','/Ocrend-Framework/');
+
 #Constantes de PHPMailer
 define('PHPMAILER_HOST','p3plcpnl0173.prod.phx3.secureserver.net');
 define('PHPMAILER_USER','ocrend@ocrend.com');
