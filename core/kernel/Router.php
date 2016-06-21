@@ -1,5 +1,7 @@
 <?php
 
+defined('INDEX_DIR') OR exit('Ocrend software says .i.');
+
 class Router {
 
   public $dir = __ROOT__;
