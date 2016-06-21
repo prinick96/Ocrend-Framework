@@ -12,4 +12,7 @@ require('../core/config.php');
 require('../core/kernel/Ocrend.php');
 require('../vendor/autoload.php');
 
+#router para URL's amigables
+$router = new Router;
+
 ?>

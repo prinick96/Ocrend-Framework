@@ -3,7 +3,12 @@
 define('INDEX_DIR',true);
 require('../core/api_core.php');
 
-$app = new \Slim\App;
+if(DEBUG) {
+  $app = new \Slim\App(['settings' => ['displayErrorDetails' => true]]);
+} else {
+  $app = new \Slim\App;
+}
+
 
 if($_GET) {
   include('http/get.php');
