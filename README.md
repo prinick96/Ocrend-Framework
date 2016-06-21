@@ -41,6 +41,13 @@ __./core/config.php__
   define('PHPMAILER_PASS','CaX5487B!89');
   define('PHPMAILER_PORT',465);
 
+  /**
+    * Define la carpeta en la cual se encuentra instalado el framework.
+    * @example "/" si para acceder al framework colocamos http://url.com en la URL, ó http://localhost
+    * @example "/Ocrend-Framework/" si para acceder al framework colocamos http://url.com/Ocrend-Framework, ó http://localhost/Ocrend-Framework/
+  */
+  define('__ROOT__','/Ocrend-Framework/');
+
   define('FIREWALL',true); #Activación del firewall que ofrece protección contra múltiples ataques comunes
 
   define('DEBUG',true); #Establecer en FALSE una vez esté todo el producción, en desarrollo mantener en true
