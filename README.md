@@ -88,7 +88,7 @@ Crear __./templates/hola/hola.twig__
 </body>
 </html>
 ```
-Acceder a http://url.com/?view=hola
+Acceder a http://url.com/hola/
 
 > Y listo, el framework utiliza el motor de templates Twig, el mismo que se utiliza en Symfony. Todo lo que esté en hola.twig es HTML y algunas implementaciones de Twig como la inclusión de header.twig el archivo que contiene el <head> y footer.twig que tiene la carga de scripts. El framework viene con boostrap presintalado y jquery.
 
@@ -106,7 +106,7 @@ A continuación escribir el comando para generar un módulo completo (Modelo,Vis
 ```
   ~$ python gen.py mvc Ejemplo
 ```
-Debería de aparecer en consola, tres mensajes que indican la creación de tres archivos, entonces ya podríamos entrar a http://url.com/?view=ejemplo
+Debería de aparecer en consola, tres mensajes que indican la creación de tres archivos, entonces ya podríamos entrar a http://url.com/ejemplo/
 
 Para __más información acerca de los comandos__ escribir:
 ```
