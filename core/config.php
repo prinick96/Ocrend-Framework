@@ -39,8 +39,8 @@ define('DATABASE', array(
 ));
 
 #constantes elementales
-define('URL','http://prinick-notebook/Ocrend-Framework/');
-//define('URL','http://localhost/Ocrend-Framework/');
+//define('URL','http://prinick-notebook/Ocrend-Framework/');
+define('URL','http://localhost/Ocrend-Framework/');
 define('APP','Ocrend-Framework');
 define('SESS_APP_ID','app_id');
 

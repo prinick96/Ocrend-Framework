@@ -173,7 +173,7 @@ final class Func extends Models implements OCREND {
     *
     * @return string Cadena de texto con formato de url amigable
   */
-  final public function url_amigable(string $url) : string {
+  final public static function url_amigable(string $url) : string {
     $url = strtolower($url);
     $url = str_replace (['á', 'é', 'í', 'ó', 'ú', 'ñ'],['a', 'e', 'i', 'o', 'u', 'n'], $url);
     $url = str_replace([' ', '&', '\r\n', '\n', '+', '%'],'-',$url);
