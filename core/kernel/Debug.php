@@ -96,13 +96,13 @@ final class Debug {
       echo '<br /><strong class="cab">QUERYS:</strong><br />';
       echo '<ul style="list-style:none;padding:0;">';
       foreach ($_SESSION['___QUERY_DEBUG___'] as $query) {
-        echo '<li><ul><li><span class="variable">query: </span>',$query[0],'</li><li><span class="variable">memoria: </span>',Func::convert($query[1]),'</li></ul></li>';
+        echo '<li><ul><li><span class="variable">query: </span>',$query,'</li></ul></li>';
       }
       echo '</ul>';
     }
 
-    echo '<br /><b class="cab">DB_HOST:</b> ', DB_HOST;
-    echo '<br /><b class="cab">DB_NAME:</b> ', DB_NAME,'<br />';
+    echo '<br /><b class="cab">DB_HOST:</b> ', DATABASE['host'];
+    echo '<br /><b class="cab">DB_NAME:</b> ', DATABASE['name'],'<br />';
     echo '<br /><b class="cab">Firewall:</b> ', FIREWALL ? 'True' : 'False';
     echo '<br /><b class="cab">Tiempo de ejecución total:</b> ',$endtime - $startime,' segundos ';
     echo '<br /><b class="cab">RAM consumida por cada usuario:</b> ', $memory;

@@ -30,7 +30,7 @@ final class Register extends Models implements OCREND {
             'telefono' => str_replace([',','+','.',' '],'',$data['telefono'])
           );
           $this->db->insert('users',$e);
-          $_SESSION[SESS_APP_ID] = $this->db->insert_id;
+          $_SESSION[SESS_APP_ID] = $this->db->lastInsertId();
           $success = 1;
           $message = 'Registro completado con éxito, le estamos redireccionando.';
         } else {

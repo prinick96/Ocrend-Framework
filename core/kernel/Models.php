@@ -19,11 +19,11 @@ abstract class Models {
   /**
     * Constructor, inicializa los alcances de todos los Modelos
     *
-    * @param string $DATABASE, se pasa de forma opcional una base de datos distinta a la definida en DB_NAME para conectar
+    * @param string $DATABASE, se pasa de forma opcional una base de datos distinta a la definida en DATABASE['name'] para conectar
     *
     * @return void
   */
-  protected function __construct($DATABASE = DB_NAME) {
+  protected function __construct($DATABASE = DATABASE['name']) {
 
     global $router;
 
@@ -55,7 +55,7 @@ abstract class Models {
     * @return void
   */
   protected function __destruct() {
-    $this->db->close();
+    $this->db = null;
   }
 
 }

@@ -2,18 +2,18 @@
 
 defined('INDEX_DIR') OR exit('Ocrend software says .i.');
 
-final class Conexion extends mysqli {
+final class Conexion extends PDO {
 
   private static $inst;
 
   /**
     * Inicia la instancia de conexión, si esta ya ha sido declarada antes, no la duplica y ahorra memoria.
     *
-    * @param string $DATABASE, se pasa de forma opcional una base de datos distinta a la definida en DB_NAME para conectar
+    * @param string $DATABASE, se pasa de forma opcional una base de datos distinta a la definida en DATABASE['name'] para conectar
     *
     * @return la instancia de conexión
   */
-  final public static function Start($DATABASE = DB_NAME) {
+  final public static function Start($DATABASE = DATABASE['name']) {
 
     if(!self::$inst instanceof self) {
       self::$inst = new self($DATABASE);
@@ -25,58 +25,34 @@ final class Conexion extends mysqli {
   /**
     * Inicia la conexión con una base de datos
     *
-    * @param string $DATABASE, se pasa de forma opcional una base de datos distinta a la definida en DB_NAME para conectar
+    * @param string $DATABASE, se pasa de forma opcional una base de datos distinta a la definida en DATABASE['name'] para conectar
     *
     * @return void
   */
-  final public function __construct($DATABASE = DB_NAME) {
-    parent::__construct(DB_HOST,DB_USER,DB_PASS,$DATABASE);
-    $this->connect_errno ? die('Error al conectar con la base de datos') : null;
-    $this->set_charset('utf8');
-  }
+  final public function __construct($DATABASE = DATABASE['name']) {
+    try {
+      $host = 'mysql:host='.DATABASE['host'].';dbname='.$DATABASE.';charset=utf8mb4';
+      parent::__construct($host,'root','',array(
+        PDO::ATTR_EMULATE_PREPARES => false,
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+      ));
+    } catch (PDOException $e) {
+      die('Error intentando conectar con la base de datos.');
+    } finally {
+      unset($host);
+    }
 
-  /**
-    * Libera el buffer para una query SELECT
-    *
-    * @param object mysqli_result $query, valor devuelto de la query
-    *
-    * @return void
-  */
-  final public function liberar($query) {
-    return $query->free();
   }
 
   /**
     * Consigue el numero de filas encontradas después de un SELECT
     *
-    * @param object mysqli_result $query, valor devuelto de la query
+    * @param object PDOStatement $query, valor devuelto de la query
     *
     * @return numero de filas encontradas
   */
   final public function rows($query) : int {
-    return $query->num_rows;
-  }
-
-  /**
-    * Convierte el object mysqli_result en un arreglo asociativo/numérico con cada campo después de un SELECT
-    *
-    * @param object mysqli_result $query, valor devuelto de la query
-    *
-    * @return array con información de cada campo obtenido, en orden 'campo' => valor, false cuando no consigue más
-  */
-  final public function recorrer($query) {
-    return $query->fetch_array();
-  }
-
-  /**
-    * Convierte el object mysqli_result en un arreglo estrictamente asociativo con cada campo después de un SELECT
-    *
-    * @param object mysqli_result $query, valor devuelto de la query
-    *
-    * @return array con información de cada campo obtenido, en orden 'campo' => valor, false cuando no consigue más
-  */
-  final public function assoc($query) {
-    return $query->fetch_assoc();
+    return $query->rowCount();
   }
 
   /**
@@ -92,7 +68,12 @@ final class Conexion extends mysqli {
     } else if (is_float($e)) {
       return floatval($e);
     }
-    return $this->real_escape_string($e);
+
+    $q = $this->quote($e);
+    $q[0] = '';
+    $q[strlen($q) - 1] = '';
+
+    return $q;
   }
 
   /**
@@ -100,25 +81,19 @@ final class Conexion extends mysqli {
     *
     * @param SQL string, recibe la consulta SQL a ejecutar
     *
-    * @return object mysqli_result
+    * @return object PDOStatement
   */
-  final public function query($q) {
+  final public function query(string $q) {
+    try {
 
-    if(DEBUG) {
-      $i = (int) memory_get_usage();
-      $query = parent::query($q);
-      $f = (int) memory_get_usage();
+      if(DEBUG) {
+        $_SESSION['___QUERY_DEBUG___'][] = (string) $q;
+      }
 
-      $_SESSION['___QUERY_DEBUG___'][] = [
-        (string) $q,
-        (int) $f - $f
-      ];
-
-      unset($i,$f,$q);
-      return $query;
+      return parent::query($q);
+    } catch (Exception $e) {
+      die('Error en la query: <b>' . $q . '<b/><br /><br />' . $e->getMessage());
     }
-
-    return parent::query($q);
   }
 
   /**
@@ -128,9 +103,9 @@ final class Conexion extends mysqli {
     * @param string $where: Condición de borrado que define quien/quienes son dichos elementos
     * @param string $limit: Por defecto se limita a borrar un solo elemento que cumpla el $where
     *
-    * @return true si fue ejecutado con éxito, false si no fue ejecutado con éxito
+    * @return object PDOStatement
   */
-  final public function delete(string $table, string $where, string $limit = 'LIMIT 1') : bool {
+  final public function delete(string $table, string $where, string $limit = 'LIMIT 1')  {
     return $this->query("DELETE FROM $table WHERE $where $limit;");
   }
 
@@ -141,9 +116,9 @@ final class Conexion extends mysqli {
     * @param array $e: Arreglo asociativo de elementos, con la estrctura 'campo_en_la_tabla' => 'valor_a_insertar_en_ese_campo',
     *                  todos los elementos del arreglo $e, serán sanados por el método sin necesidad de hacerlo manualmente al crear el arreglo
     *
-    * @return true si fue ejecutado con éxito, false si no fue ejecutado con éxito
+    * @return object PDOStatement
   */
-  final public function insert(string $table, array $e) : bool {
+  final public function insert(string $table, array $e) {
     if (sizeof($e) == 0) {
       trigger_error('El arreglo pasado por $this->db->insert(...) está vacío.', E_USER_ERROR);
 
@@ -172,9 +147,9 @@ final class Conexion extends mysqli {
     * @param string $where: Condición que indica quienes serán modificados
     * @param string $limite: Límite de elementos modificados, por defecto solo modifica el primero que cumpla la condición
     *
-    * @return true si fue ejecutado con éxito, false si no fue ejecutado con éxito
+    * @return object PDOStatement
   */
-  final public function update(string $table, array $e, string $where, string $limit = 'LIMIT 1') : bool {
+  final public function update(string $table, array $e, string $where, string $limit = 'LIMIT 1') {
     if (sizeof($e) == 0) {
       trigger_error('El arreglo pasado por $this->db->update(...) está vacío.', E_USER_ERROR);
 
@@ -204,26 +179,14 @@ final class Conexion extends mysqli {
   final public function select(string $e, string $table, string $where = '1 = 1', string $limit = "") {
     $sql = $this->query("SELECT $e FROM $table WHERE $where $limit;");
     if($this->rows($sql) > 0) {
-      while ($d = $this->recorrer($sql)) {
+      foreach ($sql as $d) {
         $s[] = $d;
       }
     } else {
       $s = false;
     }
-    $this->liberar($sql);
 
     return $s;
-  }
-
-  /**
-    * Cierra la conexión actual
-    *
-    * @return void
-  */
-  final public function close() {
-    if(!self::$inst instanceof self) {
-      return parent::close();
-    }
   }
 
   /**
@@ -233,15 +196,6 @@ final class Conexion extends mysqli {
   */
   final public function __clone() {
     trigger_error('Estás intentando clonar la Conexión', E_USER_ERROR);
-  }
-
-  /**
-    * Alert para evitar deserializaciones
-    *
-    * @return void
-  */
-  final public function __wakeup() {
-    trigger_error('Estás intentando deserializar la Conexión', E_USER_ERROR);
   }
 
 }

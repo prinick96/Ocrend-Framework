@@ -23,11 +23,20 @@ try {
   die('CRYPT_BLOWFISH no soportado, encriptado de hash actual no funcional.');
 }
 
-#configuración de conxión con base de datos
-define('DB_HOST','localhost');
-define('DB_USER','root');
-define('DB_PASS','');
-define('DB_NAME','ocrend');
+/**
+  * Configuración de la conexión con la base de datos.
+  * @param host 'hosting local/remoto'
+  * @param user 'usuario de la base de datos'
+  * @param pass 'password del usuario de la base de datos'
+  * @param name 'nombre de la base de datos'
+*/
+define('DATABASE', array(
+  'host' => 'localhost',
+  'user' => 'root',
+  'pass' => '',
+  'name' => 'ocrend',
+  'motor' => 'mysql'
+));
 
 #constantes elementales
 //define('URL','http://prinick-notebook/Ocrend-Framework/');
@@ -52,6 +61,6 @@ define('PHPMAILER_PORT',465);
 define('FIREWALL',true);
 
 #Activación del DEBUG, solo para desarrollo
-define('DEBUG',false);
+define('DEBUG',true);
 
 ?>
