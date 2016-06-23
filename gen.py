@@ -16,7 +16,7 @@ R_CONTROLLERS = './core/controllers/'
 R_VIEWS = './templates/'
 
 def create_file(route,filename,ext,api):
-    if ext == '.twig':
+    if ext == '.phtml':
         if not os.path.isdir(route + filename + '/'):
             os.mkdir(route + filename + '/')
 
@@ -45,35 +45,35 @@ def create_file(route,filename,ext,api):
         e.write('class ' + filename + ' extends Controllers {\n\n')
         e.write('\tpublic function __construct() {\n')
         e.write('\t\tparent::__construct();\n')
-        e.write('\t\techo $this->template->render(\'' + filename.replace('Controller', '/') + filename.replace('Controller', '.twig') + '\');\n')
+        e.write('\t\techo $this->template->render(\'' + filename.replace('Controller', '/') + filename.replace('Controller', '') + '\');\n')
         e.write('\t}\n');
         e.write('}\n\n');
         e.write('?>')
     else:
-        e.write('{% include \'overall/header.twig\' %} \n')
+        e.write('<?= $this->insert(\'overall/header\') ?> \n')
         e.write('<body id="page-top" class="index"> \n')
-        e.write('\t{% include \'overall/topnav.twig\' %}\n\n')
-        e.write('\t<section id="about">\n\t<div class="container">\n\t<div class="row">\n')
-        e.write('\t<div class="col-sm-12 text-center"><h1>' + filename + '</h1></div>\n')
+        e.write('\t<?= $this->insert(\'overall/topnav\') ?>\n\n')
+        e.write('\t<section id="about">\n\t\t<div class="container">\n\t\t\t<div class="row">\n\n')
+        e.write('\t\t\t\t<div class="col-sm-12 text-center"><h1>' + filename + '</h1></div>\n\n')
         if api:
-            e.write('\t<div class="col-sm-12 text-center">\n')
-            e.write('\n\t\t<form id="' + filename.lower() + '_form" role="form">\n')
-            e.write('\n\t\t\t<div class="alert hide" id="ajax_' + filename.lower() + '"></div>\n\n')
-            e.write('\t\t\t<div class="form-group">\n')
-            e.write('\t\t\t\t<label>Ejemplo</label>\n')
-            e.write('\t\t\t\t<input type="text" class="form-control" name="ejemplo" placeholder="Escribe algo..." />\n')
-            e.write('\t\t\t</div>\n')
-            e.write('\t\t\t<div class="form-group">\n')
-            e.write('\t\t\t\t<button type="button" id="' + filename.lower() + '" class="btn btn-primary">Enviar</button>\n')
-            e.write('\t\t\t</div>\n\n')
-            e.write('\t\t</form>\n')
-            e.write('\t\t</div>\n\n')
-            e.write('\t</div></div></section>\n')
-            e.write('{% include \'overall/footer.twig\' %} \n')
+            e.write('\t\t\t\t<div class="col-sm-12 text-center" style="max-width: 780px!important;">\n')
+            e.write('\n\t\t\t\t\t<form id="' + filename.lower() + '_form" role="form">\n')
+            e.write('\n\t\t\t\t\t\t<div class="alert hide" id="ajax_' + filename.lower() + '"></div>\n\n')
+            e.write('\t\t\t\t\t\t<div class="form-group">\n')
+            e.write('\t\t\t\t\t\t\t<label>Ejemplo</label>\n')
+            e.write('\t\t\t\t\t\t\t<input type="text" class="form-control" name="ejemplo" placeholder="Escribe algo..." />\n')
+            e.write('\t\t\t\t\t\t</div>\n')
+            e.write('\t\t\t\t\t\t<div class="form-group">\n')
+            e.write('\t\t\t\t\t\t\t<button type="button" id="' + filename.lower() + '" class="btn btn-primary">Enviar</button>\n')
+            e.write('\t\t\t\t\t\t</div>\n\n')
+            e.write('\t\t\t\t\t</form>\n')
+            e.write('\t\t\t\t\t</div>\n\n')
+            e.write('\t\t\t\t</div></div></section>\n')
+            e.write('<?= $this->insert(\'overall/footer\') ?> \n')
             e.write('<script src="views/app/js/' + filename.lower() + '.js"></script>\n')
         else:
-            e.write('\t</div>\n\t</div>\n\t</section>\n')
-            e.write('{% include \'overall/footer.twig\' %} \n')
+            e.write('\t\t\t</div>\n\t\t</div>\n\t</section>\n')
+            e.write('<?= $this->insert(\'overall/footer\') ?> \n')
         e.write('</body> \n')
         e.write('</html> \n')
 
@@ -179,7 +179,7 @@ def main():
                 elif 'm' in arg[1] and 'a:get' in arg[1]:
                     api = True
 
-                check_file(R_VIEWS,view,'.twig',api)
+                check_file(R_VIEWS,view,'.phtml',api)
 
             if 'c' in arg[1]:
                 count += 1

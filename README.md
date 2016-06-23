@@ -78,23 +78,33 @@ Crear __./core/controllers/holaController.php__
 
     public function __construct() {
       parent::__construct();
-      echo $this->template->render('hola/hola.twig');
+      echo $this->template->render('hola/hola');
     }
 
   }
 ```
-Crear __./templates/hola/hola.twig__
-```twig
-{% include 'overall/header.twig' %}
-<body>
-  <div id="ocrend">
-    <div class="row">
-      <div class="col-sm-12" style="text-align: center;">
-        <h2>Hola mundo</h2>
-      </div>
-    </div>
-  </div>
-{% include 'overall/footer.twig' %}
+Crear __./templates/hola/hola.phtml__
+```phtml
+<?= $this->insert('overall/header') ?>
+<body id="page-top" class="index">
+
+  <?= $this->insert('overall/topnav') ?>
+
+    <section id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <h2>¡Creando un Hola Mundo!</h2>
+                </div>
+                <div class="col-sm-12 text-center">
+                  <br />
+                  <p>¡Hola mundo!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<?= $this->insert('overall/footer') ?>
 </body>
 </html>
 ```

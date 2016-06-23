@@ -1,0 +1,22 @@
+<?= $this->insert('overall/header') ?>
+<body id="page-top" class="index">
+
+    <?= $this->insert('overall/topnav') ?>
+
+    <section id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <h2>¡404 ERROR!</h2>
+                </div>
+                <div class="col-sm-12 text-center">
+                  <br />
+                  <p>Controlador <b><?= str_replace('Controller','',$controller) ?></b> no encontrado.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<?= $this->insert('overall/footer') ?>
+</body>
+</html>

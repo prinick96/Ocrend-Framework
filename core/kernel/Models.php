@@ -23,11 +23,11 @@ abstract class Models {
     *
     * @return void
   */
-  protected function __construct($DATABASE = DATABASE['name']) {
+  protected function __construct($DATABASE = DATABASE['name'], $MOTOR = DATABASE['motor']) {
 
     global $router;
 
-    $this->db = Conexion::Start($DATABASE);
+    $this->db = Conexion::Start($DATABASE,$MOTOR);
     $this->id = ($router->getId() != null and is_numeric($router->getId()) and $router->getId() >= 1) ? intval($router->getId()) : 0;
     $this->id_user = $_SESSION[SESS_APP_ID] ?? 0;
   }

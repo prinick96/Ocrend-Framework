@@ -1,7 +1,8 @@
 {
     "require": {
-        "twig/twig": "~1.24.0",
-        "slim/slim": "^3.0",
-        "phpmailer/phpmailer": "^5.2"
+        "league/plates": "^3.1",
+        "phpmailer/phpmailer": "^5.2",
+        "slim/slim": "^3.4",
+        "league/oauth2-google": "^1.0"
     }
 }

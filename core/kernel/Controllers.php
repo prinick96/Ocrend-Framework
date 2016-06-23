@@ -10,6 +10,19 @@ abstract class Controllers {
   protected $route;
 
   /**
+    * Cargador de funciones para Plates
+    *
+    * @return void
+  */
+  private function loadFunctions() {
+
+    $this->template->registerFunction('url_amigable', function ($var) {
+      return Func::url_amigable($var);
+    });
+
+  }
+
+  /**
     * Constructor, inicializa los alcances de todos los Controladores
     *
     * @param bool $LOGED: Si el controlador en cuestión será solamente para usuarios logeados, se pasa TRUE
@@ -17,17 +30,12 @@ abstract class Controllers {
     *
     * @return void
   */
-  protected function __construct(bool $LOGED = false, bool $CACHE = false) {
+  protected function __construct(bool $LOGED = false) {
 
     global $router;
 
     #Accedemos a el router para URL's amigables
     $this->route = $router;
-
-    #Debug mode
-    if(DEBUG) {
-      $_SESSION['___QUERY_DEBUG___'] = array();
-    }
 
     #Restricción para usuarios logeados
     if($LOGED and !isset($_SESSION[SESS_APP_ID])) {
@@ -35,31 +43,14 @@ abstract class Controllers {
       exit;
     }
 
-    #Definición de templates
-    $this->template = new Twig_Environment(new Twig_Loader_Filesystem('templates'), array(
-      'cache' => 'templates/.compiler',
-      'auto_reload' => !$CACHE
-    ));
+    #Carga del template
+    $this->template = new League\Plates\Engine('templates','phtml');
+    $this->loadFunctions();
 
-    #Definición de globales disponibles en templates
-    $this->template->addGlobal('controller', str_replace('Controller','',$router->getController()));
-    $this->template->addGlobal('session', $_SESSION);
-    $this->template->addGlobal('get', $_GET);
-    $this->template->addGlobal('post', $_POST);
-
-    #Añadimos la función para convertir texto común en url amigable
-    $url_amigable = new Twig_SimpleFunction('url_amigable',function(string $s) {
-      return Func::url_amigable($s);
-    });
-    $this->template->addFunction($url_amigable);
-
-    /*
-      #AGREGAR FUNCIÓN A TWIG
-      $function = new Twig_SimpleFunction('MiFuncionDesdeTwig',function($parametros) {
-        return MiFuncion($parametros);
-      });
-      $this->template->addFunction($function);
-    */
+    #Debug mode
+    if(DEBUG) {
+      $_SESSION['___QUERY_DEBUG___'] = array();
+    }
 
     #Utilidades
     $this->method = ($router->getMethod() != null and Func::alphanumeric($router->getMethod())) ? $router->getMethod() : null;

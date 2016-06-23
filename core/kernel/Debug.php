@@ -34,7 +34,7 @@ final class Debug {
     echo '<strong class="cab">',$variable,':</strong> <br />';
     echo '<ul>';
     foreach ($VAR as $key => $value) {
-      if($key == '___TWIG_DEBUG___' or $key == '___QUERY_DEBUG___') {
+      if($key == '___QUERY_DEBUG___') {
         null;
       } else {
         echo '<li><span class="variable">', $variable ,'</span><span class="b">[\'</span>', $key ,'<span class="b">\']</span> = ', $this->showinfo($value) ,'</li>';
@@ -64,9 +64,6 @@ final class Debug {
     echo '<b class="cab">Archivo:</b> "' , $_SERVER['PHP_SELF'], '"<br />';
     echo '<b class="cab">PHP:</b> ', phpversion(), '<br />';
     echo '<strong class="cab">Controller: </strong> ', $router->getController() ,'<br />';
-    if(isset($_SESSION['___TWIG_DEBUG___']) and null != $_SESSION['___TWIG_DEBUG___']) {
-      echo '<strong class="cab">Template:</strong> ', $_SESSION['___TWIG_DEBUG___'], ' <br /><br />';
-    }
 
     if(isset($_SESSION)) {
       $this->listVar($_SESSION,'$_SESSION');

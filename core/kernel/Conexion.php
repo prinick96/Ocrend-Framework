@@ -13,10 +13,10 @@ final class Conexion extends PDO {
     *
     * @return la instancia de conexión
   */
-  final public static function Start($DATABASE = DATABASE['name']) {
+  final public static function Start($DATABASE = DATABASE['name'], $MOTOR = DATABASE['motor']) {
 
     if(!self::$inst instanceof self) {
-      self::$inst = new self($DATABASE);
+      self::$inst = new self($DATABASE,$MOTOR);
     }
 
     return self::$inst;
@@ -29,9 +29,9 @@ final class Conexion extends PDO {
     *
     * @return void
   */
-  final public function __construct($DATABASE = DATABASE['name']) {
+  final public function __construct($DATABASE = DATABASE['name'], $MOTOR = DATABASE['motor']) {
     try {
-      $host = DATABASE['motor'].':host='.DATABASE['host'].';dbname='.$DATABASE.';charset=utf8mb4';
+      $host = $MOTOR.':host='.DATABASE['host'].';dbname='.$DATABASE.';charset=utf8mb4';
       parent::__construct($host,'root','',array(
         PDO::ATTR_EMULATE_PREPARES => false,
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
