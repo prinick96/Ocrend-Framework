@@ -31,7 +31,7 @@ final class Conexion extends PDO {
   */
   final public function __construct($DATABASE = DATABASE['name']) {
     try {
-      $host = 'mysql:host='.DATABASE['host'].';dbname='.$DATABASE.';charset=utf8mb4';
+      $host = DATABASE['motor'].':host='.DATABASE['host'].';dbname='.$DATABASE.';charset=utf8mb4';
       parent::__construct($host,'root','',array(
         PDO::ATTR_EMULATE_PREPARES => false,
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION

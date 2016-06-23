@@ -27,10 +27,13 @@ __./core/config.php__
 
   setlocale(LC_ALL,"es_ES"); #En caso de que el servidor de un warning, comentar esta línea, significa que no soporta setlocale
 
-  define('DB_HOST','localhost'); #Servidor para conexión con la base de datos
-  define('DB_USER','root'); #Usuario para la base de datos
-  define('DB_PASS',''); #Contraseña del usuario para la base de datos
-  define('DB_NAME','ocrend'); #Nombre de la base de datos
+  define('DATABASE', array(
+    'host' => 'localhost', #Servidor para conexión con la base de datos
+    'user' => 'root', #Usuario para la base de datos
+    'pass' => '', #Contraseña del usuario para la base de datos
+    'name' => 'ocrend', #Nombre de la base de datos
+    'motor' => 'mysql' #Motor de la base de datos
+  ));
 
   define('URL','http://prinick-notebook/Ocrend-Framework/'); #Url en donde está instalado el framework, importante el "/" al final
   define('APP','Ocrend-Framework'); #Nombre de la aplicación, este también sale en <title></title>, correos, footer y demás
