@@ -14,6 +14,25 @@ final class Func extends Models implements OCREND {
   }
 
   /**
+    * Dado un índice asociativo y un arreglo, devuelve el índice numérico correspondiente al asociativo
+    *
+    * @param string $index: Índice asociativo del arreglo
+    * @param array $a: Arreglo a evaluar
+    *
+    * @return int el índice correspondiente, -1 si no existe el indice
+  */
+  final public static function get_key_by_index(string $index, array $a) : int {
+    $i = 0;
+    foreach ($a as $key => $val) {
+      if($key == $index) {
+        return $i;
+      }
+      $i++;
+    }
+    return -1;
+  }
+
+  /**
     * Da unidades de peso a un integer según sea su tamaño asumida en bytes
     *
     * @param int $size: Un entero que representa el tamaño a convertir
