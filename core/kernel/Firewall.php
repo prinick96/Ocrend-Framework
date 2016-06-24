@@ -201,22 +201,22 @@ final class Firewall {
     }
   }
 
-  const MSG_PROTECTION_OVH = 'Protection OVH Server active, this IP range is not allowed!';
-  const MSG_PROTECTION_KIMSUFI = 'Protection KIMSUFI Server active, this IP range is not allowed!';
-  const MSG_PROTECTION_DEDIBOX = 'Protection DEDIBOX Server active, this IP range is not allowed!';
-  const MSG_PROTECTION_DEDIBOX_IP = 'Protection DEDIBOX Server active, this IP is not allowed!';
-  const MSG_PROTECTION_DIGICUBE = 'Protection DIGICUBE Server active, this IP range is not allowed!';
-  const MSG_PROTECTION_DIGICUBE_IP = 'Protection DIGICUBE Server active, this IP is not allowed!';
-  const MSG_PROTECTION_BOTS = 'Bot attack detected ! stop it ...';
-  const MSG_PROTECTION_CLICK = 'Click attack detected ! stop it...';
-  const MSG_PROTECTION_DOS = 'Invalid user agent ! Stop it ...';
-  const MSG_PROTECTION_OTHER_SERVER = 'Posting from another server not allowed !';
-  const MSG_PROTECTION_REQUEST = 'Invalid request method check ! Stop it ...';
-  const MSG_PROTECTION_SPAM = 'Protection SPAM IPs active, this IP range is not allowed !';
-  const MSG_PROTECTION_SPAM_IP = 'Protection died IPs active, this IP range is not allowed !';
-  const MSG_PROTECTION_UNION = 'Union attack detected ! stop it ...';
-  const MSG_PROTECTION_URL = 'Protection url active, string not allowed !';
-  const MSG_PROTECTION_XSS = 'XSS attack detected ! stop it ...';
+  const MSG_PROTECTION_OVH = 'Protection OVH Server active, this IP range is not allowed.';
+  const MSG_PROTECTION_KIMSUFI = 'Protection KIMSUFI Server active, this IP range is not allowed.';
+  const MSG_PROTECTION_DEDIBOX = 'Protection DEDIBOX Server active, this IP range is not allowed.';
+  const MSG_PROTECTION_DEDIBOX_IP = 'Protection DEDIBOX Server active, this IP is not allowed.';
+  const MSG_PROTECTION_DIGICUBE = 'Protection DIGICUBE Server active, this IP range is not allowed.';
+  const MSG_PROTECTION_DIGICUBE_IP = 'Protection DIGICUBE Server active, this IP is not allowed.';
+  const MSG_PROTECTION_BOTS = 'Bot attack detected.';
+  const MSG_PROTECTION_CLICK = 'Click attack detected.';
+  const MSG_PROTECTION_DOS = 'Invalid user agent.';
+  const MSG_PROTECTION_OTHER_SERVER = 'Posting from another server not allowed.';
+  const MSG_PROTECTION_REQUEST = 'Invalid request method check.';
+  const MSG_PROTECTION_SPAM = 'Protection SPAM IPs active, this IP range is not allowed.';
+  const MSG_PROTECTION_SPAM_IP = 'Protection died IPs active, this IP range is not allowed.';
+  const MSG_PROTECTION_UNION = 'Union attack detected.';
+  const MSG_PROTECTION_URL = 'Protection url active, string not allowed.';
+  const MSG_PROTECTION_XSS = 'XSS attack detected.';
 
   const CT_RULES = ['applet', 'base', 'bgsound', 'blink', 'embed', 'expression',
   'frame', 'javascript', 'layer', 'link', 'meta', 'object', 'onabort', 'onactivate',

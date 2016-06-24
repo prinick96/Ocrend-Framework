@@ -16,6 +16,14 @@ class Router {
     '/id' => 'int'
   );
 
+  /**
+    * Constructor, inicializa las Rutas y obtiene los parámetros principales pasados por la URL de forma amigable.
+    * Todas las variables pasadas por la URL de forma amigable, son independientes y no forman parte del arreglo $_GET
+    *
+    * @param string $DATABASE, se pasa de forma opcional una base de datos distinta a la definida en DATABASE['name'] para conectar
+    *
+    * @return void
+  */
   public function __construct() {
 
     $this->url = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
@@ -51,9 +59,9 @@ class Router {
     return $this->id;
   }
 
-  public function setRoute(string $name, string $type = 'none') {
-    if(!in_array($type,['alphanumeric','letters','int','float'])) {
-      $type = 'none';
+  public function setRoute(string $name, string $type = 'alphanumeric') {
+    if(!in_array($type,['letters','int','float','none'])) {
+      $type = 'alphanumeric';
     }
     $this->routes[$name] = $type;
   }
