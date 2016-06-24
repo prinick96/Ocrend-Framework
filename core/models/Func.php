@@ -35,7 +35,7 @@ final class Func extends Models implements OCREND {
     *
     * @return true si $s2 contiene la misma llave que $hash, por tanto el contenido de $hash es $s2, de lo contrario false
   */
-  final public static function chash(string $hash, string $s2) : bool {
+  final public static function chash(string $hash, string $s2) : bool  {
     $full_salt = substr($hash, 0, 29);
     $new_hash = crypt($s2, $full_salt);
     return ($hash == $new_hash);
@@ -77,8 +77,8 @@ final class Func extends Models implements OCREND {
     $mail = new PHPMailer;
     $mail->CharSet = "UTF-8";
     $mail->Encoding = "quoted-printable";
-    $mail->isSendMail(); # Comentar y descomentar la línea de abajo si da problemas #
-    //$mail->isSMTP();
+    //$mail->isSendMail();
+    $mail->isSMTP(); # Comentar y descomentar la línea de arriba si da problemas #
     $mail->Host = PHPMAILER_HOST;
     $mail->SMTPAuth = true;
     $mail->Username = PHPMAILER_USER;

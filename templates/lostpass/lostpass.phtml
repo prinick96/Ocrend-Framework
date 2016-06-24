@@ -1,0 +1,26 @@
+<?= $this->insert('overall/header') ?>
+<body id="page-top" class="index">
+
+    <?= $this->insert('overall/topnav') ?>
+
+    <section id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <h2>Cambiar contraseña</h2>
+                </div>
+                <div class="col-sm-12 text-center">
+                  <br />
+                  <?php if (false === $pass): ?>
+                    <div class="alert alert-danger">¡Este enlace ha caducado!</div>
+                  <?php else: ?>
+                    <div class="alert alert-success">Tu nueva contraseña es <b><?= $pass ?></b> , ahora puedes <a href="" data-toggle="modal" data-target="#iniciar_sesion">iniciar sesión</a></div>
+                  <?php endif ?>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<?= $this->insert('overall/footer') ?>
+</body>
+</html>

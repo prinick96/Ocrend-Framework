@@ -25,12 +25,12 @@ abstract class Controllers {
   /**
     * Constructor, inicializa los alcances de todos los Controladores
     *
-    * @param bool $LOGED: Si el controlador en cuestión será solamente para usuarios logeados, se pasa TRUE
-    * @param bool $CACHE: Si la VISTA para el controlador en cuestión se quiere compilar una única sin detectar futuros cambios vez se pasa TRUE
+    * @param bool $LOGED: Si el controlador en cuestión será exclusivamente para usuarios logeados, se pasa TRUE
+    * @param bool $UNLOGED: Si el controlador en cuestión será exclusivamente para usuarios NO logeados, se pasa TRUE
     *
     * @return void
   */
-  protected function __construct(bool $LOGED = false) {
+  protected function __construct(bool $LOGED = false, bool $UNLOGED = false) {
 
     global $router;
 
@@ -39,6 +39,12 @@ abstract class Controllers {
 
     #Restricción para usuarios logeados
     if($LOGED and !isset($_SESSION[SESS_APP_ID])) {
+      Func::redir();
+      exit;
+    }
+
+    #Restricción de página para ser visa sólamente por usuarios No logeados
+    if($UNLOGED and isset($_SESSION[SESS_APP_ID])) {
       Func::redir();
       exit;
     }

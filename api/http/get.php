@@ -13,3 +13,15 @@ $app->get('/login',function($request, $response) {
 
   return $response;
 });
+
+/**
+	* ¿qué hace (el modelo que se invoca desde aqui)?
+	* @return ¿qué retorna?, ¡un json por favor!
+*/
+$app->get('/lostpass',function($request, $response) {
+
+	$model = new Lostpass;
+	$response->withJson($model->RepairPass($_GET));
+
+	return $response;
+});

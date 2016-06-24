@@ -31,10 +31,11 @@ final class Conexion extends PDO {
   */
   final public function __construct($DATABASE = DATABASE['name'], $MOTOR = DATABASE['motor']) {
     try {
-      $host = $MOTOR.':host='.DATABASE['host'].';dbname='.$DATABASE.';charset=utf8mb4';
+      $host = $MOTOR.':host='.DATABASE['host'].';dbname='.$DATABASE;
       parent::__construct($host,'root','',array(
         PDO::ATTR_EMULATE_PREPARES => false,
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
       ));
     } catch (PDOException $e) {
       die('Error intentando conectar con la base de datos.');
@@ -73,7 +74,7 @@ final class Conexion extends PDO {
     $q[0] = '';
     $q[strlen($q) - 1] = '';
 
-    return $q;
+    return trim($q);
   }
 
   /**
