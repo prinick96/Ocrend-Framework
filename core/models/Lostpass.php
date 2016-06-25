@@ -58,9 +58,11 @@ final class Lostpass extends Models implements OCREND {
 
 		if(false != $u) {
 
+			Helper::load('strings');
+
 			$id = $u[0]['id'];
 			$pass = $u[0]['keypass_tmp'];
-			$hash = Func::hash($pass);
+			$hash = Strings::hash($pass);
 
 			$e = array(
 				'keypass' => 0,

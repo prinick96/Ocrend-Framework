@@ -16,8 +16,11 @@ abstract class Controllers {
   */
   private function loadFunctions() {
 
+    #Carga del helper strings que incluye url_amigables
+    Helper::load('strings');
+
     $this->template->registerFunction('url_amigable', function ($var) {
-      return Func::url_amigable($var);
+      return Strings::url_amigable($var);
     });
 
   }
@@ -59,7 +62,7 @@ abstract class Controllers {
     }
 
     #Utilidades
-    $this->method = ($router->getMethod() != null and Func::alphanumeric($router->getMethod())) ? $router->getMethod() : null;
+    $this->method = ($router->getMethod() != null and Strings::alphanumeric($router->getMethod())) ? $router->getMethod() : null;
     $this->isset_id = ($router->getId() != null and is_numeric($router->getId()) and $router->getId() >= 1);
 
   }

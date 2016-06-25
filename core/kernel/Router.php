@@ -26,6 +26,7 @@ class Router {
   */
   public function __construct() {
 
+    Helper::load('strings');
     $this->url = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 
     if($this->dir == '/' and strlen($this->url) > strlen($this->dir)) {
@@ -38,7 +39,7 @@ class Router {
     if(!empty($this->url) and $this->url != $this->dir) {
       $this->url = explode('/',$this->url);
 
-      $this->controller = Func::alphanumeric($this->url[0]) ? strtolower( $this->url[0] ) . 'Controller' : 'homeController';
+      $this->controller = Strings::alphanumeric($this->url[0]) ? strtolower( $this->url[0] ) . 'Controller' : 'homeController';
       $this->method = array_key_exists(1,$this->url) ? strtolower($this->url[1]) : null;
       $this->id = array_key_exists(2,$this->url) ? $this->url[2] : null;
     } else {
@@ -68,15 +69,18 @@ class Router {
 
   public function getRoute(string $name) {
 
-    $index = Func::get_key_by_index($name,$this->routes);
+    Strings::load('arrays');
+    $index = Arrays::get_key_by_index($name,$this->routes);
+
+    if(!is_array($this->url)) $this->url = array();
 
     if($index >= 3 and array_key_exists($index,$this->url)) {
       switch ($this->routes[$name]) {
         case 'alphanumeric':
-          return Func::alphanumeric($this->url[$index]) ? strtolower($this->url[$index]) : null;
+          return Strings::alphanumeric($this->url[$index]) ? strtolower($this->url[$index]) : null;
         break;
         case 'letters':
-          return Func::only_letters($this->url[$index]) ? strtolower($this->url[$index]) : null;
+          return Strings::only_letters($this->url[$index]) ? strtolower($this->url[$index]) : null;
         break;
         case 'int':
           return is_numeric($this->url[$index]) ? intval($this->url[$index]) : null;

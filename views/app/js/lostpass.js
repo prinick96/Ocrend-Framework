@@ -15,7 +15,7 @@ $('#lostpass').click(function(){
 	$('#ajax_lostpass').removeClass('hide');
 
 	$.ajax({
-		type : "GET",
+		type : "POST",
 		url : "api/lostpass",
 		data : $('#lostpass_form').serialize(),
 		success : function(json) {

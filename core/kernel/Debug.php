@@ -4,7 +4,38 @@ defined('INDEX_DIR') OR exit('Ocrend software says .i.');
 
 final class Debug {
 
-  const HEAD = '<br /><div id="debug">';
+  const HEAD = '<style>
+  #debug {
+    margin-bottom: 18px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
+    background: #f7f7f9;
+    border: 1px solid #e1e1e8;
+    padding: 8px;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border radius: 4px;
+    display: block;
+    font-size: 12.05px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    color: #333;
+    font-family: \'Menlo\',\'Monaco\',\'Consolas\',\'Courier New\',\'monospace\';
+  }
+  .variable {
+    font-weight: bold!important;
+    color: #e06a60!important;
+  }
+  .cab {
+    font-weight: bold!important;
+    color: #3864c6!important;
+  }
+  .b {
+    color: #9eb2a9!important;
+  }
+  </style>
+  <br /><div id="debug">';
   const FOOT = '</div>';
 
   /**

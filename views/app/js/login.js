@@ -11,7 +11,7 @@ $('#login').click(function(){
   $('#ajax_login').removeClass('hide');
 
   $.ajax({
-    type : "GET",
+    type : "POST",
     url : "api/login",
     data : $('#login_form').serialize(),
     success : function(json) {

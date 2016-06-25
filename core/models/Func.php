@@ -1,35 +1,19 @@
 <?php
 
-/**
-  * Las funciones que requiren conexión con la base de datos o heredar algo del modelo, su previa llamda debe realizarse
-  * instanciando primero la clase Func, y llamarse a través de un objeto.
-  *
-  * Las que no, son static y utilizan Func::nombrefuncion()
-*/
+defined('INDEX_DIR') OR exit('Ocrend software says .i.');
 
-final class Func extends Models implements OCREND {
-
-  public function __construct() {
-    parent::__construct();
-  }
+final class Func {
 
   /**
-    * Dado un índice asociativo y un arreglo, devuelve el índice numérico correspondiente al asociativo
+    * Calcula el porcentaje de una cantidad
     *
-    * @param string $index: Índice asociativo del arreglo
-    * @param array $a: Arreglo a evaluar
+    * @param int $por: El porcentaje a evaluar, por ejemplo 1, 20, 30 % sin el "%", sólamente el número
+    * @param int $n: El número al cual se le quiere sacar el porcentaje
     *
-    * @return int el índice correspondiente, -1 si no existe el indice
+    * @return int con el porcentaje correspondiente
   */
-  final public static function get_key_by_index(string $index, array $a) : int {
-    $i = 0;
-    foreach ($a as $key => $val) {
-      if($key == $index) {
-        return $i;
-      }
-      $i++;
-    }
-    return -1;
+  final public static function percent(int $por, int $n) : int {
+    return $n * ($por / 100);
   }
 
   /**
@@ -42,33 +26,6 @@ final class Func extends Models implements OCREND {
   final public static function convert(int $size) : string {
       $unit = array('bytes','kb','mb','gb','tb','pb');
       return round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
-  }
-
-  /**
-    * Compara un string hash con un string sin hash, si el string sin hash al encriptar posee la misma llave que hash, son iguales
-    *
-    * @param string $hash: Hash con la forma $2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G
-    * @param string $s2: Cadena de texto a comparar
-    *
-    * @example Func::chash('$2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G','123456'); //return true
-    *
-    * @return true si $s2 contiene la misma llave que $hash, por tanto el contenido de $hash es $s2, de lo contrario false
-  */
-  final public static function chash(string $hash, string $s2) : bool  {
-    $full_salt = substr($hash, 0, 29);
-    $new_hash = crypt($s2, $full_salt);
-    return ($hash == $new_hash);
-   }
-
-  /**
-    * Devuelve un hash DINÁMICO, para comparar un hash con un elemento se utiliza chash
-    *
-    * @param string $p: Cadena de texto a encriptar
-    *
-    * @return string Hash, con la forma $2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G
-  */
-  final public static function hash(string $p) : string {
-    return crypt($p, '$2a$10$' . substr(sha1(mt_rand()),0,22));
   }
 
   /**
@@ -121,138 +78,6 @@ final class Func extends Models implements OCREND {
     } else {
       return true;
     }
-  }
-
-  /**
-    * Dice si un elemento es una imagen o no según su extensión
-    *
-    * @param string $file_name: Nombre del archivo, da igual si es solo el nombre o la ruta con el nombre
-    *
-    * @return true si es una imagen, false si no lo es
-  */
-  final public static function is_image(string $file_name) : bool {
-    $formats = ['jpg','png','jpeg','gif','JPG','PNG','JPEG','GIF'];
-    $file_name = explode('.',$file_name);
-    $ext = end($file_name);
-
-    return in_array($ext,$formats);
-  }
-
-  /**
-    * Remueve todos los espacios en blanco de un string
-    *
-    * @param string $s: Cadena de texto a convertir
-    *
-    * @return string del texto sin espacios
-  */
-  final public static function remove_spaces(string $s) : string {
-    return str_replace(' ','',$s);
-  }
-
-  /**
-    * Analiza si una cadena de texto es alfanumérica
-    *
-    * @param string $s: Cadena de texto a verificar
-    *
-    * @return bool, verdadero si es alfanumerica, falso si no
-  */
-  final public static function alphanumeric(string $s) : bool {
-    $s = self::remove_spaces($s);
-    return ctype_alnum($s);
-  }
-
-  /**
-    * Analiza si una cadena de texto verificando si sólamente tiene letras
-    *
-    * @param string $s: Cadena de texto a verificar
-    *
-    * @return bool, verdadero si sólamente tiene letras, falso si no
-  */
-  final public static function only_letters(string $s) : bool {
-    $s = self::remove_spaces($s);
-    return ctype_alpha($s);
-  }
-
-  /**
-    * Analiza si una cadena de texto contiene sólamente letras y números
-    *
-    * @param string $s: Cadena de texto a verificar
-    *
-    * @return bool, verdadero si sólamente contiene letras y números, falso si no
-  */
-  final public static function letters_and_numbers(string $s) : string {
-    $s = self::remove_spaces($s);
-    return preg_match('/^[\w.]*$/', $s);
-  }
-
-  /**
-    * Convierte una expresión de texto, a una compatible con url amigables
-    *
-    * @param string $url: Cadena de texto a convertir
-    *
-    * @return string Cadena de texto con formato de url amigable
-  */
-  final public static function url_amigable(string $url) : string {
-    $url = strtolower($url);
-    $url = str_replace (['á', 'é', 'í', 'ó', 'ú', 'ñ'],['a', 'e', 'i', 'o', 'u', 'n'], $url);
-    $url = str_replace([' ', '&', '\r\n', '\n', '+', '%'],'-',$url);
-
-    return preg_replace (['/[^a-z0-9\-<>]/', '/[\-]+/', '/<[^>]*>/'],['', '-', ''], $url);
-  }
-
-  /**
-    * Convierte código BBCode en su equivalente HTML
-    *
-    * @param string $string: Código con formato BBCode dentro
-    *
-    * @return string del código BBCode transformado en HTML
-  */
-  final public static function bbcode(string $string) : string {
-    $BBcode = array(
-        '/\[i\](.*?)\[\/i\]/is',
-        '/\[b\](.*?)\[\/b\]/is',
-        '/\[u\](.*?)\[\/u\]/is',
-        '/\[s\](.*?)\[\/s\]/is',
-        '/\[img\](.*?)\[\/img\]/is',
-        '/\[center\](.*?)\[\/center\]/is',
-        '/\[h1\](.*?)\[\/h1\]/is',
-        '/\[h2\](.*?)\[\/h2\]/is',
-        '/\[h3\](.*?)\[\/h3\]/is',
-        '/\[h4\](.*?)\[\/h4\]/is',
-        '/\[h5\](.*?)\[\/h5\]/is',
-        '/\[h6\](.*?)\[\/h6\]/is',
-        '/\[quote\](.*?)\[\/quote\]/is',
-        '/\[url=(.*?)\](.*?)\[\/url\]/is',
-        '/\[bgcolor=(.*?)\](.*?)\[\/bgcolor\]/is',
-        '/\[color=(.*?)\](.*?)\[\/color\]/is',
-        '/\[bgimage=(.*?)\](.*?)\[\/bgimage\]/is',
-        '/\[size=(.*?)\](.*?)\[\/size\]/is',
-        '/\[font=(.*?)\](.*?)\[\/font\]/is'
-    );
-
-    $HTML = array(
-        '<i>$1</i>',
-        '<b>$1</b>',
-        '<u>$1</u>',
-        '<s>$1</s>',
-        '<img src="$1" />',
-        '<center>$1</center>',
-        '<h1>$1</h1>',
-        '<h2>$1</h2>',
-        '<h3>$1</h3>',
-        '<h4>$1</h4>',
-        '<h5>$1</h5>',
-        '<h6>$1</h6>',
-        '<blockquote style="background:#f1f5f7;color:#404040;padding:4px;border-radius:4px;">$1</blockquote>',
-        '<a href="$1" target="_blank">$2</a>',
-        '<div style="background: $1;">$2</div>',
-        '<span style="color: $1;">$2</span>',
-        '<div style="background: url(\'$1\');">$2</div>',
-        '<span style="font-size: $1px">$2</span>',
-        '<span style="font-family: $1">$2</span>'
-    );
-
-    return nl2br(preg_replace($BBcode,$HTML,$string));
   }
 
   /**
@@ -359,23 +184,16 @@ final class Func extends Models implements OCREND {
   }
 
   /**
-    * Prueba la existencia de un elemento en la base de datos
-    * Para que este funcione, el identificador GET para pasar entre páginas debe ser $_GET['pag'], es decir &pag=numero
-    * IMPORTANTE: Debe estar INSTANCIADA, la clase Func y a través de un objeto se invoca esta función
+    * Retorna la URL de un gravatar, según el email
     *
-    * @param int $id: Id del elemento en la base de datos
-    * @param string $table: Tabla en donde se quiere verificar
-    * @param string $e: Elementos a seleccionar
-    *
-    * @return si existe devuelve el contenido en un arreglo asociativo/numérico, si no deveuvel false
+    * @param string  $email: El email del usuario a extraer el gravatar
+    * @param int $size: El tamaño del gravatar
+    * @return string con la URl
   */
-  final public function check_exists(int $id, string $table, string $e = '*') {
-    return $this->db->select($e,$table,"id='$id','LIMIT 1'");
-  }
+   final public static function get_gravatar(string $email, int $size = 32) : string  {
+       return 'http://www.gravatar.com/avatar/' . md5($email) . '?s=' . (int) abs($size);
+   }
 
-  public function __destruct() {
-    parent::__destruct();
-  }
 
 }
 
