@@ -60,7 +60,7 @@ def create_file(route,filename,ext,api):
             e.write('\n\t\t\t<form id="' + filename.lower() + '_form" role="form">\n');
             e.write('\n\t\t\t<div class="alert hide" id="ajax_' + filename.lower() + '"></div>\n\n')
             e.write('\n\t\t\t<div class="form-group">')
-            e.write('\n\t\t\t\t<label>Ejemplo:</label>')
+            e.write('\n\t\t\t\t<label class="cole">Ejemplo:</label>')
             e.write('\n\t\t\t\t<input type="text" class="form-control form-input" name="ejemplo" placeholder="Escribe algo..." />')
             e.write('\n\t\t\t</div>')
             e.write('\n\t\t\t<div class="form-group">')
