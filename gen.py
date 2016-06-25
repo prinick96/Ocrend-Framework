@@ -29,7 +29,7 @@ def create_file(route,filename,ext,api):
         e.write('final class ' + filename + ' extends Models implements OCREND {\n\n')
         e.write('\tpublic function __construct() {\n')
         e.write('\t\tparent::__construct();\n')
-        e.write('\t}\n\n');
+        e.write('\t}\n\n')
         if api:
             e.write('\tfinal public function Foo(array $data) : array {\n')
             e.write('\t\t#...\n')
@@ -37,8 +37,8 @@ def create_file(route,filename,ext,api):
             e.write('\t}\n\n');
         e.write('\tpublic function __destruct() {\n')
         e.write('\t\tparent::__destruct();\n')
-        e.write('\t}\n');
-        e.write('}\n\n');
+        e.write('\t}\n')
+        e.write('}\n\n')
         e.write('?>')
     elif route == R_CONTROLLERS:
         e.write('<?php \n\n')
@@ -46,36 +46,35 @@ def create_file(route,filename,ext,api):
         e.write('\tpublic function __construct() {\n')
         e.write('\t\tparent::__construct();\n')
         e.write('\t\techo $this->template->render(\'' + filename.replace('Controller', '/') + filename.replace('Controller', '') + '\');\n')
-        e.write('\t}\n');
-        e.write('}\n\n');
+        e.write('\t}\n')
+        e.write('}\n\n')
         e.write('?>')
     else:
         e.write('<?= $this->insert(\'overall/header\') ?> \n')
-        e.write('<body id="page-top" class="index"> \n')
-        e.write('\t<?= $this->insert(\'overall/topnav\') ?>\n\n')
-        e.write('\t<section id="about">\n\t\t<div class="container">\n\t\t\t<div class="row">\n\n')
-        e.write('\t\t\t\t<div class="col-sm-12 text-center"><h1>' + filename + '</h1></div>\n\n')
+        e.write('<body class="framework"> \n')
+        e.write('\n\n\t<div class="logo">\n\t\t<h3><?= strtoupper(APP) ?></h3>\n\t</div>')
+        e.write('\n\n\t<div class="content">')
+        e.write('\n\t\t<div class="ocrend-welcome">\n\t\t\t<span class="ocrend-welcome">' + filename.lower() + '</span>\n\t\t\t<span class="ocrend-welcome-subtitle">Vista.</span>\n\t\t</div>')
+        e.write('\n\t\t<div class="form-actions">')
         if api:
-            e.write('\t\t\t\t<div class="col-sm-12 text-center" style="max-width: 780px!important;">\n')
-            e.write('\n\t\t\t\t\t<form id="' + filename.lower() + '_form" role="form">\n')
-            e.write('\n\t\t\t\t\t\t<div class="alert hide" id="ajax_' + filename.lower() + '"></div>\n\n')
-            e.write('\t\t\t\t\t\t<div class="form-group">\n')
-            e.write('\t\t\t\t\t\t\t<label>Ejemplo</label>\n')
-            e.write('\t\t\t\t\t\t\t<input type="text" class="form-control" name="ejemplo" placeholder="Escribe algo..." />\n')
-            e.write('\t\t\t\t\t\t</div>\n')
-            e.write('\t\t\t\t\t\t<div class="form-group">\n')
-            e.write('\t\t\t\t\t\t\t<button type="button" id="' + filename.lower() + '" class="btn btn-primary">Enviar</button>\n')
-            e.write('\t\t\t\t\t\t</div>\n\n')
-            e.write('\t\t\t\t\t</form>\n')
-            e.write('\t\t\t\t\t</div>\n\n')
-            e.write('\t\t\t\t</div></div></section>\n')
-            e.write('<?= $this->insert(\'overall/footer\') ?> \n')
-            e.write('<script src="views/app/js/' + filename.lower() + '.js"></script>\n')
+            e.write('\n\t\t\t<form id="' + filename.lower() + '_form" role="form">\n');
+            e.write('\n\t\t\t<div class="alert hide" id="ajax_' + filename.lower() + '"></div>\n\n')
+            e.write('\n\t\t\t<div class="form-group">')
+            e.write('\n\t\t\t\t<label>Ejemplo:</label>')
+            e.write('\n\t\t\t\t<input type="text" class="form-control form-input" name="ejemplo" placeholder="Escribe algo..." />')
+            e.write('\n\t\t\t</div>')
+            e.write('\n\t\t\t<div class="form-group">')
+            e.write('\n\t\t\t\t<button type="button" id="' + filename.lower() + '" class="btn red  btn-block">Enviar</button>')
+            e.write('\n\t\t\t</div>')
+            e.write('\n\t\t\t</form>')
+            e.write('\n\t\t</div>\n')
+            e.write('\n\n\t\t<?= $this->insert(\'overall/footer\') ?> \n')
+            e.write('\t<script src="views/app/js/' + filename.lower() + '.js"></script>\n\n\t</div>\n')
         else:
-            e.write('\t\t\t</div>\n\t\t</div>\n\t</section>\n')
-            e.write('<?= $this->insert(\'overall/footer\') ?> \n')
-        e.write('</body> \n')
-        e.write('</html> \n')
+            e.write('\n\t\t\t<p>Vista ' + filename.lower() + '</p>')
+            e.write('\n\t\t</div>');
+            e.write('\n\n\t\t<?= $this->insert(\'overall/footer\') ?>\n\t</div>\n')
+        e.write('</body>\n</html>');
 
     e.close()
     print "Creado " + route + filename + ext

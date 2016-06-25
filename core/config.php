@@ -41,7 +41,7 @@ define('DATABASE', array(
 #constantes elementales
 //define('URL','http://prinick-notebook/Ocrend-Framework/');
 define('URL','http://localhost/Ocrend-Framework/');
-define('APP','Ocrend-Framework');
+define('APP','Ocrend Framework');
 define('SESS_APP_ID','app_id');
 
 /**
@@ -61,6 +61,6 @@ define('PHPMAILER_PORT',465);
 define('FIREWALL',true);
 
 #Activación del DEBUG, solo para desarrollo
-define('DEBUG',true);
+define('DEBUG',false);
 
 ?>

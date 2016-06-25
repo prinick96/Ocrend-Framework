@@ -1,26 +1,29 @@
 <?= $this->insert('overall/header') ?>
-<body id="page-top" class="index">
+<body class="framework">
 
-    <?= $this->insert('overall/topnav') ?>
+  <div class="logo">
+    <h3><?= strtoupper(APP) ?></h3>
+  </div>
 
-    <section id="about">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 text-center">
-                    <h2>Cambiar contraseña</h2>
-                </div>
-                <div class="col-sm-12 text-center">
-                  <br />
-                  <?php if (false === $pass): ?>
-                    <div class="alert alert-danger">¡Este enlace ha caducado!</div>
-                  <?php else: ?>
-                    <div class="alert alert-success">Tu nueva contraseña es <b><?= $pass ?></b> , ahora puedes <a href="" data-toggle="modal" data-target="#iniciar_sesion">iniciar sesión</a></div>
-                  <?php endif ?>
-                </div>
-            </div>
-        </div>
-    </section>
+  <div class="content">
+    <div class="ocrend-welcome">
+      <span class="ocrend-welcome">Cambio de contraseña.</span>
+      <span class="ocrend-welcome-subtitle">Solicitud de cambio.</span>
+    </div>
+    <div class="form-actions">
 
-<?= $this->insert('overall/footer') ?>
+      <?php if (false === $pass): ?>
+        <div class="alert alert-danger">¡Este enlace ha caducado!</div>
+      <?php else: ?>
+        <div class="alert alert-success">Tu nueva contraseña es <b><?= $pass ?></b> , puedes <a href="" style="color: #023b32!important;" data-toggle="modal" data-target="#iniciar_sesion">iniciar sesión</a></div>
+      <?php endif ?>
+
+      <?= $this->insert('overall/modules') ?>
+
+    </div>
+
+    <?= $this->insert('overall/footer') ?>
+
+  </div>
 </body>
 </html>

@@ -1,0 +1,18 @@
+<div class="pull-left firewall-status-block">
+  <span class="firewall-status">
+    <?php if (FIREWALL): ?>
+      <span class="label label-success">Firewall Activo</span>
+    <?php else: ?>
+      <span class="label label-danger">Firewall Inactivo</span>
+    <?php endif ?>
+  </span>
+</div>
+<div class="pull-right firewall-status-block">
+  <span class="firewall-status">
+    <?php if (DEBUG): ?>
+      <span class="label label-success">Debug Activo</span>
+    <?php else: ?>
+      <span class="label label-danger">Debug Inactivo</span>
+    <?php endif ?>
+  </span>
+</div>

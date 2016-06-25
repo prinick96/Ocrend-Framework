@@ -38,7 +38,11 @@ final class Conexion extends PDO {
         PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
       ));
     } catch (PDOException $e) {
-      die('Error intentando conectar con la base de datos.');
+      if(IS_API) {
+        die(json_encode(array('success' => 0, 'message' => 'Error intentando conectar con la base de datos.')));
+      } else {
+        die('Error intentando conectar con la base de datos.');
+      }
     } finally {
       unset($host);
     }

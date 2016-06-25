@@ -1,22 +1,24 @@
 <?= $this->insert('overall/header') ?>
-<body id="page-top" class="index">
+<body class="framework">
 
-    <?= $this->insert('overall/topnav') ?>
+  <div class="logo">
+    <h3><?= strtoupper(APP) ?></h3>
+  </div>
 
-    <section id="about">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 text-center">
-                    <h2>¡404 ERROR!</h2>
-                </div>
-                <div class="col-sm-12 text-center">
-                  <br />
-                  <p>Controlador <b><?= str_replace('Controller','',$controller) ?></b> no encontrado.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+  <div class="content">
+    <div class="ocrend-welcome">
+      <span class="ocrend-welcome">¡404 ERROR!</span>
+      <span class="ocrend-welcome-subtitle">Elemento no encontrado.</span>
+    </div>
+    <div class="form-actions">
+      <p>Controlador <b><?= str_replace('Controller','',$controller) ?></b> no encontrado.</p>
 
-<?= $this->insert('overall/footer') ?>
+      <?= $this->insert('overall/modules') ?>
+
+    </div>
+
+    <?= $this->insert('overall/footer') ?>
+
+  </div>
 </body>
 </html>
