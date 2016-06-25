@@ -3,11 +3,9 @@ import sys
 import os
 
 '''
-  * OCREND Framework - PHP Code Generator
+  * Ocrend Framework - PHP Code Generator
   * Python 2.7
-  * @package OCREND Framework
-  * @link http://www.ocrend.com/framework
-  * @author Brayan Narváez (Prinick) <prinick@ocrend.com>
+  * @author Brayan Narváez (Prinick) <prinick@ocrend.com> <youtube.com/user/prinick96>
   * @copyright 2016 - Ocrend Software
 '''
 

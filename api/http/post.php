@@ -1,6 +1,9 @@
 <?php
 
+# Seguridad
 defined('INDEX_DIR') OR exit('Ocrend software says .i.');
+
+//------------------------------------------------
 
 /**
   * Registro de un usuario
@@ -14,6 +17,8 @@ $app->post('/register',function($request, $response){
   return $response;
 });
 
+//------------------------------------------------
+
 /**
   * Inicio de Sesión
   * @return Devuelve un json con información acerca del éxito o posibles errores.
@@ -25,6 +30,8 @@ $app->post('/login',function($request, $response) {
 
   return $response;
 });
+
+//------------------------------------------------
 
 /**
 	* Recuperación de contraseña perdida

@@ -1,8 +1,13 @@
 <?php
 
+# Seguridad
 defined('INDEX_DIR') OR exit('Ocrend software says .i.');
 
+//------------------------------------------------
+
 final class Arrays {
+
+  //------------------------------------------------
 
   /**
     * Dado un índice asociativo y un arreglo, devuelve el índice numérico correspondiente al asociativo
@@ -23,6 +28,8 @@ final class Arrays {
     return -1;
   }
 
+  //------------------------------------------------
+
   /**
     * Elimina todos los elementos repetidos de un array
     * (string) '1' se considera igual a (int) 1
@@ -35,6 +42,8 @@ final class Arrays {
   final public static function unique_array(array $a) : array {
     return array_keys(array_flip($a));
   }
+
+  //------------------------------------------------
 
   /**
     * Evalúa si un arreglo es de tipo asociativo o no
@@ -50,6 +59,8 @@ final class Arrays {
 
     return array_keys($a) !== range(0, count($a) - 1);
   }
+
+  //------------------------------------------------
 
   /**
     * Evalúa si un arreglo es secuencial (de índices numéricos)
@@ -69,6 +80,18 @@ final class Arrays {
     return true;
   }
 
+  //------------------------------------------------
+
+  /**
+    * Obtiene de forma random un elemento de un arreglo
+    *
+    * @param array $a: Arreglo a evaluar
+    *
+    * @return mixed, elemento random dentro del arreglo
+  */
+  final public static function array_random_element(array $a) {
+    return $a[array_rand($a)];
+  }
 }
 
 

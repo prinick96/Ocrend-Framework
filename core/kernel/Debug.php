@@ -1,8 +1,13 @@
 <?php
 
+# Seguridad
 defined('INDEX_DIR') OR exit('Ocrend software says .i.');
 
+//------------------------------------------------
+
 final class Debug {
+
+  //------------------------------------------------
 
   const HEAD = '<style>
   #debug {
@@ -38,6 +43,8 @@ final class Debug {
   <br /><div id="debug">';
   const FOOT = '</div>';
 
+  //------------------------------------------------
+
   /**
     * Muestra información acerca de una variable
     *
@@ -52,6 +59,8 @@ final class Debug {
 
     return $var;
   }
+
+  //------------------------------------------------
 
   /**
     * Lista un arreglo, mostrando la información que contiene
@@ -74,6 +83,8 @@ final class Debug {
     echo '</ul>';
   }
 
+  //------------------------------------------------
+
   /**
     * Constructor, inicializa el modo Debug
     *
@@ -85,17 +96,23 @@ final class Debug {
 
     global $router;
 
+    //------------------------------------------------
+    # Fin de test de velocidad
     $endtime = microtime();
     $endtime = explode(" ",$endtime);
     $endtime = $endtime[0] + $endtime[1];
     $memory = Func::convert(memory_get_usage());
+    //------------------------------------------------
 
     echo self::HEAD;
 
+    //------------------------------------------------
     echo '<b class="cab">Archivo:</b> "' , $_SERVER['PHP_SELF'], '"<br />';
     echo '<b class="cab">PHP:</b> ', phpversion(), '<br />';
     echo '<strong class="cab">Controller: </strong> ', $router->getController() ,'<br />';
+    //------------------------------------------------
 
+    //------------------------------------------------
     if(isset($_SESSION)) {
       $this->listVar($_SESSION,'$_SESSION');
     } else {
@@ -119,7 +136,9 @@ final class Debug {
     } else {
       echo 'Sin variables <span class="variable">$_FILES</span><br />';
     }
+    //------------------------------------------------
 
+    //------------------------------------------------
     if(isset($_SESSION['___QUERY_DEBUG___']) and sizeof($_SESSION['___QUERY_DEBUG___']) > 0) {
       echo '<br /><strong class="cab">QUERYS:</strong><br />';
       echo '<ul style="list-style:none;padding:0;">';
@@ -128,14 +147,19 @@ final class Debug {
       }
       echo '</ul>';
     }
+    //------------------------------------------------
 
+    //------------------------------------------------
     echo '<br /><b class="cab">DB_HOST:</b> ', DATABASE['host'];
     echo '<br /><b class="cab">DB_NAME:</b> ', DATABASE['name'],'<br />';
     echo '<br /><b class="cab">Firewall:</b> ', FIREWALL ? 'True' : 'False';
     echo '<br /><b class="cab">Tiempo de ejecución total:</b> ',$endtime - $startime,' segundos ';
     echo '<br /><b class="cab">RAM consumida por cada usuario:</b> ', $memory;
+    //------------------------------------------------
 
   }
+
+  //------------------------------------------------
 
   /**
     * Finaliza el modo Debug

@@ -1,13 +1,20 @@
 <?php
 
+# Seguridad
 defined('INDEX_DIR') OR exit('Ocrend software says .i.');
 
+//------------------------------------------------
+
 abstract class Controllers {
+
+  //------------------------------------------------
 
   protected $template;
   protected $isset_id;
   protected $method;
   protected $route;
+
+  //------------------------------------------------
 
   /**
     * Cargador de funciones para Plates
@@ -25,6 +32,8 @@ abstract class Controllers {
 
   }
 
+  //------------------------------------------------
+
   /**
     * Constructor, inicializa los alcances de todos los Controladores
     *
@@ -37,31 +46,31 @@ abstract class Controllers {
 
     global $router;
 
-    #Accedemos a el router para URL's amigables
+    # Accedemos a el router para URL's amigables
     $this->route = $router;
 
-    #Restricción para usuarios logeados
+    # Restricción para usuarios logeados
     if($LOGED and !isset($_SESSION[SESS_APP_ID])) {
       Func::redir();
       exit;
     }
 
-    #Restricción de página para ser visa sólamente por usuarios No logeados
+    # Restricción de página para ser visa sólamente por usuarios No logeados
     if($UNLOGED and isset($_SESSION[SESS_APP_ID])) {
       Func::redir();
       exit;
     }
 
-    #Carga del template
+    # Carga del template
     $this->template = new League\Plates\Engine('templates','phtml');
     $this->loadFunctions();
 
-    #Debug mode
+    # Debug
     if(DEBUG) {
       $_SESSION['___QUERY_DEBUG___'] = array();
     }
 
-    #Utilidades
+    # Utilidades
     $this->method = ($router->getMethod() != null and Strings::alphanumeric($router->getMethod())) ? $router->getMethod() : null;
     $this->isset_id = ($router->getId() != null and is_numeric($router->getId()) and $router->getId() >= 1);
 

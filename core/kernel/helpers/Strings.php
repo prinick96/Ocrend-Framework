@@ -1,8 +1,13 @@
 <?php
 
+# Seguridad
 defined('INDEX_DIR') OR exit('Ocrend software says .i.');
 
+//------------------------------------------------
+
 final class Strings {
+
+  //------------------------------------------------
 
   /**
     * Convierte un tiempo dado al formato hace 1 minuto, hace 2 horas, hace 1 año ...
@@ -51,6 +56,8 @@ final class Strings {
     return 'hace ' . trim($text);
   }
 
+  //------------------------------------------------
+
   /**
     * Compara un string hash con un string sin hash, si el string sin hash al encriptar posee la misma llave que hash, son iguales
     *
@@ -65,6 +72,8 @@ final class Strings {
     return ($hash == crypt($s2, substr($hash, 0, 29)));
    }
 
+   //------------------------------------------------
+
   /**
     * Devuelve un hash DINÁMICO, para comparar un hash con un elemento se utiliza chash
     *
@@ -75,6 +84,8 @@ final class Strings {
   final public static function hash(string $p) : string {
     return crypt($p, '$2a$10$' . substr(sha1(mt_rand()),0,22));
   }
+
+  //------------------------------------------------
 
   /**
     * Calcula el tiempo de diferencia entre dos fechas
@@ -92,6 +103,8 @@ final class Strings {
     return floor((mktime(0, 0, 0, $fin_i[1], $fin_i[0], $fin_i[2]) - mktime(0, 0, 0, $ini_i[1], $ini_i[0], $ini_i[2])) / 86400);
   }
 
+  //------------------------------------------------
+
   /**
     * Calcula la edad de una persona segun la fecha de nacimiento
     *
@@ -106,6 +119,8 @@ final class Strings {
     return $age[0];
   }
 
+  //------------------------------------------------
+
   /**
     * Calcula cuántos días tiene el mes actual
     *
@@ -115,6 +130,8 @@ final class Strings {
   final public static function days_of_month() : int {
     return cal_days_in_month(CAL_GREGORIAN, date('m',time()), date('Y',time()));
   }
+
+  //------------------------------------------------
 
   /**
     * Verifica si una cadena de texto tiene forma de email
@@ -127,6 +144,7 @@ final class Strings {
     return filter_var($address, FILTER_VALIDATE_EMAIL);
   }
 
+  //------------------------------------------------
 
   /**
     * Remueve todos los espacios en blanco de un string
@@ -139,6 +157,8 @@ final class Strings {
     return str_replace(' ','',$s);
   }
 
+  //------------------------------------------------
+
   /**
     * Analiza si una cadena de texto es alfanumérica
     *
@@ -149,6 +169,8 @@ final class Strings {
   final public static function alphanumeric(string $s) : bool {
     return ctype_alnum(self::remove_spaces($s));
   }
+
+  //------------------------------------------------
 
   /**
     * Analiza si una cadena de texto verificando si sólamente tiene letras
@@ -161,6 +183,8 @@ final class Strings {
     return ctype_alpha(self::remove_spaces($s));
   }
 
+  //------------------------------------------------
+
   /**
     * Analiza si una cadena de texto contiene sólamente letras y números
     *
@@ -171,6 +195,8 @@ final class Strings {
   final public static function letters_and_numbers(string $s) : string {
     return preg_match('/^[\w.]*$/', self::remove_spaces($s));
   }
+
+  //------------------------------------------------
 
   /**
     * Convierte una expresión de texto, a una compatible con url amigables
@@ -186,6 +212,8 @@ final class Strings {
 
     return preg_replace (['/[^a-z0-9\-<>]/', '/[\-]+/', '/<[^>]*>/'],['', '-', ''], $url);
   }
+
+  //------------------------------------------------
 
   /**
     * Convierte código BBCode en su equivalente HTML

@@ -1,8 +1,46 @@
 <?php
 
+# Seguridad
 defined('INDEX_DIR') OR exit('Ocrend software says .i.');
 
+//------------------------------------------------
+
 final class Files {
+
+  //------------------------------------------------
+
+  /**
+    * Devuelve un string con el contenido de un archivo
+    *
+    * @param string $dir: Directorio del archivo a leer
+    *
+    * @return string con contenido del archivo
+  */
+  final public static function read_file(string $dir) : string {
+    $lines = '';
+    $f = new SplFileObject($dir);
+    while (!$f->eof()) {
+        $lines .= $f->fgets();
+    }
+    return (string) $lines;
+  }
+
+  //------------------------------------------------
+
+  /**
+    * Escribe un string completo en un archivo, si este no existe lo crea
+    *
+    * @param string $dir: Directorio del archivo escribir/crear
+    * @param string $content: Contenido a escribir
+    *
+    * @return catidad de bytes escritos en el archivo
+  */
+  final public static function write_file(string $dir, string $content) : int {
+    $f = new SplFileObject($dir,'w');
+    return (int) $f->fwrite($content);
+  }
+
+  //------------------------------------------------
 
   /**
     * Devuelve la extensión de un archivo cualquiera, da igual si es solo el nombre o la ruta con el nombre
@@ -15,6 +53,8 @@ final class Files {
     return pathinfo($file_name, PATHINFO_EXTENSION);
   }
 
+  //------------------------------------------------
+
   /**
     * Dice si un elemento es una imagen o no según su extensión
     *
@@ -25,6 +65,8 @@ final class Files {
   final public static function is_image(string $file_name) : bool {
     return in_array(self::get_file_ext($file_name),['jpg','png','jpeg','gif','JPG','PNG','JPEG','GIF']);
   }
+
+  //------------------------------------------------
 
   /**
     * Devuelve en un arreglo numérico, la ruta de todos los ficheros en un directorio filtrado por tipos
@@ -43,6 +85,8 @@ final class Files {
     }
     return $array;
   }
+
+  //------------------------------------------------
 
   /**
     * Elimina de forma recursiva un directorio con su contenido

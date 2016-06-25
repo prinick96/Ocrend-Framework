@@ -1,8 +1,26 @@
 <?php
 
+/**
+  * Ocrend Framework - MVC Architecture for Web Applications
+  * PHP Version 7
+  * @package Ocrend Framework
+  * @package Slim Framework 3
+  * @version v1.0.0
+  * @author Brayan Narváez (Prinick) <prinick@ocrend.com> <youtube.com/user/prinick96>
+  * @copyright 2016 - Ocrend Software
+  * @license	http://opensource.org/licenses/MIT	MIT License
+  * @link http://www.ocrend.com/framework
+*/
+
+//------------------------------------------------
+
+# Carga del núcleo
 define('INDEX_DIR',true);
 require('../core/api_core.php');
 
+//------------------------------------------------
+
+# Modo debug
 if(DEBUG) {
   $app = new \Slim\App(['settings' => ['displayErrorDetails' => true]]);
   $c = $app->getContainer();
@@ -19,15 +37,22 @@ if(DEBUG) {
   $app = new \Slim\App;
 }
 
+//------------------------------------------------
 
+# Peticiones GET
 if($_GET) {
   include('http/get.php');
 }
+
+//------------------------------------------------
+
+# Peticiones POST
 if($_POST) {
   include('http/post.php');
 }
 
+//------------------------------------------------
+
 $app->run();
 
-#http://www.slimframework.com/docs/objects/router.html
 ?>

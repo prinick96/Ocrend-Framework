@@ -1,10 +1,17 @@
 <?php
 
+# Seguridad
 defined('INDEX_DIR') OR exit('Ocrend software says .i.');
+
+//------------------------------------------------
 
 final class Conexion extends PDO {
 
+  //------------------------------------------------
+
   private static $inst;
+
+  //------------------------------------------------
 
   /**
     * Inicia la instancia de conexión, si esta ya ha sido declarada antes, no la duplica y ahorra memoria.
@@ -21,6 +28,8 @@ final class Conexion extends PDO {
 
     return self::$inst;
   }
+
+  //------------------------------------------------
 
   /**
     * Inicia la conexión con una base de datos
@@ -46,8 +55,9 @@ final class Conexion extends PDO {
     } finally {
       unset($host);
     }
-
   }
+
+  //------------------------------------------------
 
   /**
     * Consigue el numero de filas encontradas después de un SELECT
@@ -59,6 +69,8 @@ final class Conexion extends PDO {
   final public function rows($query) : int {
     return $query->rowCount();
   }
+
+  //------------------------------------------------
 
   /**
     * Sana un valor para posteriormente ser introducido en una query
@@ -81,6 +93,8 @@ final class Conexion extends PDO {
     return trim($q);
   }
 
+  //------------------------------------------------
+
   /**
     * Realiza una query, y si está en modo debug analiza que query fue ejecutada y el peso de esta en memoria
     *
@@ -101,6 +115,8 @@ final class Conexion extends PDO {
     }
   }
 
+  //------------------------------------------------
+
   /**
     * Borra una serie de elementos de forma segura de una tabla en la base de datos
     *
@@ -113,6 +129,8 @@ final class Conexion extends PDO {
   final public function delete(string $table, string $where, string $limit = 'LIMIT 1')  {
     return $this->query("DELETE FROM $table WHERE $where $limit;");
   }
+
+  //------------------------------------------------
 
   /**
     * Inserta una serie de elementos a una tabla en la base de datos
@@ -143,6 +161,8 @@ final class Conexion extends PDO {
     return $this->query($query);
   }
 
+  //------------------------------------------------
+
   /**
     * Actualiza elementos de una tabla en la base de datos según una condición
     *
@@ -171,6 +191,8 @@ final class Conexion extends PDO {
     return $this->query($query);
   }
 
+  //------------------------------------------------
+
   /**
     * Selecciona y lista en un arreglo asociativo/numérico los resultados de una búsqueda en la base de datos
     *
@@ -193,6 +215,8 @@ final class Conexion extends PDO {
 
     return $s;
   }
+
+  //------------------------------------------------
 
   /**
     * Alert para evitar clonaciones

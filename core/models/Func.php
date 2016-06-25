@@ -1,6 +1,9 @@
 <?php
 
+# Seguridad
 defined('INDEX_DIR') OR exit('Ocrend software says .i.');
+
+//------------------------------------------------
 
 final class Func {
 
@@ -16,6 +19,8 @@ final class Func {
     return $n * ($por / 100);
   }
 
+  //------------------------------------------------
+
   /**
     * Da unidades de peso a un integer según sea su tamaño asumida en bytes
     *
@@ -28,6 +33,8 @@ final class Func {
       return round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
   }
 
+  //------------------------------------------------
+
   /**
     * Redirecciona a una URL
     *
@@ -38,6 +45,8 @@ final class Func {
   final public static function redir(string $url = URL) {
     header('location: ' . $url);
   }
+
+  //------------------------------------------------
 
   /**
     * Envía un correo electrónico utilizando PHPMailer
@@ -79,6 +88,8 @@ final class Func {
       return true;
     }
   }
+
+  //------------------------------------------------
 
   /**
     * Método privado, su uso está reservado para Func::Paginador(...), devuelve un listado de números por izquierda y derecha según
@@ -134,6 +145,8 @@ final class Func {
     return $paginador;
   }
 
+  //------------------------------------------------
+
   /**
     * Devuelve un paginador numérico de la forma [<< anterior - 1 - 2 - 3 - *4* - 5 - 6 - 7 - siguiente >>]
     * Para que este funcione, el identificador GET para pasar entre páginas debe ser $_GET['pag'], es decir &pag=numero
@@ -182,6 +195,8 @@ final class Func {
 
     return $paginador;
   }
+
+  //------------------------------------------------
 
   /**
     * Retorna la URL de un gravatar, según el email

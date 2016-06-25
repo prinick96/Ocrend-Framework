@@ -1,25 +1,36 @@
 <?php
 
+# Seguridad
 defined('INDEX_DIR') OR exit('Ocrend software says .i.');
 
-#definimos desde donde se accede a los controllers
+//------------------------------------------------
+
+# Definimos desde donde se accede a los controllers
 define('IS_API',false);
 
-#carga de constantes
+//------------------------------------------------
+
+# Carga de configuración general
 require('core/config.php');
 
-#implementación de autoloaders
+//------------------------------------------------
+
+# Implementación de autoloaders
 require('core/kernel/Ocrend.php');
 require('vendor/autoload.php');
 
-#test de velocidad para el Debug
+//------------------------------------------------
+
+# Test de velocidad de el Debug
 if(DEBUG) {
   $startime = microtime();
   $startime = explode(" ",$startime);
   $startime = $startime[0] + $startime[1];
 }
 
-#router para URL's amigables
+//------------------------------------------------
+
+# Router para URL's amigables
 $router = new Router;
 
 ?>

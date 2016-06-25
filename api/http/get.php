@@ -1,6 +1,9 @@
 <?php
 
+# Seguridad
 defined('INDEX_DIR') OR exit('Ocrend software says .i.');
+
+//------------------------------------------------
 
 /*
 $app->get('/example',function($request, $response){

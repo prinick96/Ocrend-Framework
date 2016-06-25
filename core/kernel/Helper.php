@@ -1,14 +1,21 @@
 <?php
 
+# Seguridad
 defined('INDEX_DIR') OR exit('Ocrend software says .i.');
 
+//------------------------------------------------
+
 final class Helper {
+
+  //------------------------------------------------
 
   /**
     * const ROUTE: Constante que indica la ruta según desde donde se llame el loader, desde la API REST o desde la Aplicación
     *
   */
   const ROUTE = IS_API ? '../core/kernel/helpers/' : 'core/kernel/helpers/';
+
+  //------------------------------------------------
 
   /**
     * Carga de forma estática un helper alojado en la carpeta helpers del kernel para su posterior uso

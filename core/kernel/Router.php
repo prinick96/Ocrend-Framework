@@ -1,8 +1,14 @@
 <?php
 
+# Seguridad
+
 defined('INDEX_DIR') OR exit('Ocrend software says .i.');
 
+//------------------------------------------------
+
 class Router {
+
+  //------------------------------------------------
 
   public $dir = __ROOT__;
   private $url = null;
@@ -10,11 +16,15 @@ class Router {
   private $method = null;
   private $id = null;
 
+  //------------------------------------------------
+
   private $routes = array(
     '/controller' => 'alphanumeric',
     '/method' => 'none',
     '/id' => 'int'
   );
+
+  //------------------------------------------------
 
   /**
     * Constructor, inicializa las Rutas y obtiene los parámetros principales pasados por la URL de forma amigable.
@@ -48,17 +58,25 @@ class Router {
 
   }
 
+  //------------------------------------------------
+
   public function getController() : string {
     return $this->controller;
   }
+
+  //------------------------------------------------
 
   public function getMethod() {
     return $this->method;
   }
 
+  //------------------------------------------------
+
   public function getId() {
     return $this->id;
   }
+
+  //------------------------------------------------
 
   public function setRoute(string $name, string $type = 'alphanumeric') {
     if(!in_array($type,['letters','int','float','none'])) {
@@ -66,6 +84,8 @@ class Router {
     }
     $this->routes[$name] = $type;
   }
+
+  //------------------------------------------------
 
   public function getRoute(string $name) {
 

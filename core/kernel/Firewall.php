@@ -1,9 +1,14 @@
 <?php
 
+# Seguridad
 defined('INDEX_DIR') OR exit('Ocrend software says .i.');
 
-#based in http://www.php-firewall.info/
+//------------------------------------------------
+
+# Basado en http://www.php-firewall.info/
 final class Firewall {
+
+  //------------------------------------------------
 
   const FCONF = array(
     'WEBMASTER_EMAIL' => 'test@ocrend.com',
@@ -20,7 +25,7 @@ final class Firewall {
     'PROTECTION_UNION_SQL' => true,
     'PROTECTION_CLICK_ATTACK' => true,
     'PROTECTION_XSS_ATTACK' => true,
-    'PROTECTION_COOKIES' => true, #tratar de no utilizar Cookies!
+    'PROTECTION_COOKIES' => true,
     'PROTECTION_POST' => true,
     'PROTECTION_GET' => true,
     'PROTECTION_SERVER_OVH' => true,
@@ -33,6 +38,7 @@ final class Firewall {
     'PROTECTION_SERVER_DIGICUBE_BY_IP' => true
    );
 
+   //------------------------------------------------
 
   /**
     * Elimina todas las variables globales no permitidas
@@ -59,6 +65,8 @@ final class Firewall {
     }
   }
 
+  //------------------------------------------------
+
   /**
     * Sana las variables gloables retirando PHP y HTML de su contenido
     *
@@ -81,6 +89,8 @@ final class Firewall {
     return '';
   }
 
+  //------------------------------------------------
+
   /**
     * Obtiene dirección de la página que emplea el agente de usuario para la pagina actual
     *
@@ -89,6 +99,8 @@ final class Firewall {
   private function getReferer() {
     return $this->getEnv('HTTP_REFERER');
 	}
+
+  //------------------------------------------------
 
   /**
     * Obtiene ip
@@ -105,6 +117,8 @@ final class Firewall {
     return $this->getEnv('REMOTE_ADDR');
   }
 
+  //------------------------------------------------
+
   /**
     * Obtiene agente de usuario
     *
@@ -116,6 +130,8 @@ final class Firewall {
     }
 		return '-';
 	}
+
+  //------------------------------------------------
 
   /**
     * Obtiene la query de la petición de la página
@@ -129,6 +145,8 @@ final class Firewall {
 		return '';
 	}
 
+  //------------------------------------------------
+
   /**
     * Obtiene 'GET', 'HEAD', 'POST', 'PUT'.
     *
@@ -137,6 +155,8 @@ final class Firewall {
   private function getRequestMethod() {
     return $this->getEnv('REQUEST_METHOD');
   }
+
+  //------------------------------------------------
 
   /**
     * Obtiene nombre del host de Internet
@@ -152,6 +172,8 @@ final class Firewall {
     }
     return '';
   }
+
+  //------------------------------------------------
 
   /**
     * Envía un email de alerta por un ataque, SIN utilizar phpmailer
@@ -181,6 +203,8 @@ final class Firewall {
     }
   }
 
+  //------------------------------------------------
+
   /**
     * Crea un historial de Log por un ataque actual, además envía un email si está activa la acción
     *
@@ -201,6 +225,8 @@ final class Firewall {
     }
   }
 
+  //------------------------------------------------
+
   const MSG_PROTECTION_OVH = 'Protection OVH Server active, this IP range is not allowed.';
   const MSG_PROTECTION_KIMSUFI = 'Protection KIMSUFI Server active, this IP range is not allowed.';
   const MSG_PROTECTION_DEDIBOX = 'Protection DEDIBOX Server active, this IP range is not allowed.';
@@ -217,6 +243,8 @@ final class Firewall {
   const MSG_PROTECTION_UNION = 'Union attack detected.';
   const MSG_PROTECTION_URL = 'Protection url active, string not allowed.';
   const MSG_PROTECTION_XSS = 'XSS attack detected.';
+
+  //------------------------------------------------
 
   const CT_RULES = ['applet', 'base', 'bgsound', 'blink', 'embed', 'expression',
   'frame', 'javascript', 'layer', 'link', 'meta', 'object', 'onabort', 'onactivate',
@@ -238,12 +266,16 @@ final class Firewall {
   'onselectstart', 'onstart', 'onstop', 'onsubmit', 'onunload',
   'script', 'style', 'title', 'vbscript', 'xml'];
 
+  //------------------------------------------------
+
   /**
     * Inicializador del Firewall
     *
     * @return void
   */
   public function __construct() {
+
+    //------------------------------------------------
 
     $GET_QUERY_STRING = strtolower($this->getQueryString());
     $USER_AGENT = $this->getUserAgent();
@@ -253,6 +285,8 @@ final class Firewall {
     $GET_REQUEST_METHOD = $this->getRequestMethod();
     $REGEX_UNION = '#\w?\s?union\s\w*?\s?(select|all|distinct|insert|update|drop|delete)#is';
 
+    //------------------------------------------------
+
     if(self::FCONF['PROTECTION_SERVER_OVH'] and stristr($GET_HOST,'ovh')) {
       $this->Logs('OVH Server list',$GET_IP,$USER_AGENT,$GET_REFERER);
       if(IS_API) {
@@ -261,6 +295,8 @@ final class Firewall {
         die(self::MSG_PROTECTION_OVH);
       }
     }
+
+    //------------------------------------------------
 
     if(self::FCONF['PROTECTION_SERVER_OVH_BY_IP']) {
       $ip = explode('.', $GET_IP);
@@ -274,6 +310,8 @@ final class Firewall {
       }
     }
 
+    //------------------------------------------------
+
     if(self::FCONF['PROTECTION_SERVER_KIMSUFI'] and stristr($GET_HOST ,'kimsufi')) {
       $this->Logs('KIMSUFI Server list',$GET_IP,$USER_AGENT,$GET_REFERER);
       if(IS_API) {
@@ -283,6 +321,8 @@ final class Firewall {
       }
     }
 
+    //------------------------------------------------
+
     if(self::FCONF['PROTECTION_SERVER_DEDIBOX'] and stristr($GET_HOST ,'dedibox')) {
       $this->Logs('DEDIBOX Server list',$GET_IP,$USER_AGENT,$GET_REFERER);
       if(IS_API) {
@@ -291,6 +331,8 @@ final class Firewall {
         die(self::MSG_PROTECTION_DEDIBOX);
       }
     }
+
+    //------------------------------------------------
 
     if(self::FCONF['PROTECTION_SERVER_DEDIBOX_BY_IP']) {
       $ip = explode('.', $GET_IP);
@@ -304,6 +346,8 @@ final class Firewall {
       }
     }
 
+    //------------------------------------------------
+
     if(self::FCONF['PROTECTION_SERVER_DIGICUBE'] and stristr($GET_HOST,'digicube')) {
       $this->Logs('DIGICUBE Server list',$GET_IP,$USER_AGENT,$GET_REFERER);
       if(IS_API) {
@@ -312,6 +356,8 @@ final class Firewall {
         die(self::MSG_PROTECTION_DIGICUBE);
       }
     }
+
+    //------------------------------------------------
 
     if(self::FCONF['PROTECTION_SERVER_DIGICUBE_BY_IP']) {
       $ip = explode('.',$GET_IP);
@@ -325,6 +371,8 @@ final class Firewall {
       }
     }
 
+    //------------------------------------------------
+
     if(self::FCONF['PROTECTION_RANGE_IP_SPAM']) {
       $range_ip = explode('.',$GET_IP);
       if(in_array($range_ip[0],['24', '186', '189', '190', '200', '201', '202', '209', '212', '213', '217', '222'])) {
@@ -336,6 +384,8 @@ final class Firewall {
         }
       }
     }
+
+    //------------------------------------------------
 
     if(self::FCONF['PROTECTION_RANGE_IP_DENY']) {
       $range_ip = explode('.',$GET_IP);
@@ -352,6 +402,7 @@ final class Firewall {
       }
     }
 
+    //------------------------------------------------
 
     if (self::FCONF['PROTECTION_COOKIES']) {
       foreach($_COOKIE as $value) {
@@ -362,6 +413,8 @@ final class Firewall {
       }
     }
 
+    //------------------------------------------------
+
     if(self::FCONF['PROTECTION_POST'] and $_POST) {
       foreach($_POST as $value ) {
         if( $value != str_replace(self::CT_RULES, '*', $value) ) {
@@ -371,6 +424,8 @@ final class Firewall {
       }
     }
 
+    //------------------------------------------------
+
     if(self::FCONF['PROTECTION_GET'] and $_GET) {
       foreach($_GET as $value ) {
         if($value != str_replace(self::CT_RULES, '*', $value) ) {
@@ -379,6 +434,8 @@ final class Firewall {
         }
       }
     }
+
+    //------------------------------------------------
 
     if (self::FCONF['PROTECTION_URL']) {
       $ct_rules = ['absolute_path', 'ad_click', 'alert(', 'alert%20', ' and ', 'basepath', 'bash_history', '.bash_history',
@@ -428,6 +485,8 @@ final class Firewall {
       }
     }
 
+    //------------------------------------------------
+
     if(self::FCONF['PROTECTION_REQUEST_SERVER'] and $GET_REQUEST_METHOD == 'POST'
     and isset($_SERVER['HTTP_REFERER']) and !stripos( $_SERVER['HTTP_REFERER'], $_SERVER['HTTP_HOST'], 0 )) {
       $this->Logs('Posting another server',$GET_IP,$USER_AGENT,$GET_REFERER);
@@ -437,6 +496,8 @@ final class Firewall {
         die(self::MSG_PROTECTION_OTHER_SERVER);
       }
     }
+
+    //------------------------------------------------
 
     if (self::FCONF['PROTECTION_BOTS']) {
   		$ct_rules = ['@nonymouse', 'addresses.com', 'ideography.co.uk', 'adsarobot', 'ah-ha',
@@ -485,6 +546,7 @@ final class Firewall {
       'web sucker', 'webster', 'webreaper', 'webstripper', 'webvac', 'webwalk', 'webweasel', 'webzip', 'wget', 'widow', 'wisebot',
       'whizbang', 'whostalking', 'wonder', 'wumpus', 'wweb', 'www-collector-e', 'wwwoffle', 'wysigot', 'xaldon', 'xenu', 'xget',
       'x-tractor', 'zeus'];
+      //------------------------------------------------
   		if( strtolower($USER_AGENT) != str_replace($ct_rules, '*', strtolower($USER_AGENT))) {
   			$this->Logs('Bots attack',$GET_IP,$USER_AGENT,$GET_REFERER );
         if(IS_API) {
@@ -493,7 +555,10 @@ final class Firewall {
           die(self::MSG_PROTECTION_BOTS);
         }
   		}
+      //------------------------------------------------
   	}
+
+    //------------------------------------------------
 
     if(self::FCONF['PROTECTION_REQUEST_METHOD'] and !in_array(strtolower($GET_REQUEST_METHOD),['get','head','post','put','update','delete'])) {
       $this->Logs('Invalid request',$GET_IP,$USER_AGENT,$GET_REFERER);
@@ -504,6 +569,8 @@ final class Firewall {
       }
     }
 
+    //------------------------------------------------
+
     if(self::FCONF['PROTECTION_DOS'] and ($USER_AGENT == '' or $USER_AGENT == '-')) {
       $this->Logs('Dos attack',$GET_IP,$USER_AGENT,$GET_REFERER);
       if(IS_API) {
@@ -512,6 +579,8 @@ final class Firewall {
         die(self::MSG_PROTECTION_DOS);
       }
     }
+
+    //------------------------------------------------
 
     if(self::FCONF['PROTECTION_UNION_SQL']) {
       $stop = 0;
@@ -533,6 +602,8 @@ final class Firewall {
       }
     }
 
+    //------------------------------------------------
+
     if (self::FCONF['PROTECTION_CLICK_ATTACK'] and $GET_QUERY_STRING != str_replace(['/*', 'c2nyaxb0', '/*'], '*', $GET_QUERY_STRING)) {
       $this->Logs('Click attack',$GET_IP,$USER_AGENT,$GET_REFERER);
       if(IS_API) {
@@ -541,6 +612,8 @@ final class Firewall {
         die(self::MSG_PROTECTION_CLICK);
       }
   	}
+
+    //------------------------------------------------
 
     if (self::FCONF['PROTECTION_XSS_ATTACK']) {
   		$ct_rules = ['http\:\/\/', 'https\:\/\/', 'cmd=', '&cmd', 'exec', 'concat', './', '../',
@@ -557,7 +630,11 @@ final class Firewall {
   		}
   	}
 
+    //------------------------------------------------
+
     !self::FCONF['PROTECTION_UNSET_GLOBALS'] ?: $this->unset_globals();
+
+    //------------------------------------------------
 
   }
 

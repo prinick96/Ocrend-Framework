@@ -1,14 +1,39 @@
 # Ocrend-Framework
 
->**PHP 7**
+## Introducción
+### ¿Qué es Ocrend Framework?
 
->**@link** http://www.ocrend.com/
+Es un framework sencillo escrito en **PHP 7** que utiliza la arquitectura **MVC** como base de su aplicación en el desarrollo web, adicionalmente pretende acelerar el proceso de desarrollo con unas cuantas herramientas. La forma de programar con Ocrend Framework es muy fácil de aprender, en cuestión de 10 minutos ya se comprende el concepto y la intención de la arquitectura forzada por el framework, inclusive para aquellos que jamás han programado utilizando MVC.
 
->**@author** Brayan Narváez (Prinick) - <prinick@ocrend.com>
+### ¿Por qué utilizarlo?
 
->**@copyright** 2016 Ocrend Software
+* No requiere manejo de una shell (aunque existe la posibilidad con un pequeño programa escrito en python)
+* Es pequeño y de muy fácil aprendizaje
+* Es eficiente y seguro
+* Fomenta la creación de código limpio, comentado, bien estructurado y eficiente
+* Se configura en 2 minutos y se puede empezar a desarrollar con el
+* No estás interesado en librerías gigantes como PEAR
+* No estás interesado en aprender un framework gigante commo Symfony, Laravel o ZendFramework
+* No necesitas gestionar rutas usando namespaces o requires/includes, el framework lo hace por tí
+* Incluye Slim framework 3 en sus dependencias, para manejo de API REST correctamente configurado
+* Soporte de múltiples bases de datos con distintos motores usando PDO
+  * MySQL 5.1+
+  * Oracle
+  * PostgreSQL
+  * MS SQL
+  * SQLite
+  * CUBRID
+  * Interbase/Firebid
+  * ODBC
 
->**@license** Private code
+## Requisitos
+
+Para colocar el framework en producción se requiere un VPS, Dedicado o Hosting que cumpla las siguientes características:
+
+* PHP 7
+* APACHE 2
+* MySQL 5
+* Python 2 para utilizar el generador de código (no necesario para el funcionamiento del framework)
 
 ## Instalación
 ### Descarga
@@ -17,7 +42,7 @@
 ```
 ### Configuración
 
-En caso de estar en LINUX y obtener problemas de persmisos de escritura con Twig o el Firewall, poner en la consola lo siguiente:
+En caso de estar en LINUX y obtener problemas de persmisos de escritura por el Firewall, poner en la consola lo siguiente:
 ```
   ~$ sudo chmod -R 777 /ruta/en/donde/esta/el/framework
 ```
@@ -25,7 +50,8 @@ En caso de estar en LINUX y obtener problemas de persmisos de escritura con Twig
 __./core/config.php__
 ```php
 
-  setlocale(LC_ALL,"es_ES"); #En caso de que el servidor de un warning, comentar esta línea, significa que no soporta setlocale
+  #En caso de que el servidor de un warning, comentar esta línea, significa que no soporta setlocale
+  setlocale(LC_ALL,"es_ES");
 
   define('DATABASE', array(
     'host' => 'localhost', #Servidor para conexión con la base de datos
@@ -35,32 +61,37 @@ __./core/config.php__
     'motor' => 'mysql' #Motor de la base de datos
   ));
 
-  define('URL','http://prinick-notebook/Ocrend-Framework/'); #Url en donde está instalado el framework, importante el "/" al final
-  define('APP','Ocrend-Framework'); #Nombre de la aplicación, este también sale en <title></title>, correos, footer y demás
+   #Url en donde está instalado el framework, importante el "/" al final
+  define('URL', 'http://prinick-notebook/Ocrend-Framework/');
 
-  #Por defecto esta es la conexión SMTP para enviar correos en los entornos de desarrollo, luego se ha de cambiar en producción.
-  define('PHPMAILER_HOST','p3plcpnl0173.prod.phx3.secureserver.net');
-  define('PHPMAILER_USER','ocrend@ocrend.com');
-  define('PHPMAILER_PASS','CaX5487B!89');
-  define('PHPMAILER_PORT',465);
+  #Nombre de la aplicación, este también sale en <title></title>, correos, footer y demás
+  define('APP', 'Ocrend Framework');
+
+  #Configuración para salida de correos con PHPMailer, sin estos obtendremos un 'SMTP connect() failed'
+  define('PHPMAILER_HOST', '');
+  define('PHPMAILER_USER', '');
+  define('PHPMAILER_PASS', '');
+  define('PHPMAILER_PORT', 465);
 
   /**
     * Define la carpeta en la cual se encuentra instalado el framework.
     * @example "/" si para acceder al framework colocamos http://url.com en la URL, ó http://localhost
     * @example "/Ocrend-Framework/" si para acceder al framework colocamos http://url.com/Ocrend-Framework, ó http://localhost/Ocrend-Framework/
   */
-  define('__ROOT__','/Ocrend-Framework/');
+  define('__ROOT__', '/Ocrend-Framework/');
 
-  define('FIREWALL',true); #Activación del firewall que ofrece protección contra múltiples ataques comunes
+  #Activación del firewall que ofrece protección contra múltiples ataques comunes
+  define('FIREWALL', true);
 
-  define('DEBUG',true); #Establecer en FALSE una vez esté todo el producción, en desarrollo mantener en true
+  #Establecer en FALSE una vez esté todo el producción, en desarrollo es recomendando mantener en TRUE
+  define('DEBUG', true);
 ```
 __./core/models/Func.php__
 ```php
   #En caso de obtener error de send_mail con PHPMailer, comentar esta línea:
+  $mail->isSMTP();
+  #Descomentar (no disponible su funcionamiento en localhost sin configuración previa):
   $mail->isSendMail();
-  #Descomentar:
-  $mail->isSMTP(); //Es más lento, pero es seguro.
 ```
 __./core/kernel/Firewall.php__
 ```php
@@ -86,25 +117,27 @@ Crear __./core/controllers/holaController.php__
 Crear __./templates/hola/hola.phtml__
 ```phtml
 <?= $this->insert('overall/header') ?>
-<body id="page-top" class="index">
+<body class="framework">
 
-  <?= $this->insert('overall/topnav') ?>
+  <div class="logo">
+    <h3><?= strtoupper(APP) ?></h3>
+  </div>
 
-    <section id="about">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 text-center">
-                    <h2>¡Creando un Hola Mundo!</h2>
-                </div>
-                <div class="col-sm-12 text-center">
-                  <br />
-                  <p>¡Hola mundo!</p>
-                </div>
-            </div>
-        </div>
-    </section>
+  <div class="content">
+    <div class="ocrend-welcome">
+      <span class="ocrend-welcome">¡Hola!</span>
+      <span class="ocrend-welcome-subtitle">mundo.</span>
+    </div>
+    <div class="form-actions">
+      <p>¡Hola mundo!</p>
 
-<?= $this->insert('overall/footer') ?>
+      <?= $this->insert('overall/modules') ?>
+
+    </div>
+
+    <?= $this->insert('overall/footer') ?>
+
+  </div>
 </body>
 </html>
 ```
@@ -112,7 +145,7 @@ Acceder a http://url.com/hola/
 
 ## Generador de código PHP
 
-__Requiere Python 2.* instalado para funcionar__
+__Requiere Python 2.7 instalado para funcionar__
 
 El generador de código PHP, es muy sencillo y está escrito en Python, se encuentra en __./gen.py__ y es de libre edición como todo el framework, la idea de este generador es tener una pequeña herramienta para agilizar el proceso de escribir muchas veces el mismo molde al momento de crear Modelos, Vistas o Controladores para empezar a programar.
 
@@ -130,3 +163,7 @@ Para __más información acerca de los comandos__ escribir:
 ```
   ~$ python gen.py -ayuda
 ```
+
+## Documentación
+
+[Github Wiki](https://github.com/prinick96/Ocrend-Framework/wiki)
