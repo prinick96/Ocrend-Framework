@@ -112,7 +112,7 @@ class Router {
   */
   public function getRoute(string $name) {
 
-    Strings::load('arrays');
+    Helper::load('arrays');
     $index = Arrays::get_key_by_index($name,$this->routes);
 
     if(!is_array($this->url)) $this->url = array();
