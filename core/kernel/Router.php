@@ -60,24 +60,40 @@ class Router {
 
   //------------------------------------------------
 
+  /**
+    * Retorna el controlador actual
+  */
   public function getController() : string {
     return $this->controller;
   }
 
   //------------------------------------------------
 
+  /**
+    * Retorna el método actual
+  */
   public function getMethod() {
     return $this->method;
   }
 
   //------------------------------------------------
 
+  /**
+   * Retorna el id actual
+  */
   public function getId() {
     return $this->id;
   }
 
   //------------------------------------------------
 
+  /**
+    * Crea una ruta de URL Amigable
+    *
+    * @param string $name: Nombre de la ruta
+    * @param string $type: Regla de filtrado de la ruta
+    *
+  */
   public function setRoute(string $name, string $type = 'alphanumeric') {
     if(!in_array($type,['letters','int','float','none'])) {
       $type = 'alphanumeric';
@@ -87,6 +103,13 @@ class Router {
 
   //------------------------------------------------
 
+  /**
+    * Devuelve el valor que esté entrando por la ruta seleccionada, creada con setRoute()
+    *
+    * @param string $name: Nombre de la ruta
+    *
+    * @return contenido de la ruta o null si no cumple la regla definida con setRoute() para esa ruta
+  */
   public function getRoute(string $name) {
 
     Strings::load('arrays');

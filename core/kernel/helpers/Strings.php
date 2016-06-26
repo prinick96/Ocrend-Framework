@@ -64,7 +64,7 @@ final class Strings {
     * @param string $hash: Hash con la forma $2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G
     * @param string $s2: Cadena de texto a comparar
     *
-    * @example Func::chash('$2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G','123456'); //return true
+    * @example Strings::chash('$2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G','123456'); //return true
     *
     * @return true si $s2 contiene la misma llave que $hash, por tanto el contenido de $hash es $s2, de lo contrario false
   */
@@ -90,15 +90,15 @@ final class Strings {
   /**
     * Calcula el tiempo de diferencia entre dos fechas
     *
-    * @param string $ini: Fecha menor con el formato d-m-Y
-    * @param string $fin: Fecha mayor con el formato d-m-Y
+    * @param string $ini: Fecha menor con el formato d-m-Y ó d/m/Y
+    * @param string $fin: Fecha mayor con el formato d-m-Y ó d/m/Y
     *
-    * @return integer con la diferencia de tiempo en segundos
+    * @return integer con la diferencia de tiempo en días
     *
   */
   final public static function date_difference(string $ini, string $fin) : int {
-    $ini_i = explode('-',$ini);
-    $fin_i = explode('-',$fin);
+    $ini_i = explode('-',str_replace('/','-',$ini));
+    $fin_i = explode('-',str_replace('/','-',$fin));
 
     return floor((mktime(0, 0, 0, $fin_i[1], $fin_i[0], $fin_i[2]) - mktime(0, 0, 0, $ini_i[1], $ini_i[0], $ini_i[2])) / 86400);
   }
@@ -108,7 +108,7 @@ final class Strings {
   /**
     * Calcula la edad de una persona segun la fecha de nacimiento
     *
-    * @param string $cumple: Fecha de nacimiento con el formato d-m-Y
+    * @param string $cumple: Fecha de nacimiento con el formato d-m-Y ó d/m/Y
     *
     * @return integer con la edad
     *
@@ -192,8 +192,8 @@ final class Strings {
     *
     * @return bool, verdadero si sólamente contiene letras y números, falso si no
   */
-  final public static function letters_and_numbers(string $s) : string {
-    return preg_match('/^[\w.]*$/', self::remove_spaces($s));
+  final public static function letters_and_numbers(string $s) : bool {
+    return (boolean) preg_match('/^[\w.]*$/', self::remove_spaces($s));
   }
 
   //------------------------------------------------
