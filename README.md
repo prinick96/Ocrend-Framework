@@ -13,7 +13,7 @@ Es un framework sencillo escrito en **PHP 7** que utiliza la arquitectura **MVC*
 * Fomenta la creación de código limpio, comentado, bien estructurado y eficiente
 * Se configura en 2 minutos y se puede empezar a desarrollar con el
 * No estás interesado en librerías gigantes como PEAR
-* No estás interesado en aprender un framework gigante commo Symfony, Laravel o ZendFramework
+* No estás interesado en aprender un framework gigante como Symfony, Laravel o ZendFramework
 * No necesitas gestionar rutas usando namespaces o requires/includes, el framework lo hace por tí
 * Incluye Slim framework 3 en sus dependencias, para manejo de API REST correctamente configurado
 * Soporte de múltiples bases de datos con distintos motores usando PDO
@@ -37,9 +37,13 @@ Para colocar el framework en producción se requiere un VPS, Dedicado o Hosting 
 
 ## Instalación
 ### Descarga
+Clonando el repositorio.
 ```
   git clone https://github.com/prinick96/Ocrend-Framework.git
 ```
+Descargando el paquete manualmente.
+
+[Ver Descargas](https://github.com/prinick96/Ocrend-Framework/releases)
 ### Configuración
 
 En caso de estar en LINUX y obtener problemas de persmisos de escritura por el Firewall, poner en la consola lo siguiente:
@@ -95,11 +99,19 @@ __./core/models/Func.php__
 ```
 __./core/kernel/Firewall.php__
 ```php
-  #Línea 6
+  #Línea 14
     'WEBMASTER_EMAIL' => 'prinick@ocrend.com', //En caso de ataque, se enviará un email a este correo notificando
-  #Línea 7
+  #Línea 15
     'PUSH_MAIL' => false, //En caso de ataque, aquí se activa el envío de un email de alerta al correo en WEBMASTER_EMAIL
 ```
+
+Adicionalmente **db.sql** contiene una tabla llamada users, la cual contiene un usuario de ejemplo, debemos subirla a nuestra base de datos para poder utilizar el login/lostpass/registro que viene previamente programado.
+
+
+**usuario:** test
+
+**password:** 123456
+
 
 ## Primer Hola Mundo
 
