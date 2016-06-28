@@ -41,7 +41,7 @@ final class Conexion extends PDO {
   final public function __construct($DATABASE = DATABASE['name'], $MOTOR = DATABASE['motor']) {
     try {
       $host = $MOTOR.':host='.DATABASE['host'].';dbname='.$DATABASE;
-      parent::__construct($host,'root','',array(
+      parent::__construct($host,DATABASE['user'],DATABASE['pass'],array(
         PDO::ATTR_EMULATE_PREPARES => false,
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
