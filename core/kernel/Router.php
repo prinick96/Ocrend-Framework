@@ -50,7 +50,7 @@ class Router {
       $this->url = explode('/',$this->url);
 
       $this->controller = Strings::alphanumeric($this->url[0]) ? strtolower( $this->url[0] ) . 'Controller' : 'homeController';
-      $this->method = array_key_exists(1,$this->url) ? strtolower($this->url[1]) : null;
+      $this->method = array_key_exists(1,$this->url) ? $this->url[1] : null;
       $this->id = array_key_exists(2,$this->url) ? $this->url[2] : null;
     } else {
       $this->controller = 'homeController';
@@ -126,10 +126,10 @@ class Router {
           return Strings::only_letters($this->url[$index]) ? strtolower($this->url[$index]) : null;
         break;
         case 'int':
-          return is_numeric($this->url[$index]) ? intval($this->url[$index]) : null;
+          return is_numeric($this->url[$index]) ? (int) $this->url[$index] : null;
         break;
         case 'float':
-          return is_numeric($this->url[$index]) ? floatval($this->url[$index]) : null;
+          return is_numeric($this->url[$index]) ? (float) $this->url[$index] : null;
         break;
         default:
           return $this->url[$index];

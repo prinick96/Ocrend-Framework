@@ -8,7 +8,7 @@
   * @author Brayan Narváez (Prinick) <prinick@ocrend.com> <youtube.com/user/prinick96>
   * @copyright 2016 - Ocrend Software
   * @license	http://opensource.org/licenses/MIT	MIT License
-  * @link http://www.ocrend.com/framework
+  * @link http://framework.ocrend.com/
 */
 
 //------------------------------------------------

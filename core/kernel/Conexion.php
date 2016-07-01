@@ -81,16 +81,16 @@ final class Conexion extends PDO {
   */
   final public function scape($e) {
     if(is_int($e)) {
-      return intval($e);
+      return (int) $e;
     } else if (is_float($e)) {
-      return floatval($e);
+      return (float) $e;
     }
 
     $q = $this->quote($e);
     $q[0] = '';
     $q[strlen($q) - 1] = '';
 
-    return trim($q);
+    return (string) trim($q);
   }
 
   //------------------------------------------------

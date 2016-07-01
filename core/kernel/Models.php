@@ -37,7 +37,7 @@ abstract class Models {
     global $router;
 
     $this->db = Conexion::Start($DATABASE,$MOTOR);
-    $this->id = ($router->getId() != null and is_numeric($router->getId()) and $router->getId() >= 1) ? intval($router->getId()) : 0;
+    $this->id = ($router->getId() != null and is_numeric($router->getId()) and $router->getId() >= 1) ? (int) $router->getId() : 0;
     $this->id_user = $_SESSION[SESS_APP_ID] ?? 0;
   }
 

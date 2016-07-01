@@ -23,9 +23,6 @@ abstract class Controllers {
   */
   private function loadFunctions() {
 
-    #Carga del helper strings que incluye url_amigables
-    Helper::load('strings');
-
     $this->template->registerFunction('url_amigable', function ($var) {
       return Strings::url_amigable($var);
     });

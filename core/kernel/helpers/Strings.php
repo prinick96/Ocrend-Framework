@@ -116,7 +116,7 @@ final class Strings {
   final public static function calculate_age(string $cumple) : int {
     $age = explode('.', (string) (self::date_difference($cumple,date('d-m-Y',time())) / 365));
 
-    return $age[0];
+    return (int) $age[0];
   }
 
   //------------------------------------------------
