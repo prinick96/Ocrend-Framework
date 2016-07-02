@@ -82,6 +82,13 @@ final class Conexion extends PDO {
           PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
           PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
         break;
+        default:
+          if(IS_API) {
+            die(json_encode(array('success' => 0, 'message' => 'Motor de conexión no identificado.')));
+          } else {
+            die('Motor de conexión no identificado.');
+          }
+        break;
       }
 
     } catch (PDOException $e) {

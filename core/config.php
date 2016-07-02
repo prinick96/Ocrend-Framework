@@ -15,8 +15,13 @@ date_default_timezone_set('America/Caracas');
 
 //------------------------------------------------
 
-# Control global de sesiones
-session_start();
+# Control global de sesiones DOC http://php.net/manual/es/session.configuration.php
+session_start([
+  'use_strict_mode' => true,
+  'use_cookies' => true,
+  'cookie_httponly' => true, # Evita el acceso a la cookie mediante lenguajes de script (cómo javascript)
+  'hash_function' => 5 # sha256, para obtener una lista completa print_r(hash_algos());
+]);
 
 //------------------------------------------------
 
@@ -99,6 +104,6 @@ define('FIREWALL', true);
 //------------------------------------------------
 
 #Activación del DEBUG, solo para desarrollo
-define('DEBUG', true);
+define('DEBUG', false);
 
 ?>

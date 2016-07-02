@@ -62,6 +62,8 @@ __./core/config.php__
     'user' => 'root', #Usuario para la base de datos
     'pass' => '', #Contraseña del usuario para la base de datos
     'name' => 'ocrend', #Nombre de la base de datos
+    'port' => 1521, #Puerto de conexión para algunos motores
+    'protocol' => 'TCP', #Protocolo de conexión para Oracle
     'motor' => 'mysql' #Motor de la base de datos
   ));
 
