@@ -98,12 +98,12 @@ define('PHPMAILER_PORT', 465);
 
 //------------------------------------------------
 
-#Activación del Firewall
+# Activación del Firewall
 define('FIREWALL', true);
 
 //------------------------------------------------
 
-#Activación del DEBUG, solo para desarrollo
+# Activación del DEBUG, solo para desarrollo
 define('DEBUG', false);
 
 ?>

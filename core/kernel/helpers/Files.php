@@ -89,6 +89,24 @@ final class Files {
   //------------------------------------------------
 
   /**
+    * Crea un directorio 
+    *
+    * @param string $dir: Directorio a crear
+    * @param int $permisos: Permisos del directorio a crear, por defecto es "todos los permisos"
+    *
+    * @return true si fue creado con éxito, false si el directorio ya existía o hubo algún error
+  */
+  final public static function create_dir(string $dir, int $permisos = 0777) : bool {
+    if(is_dir($dir)) {
+      return false;
+    } else {
+      return mkdir($dir,$permisos,true);
+    }
+  }
+
+  //------------------------------------------------
+
+  /**
     * Elimina de forma recursiva un directorio con su contenido
     *
     * @author brandonwamboldt
