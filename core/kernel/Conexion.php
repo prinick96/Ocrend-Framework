@@ -40,12 +40,50 @@ final class Conexion extends PDO {
   */
   final public function __construct($DATABASE = DATABASE['name'], $MOTOR = DATABASE['motor']) {
     try {
-      $host = $MOTOR.':host='.DATABASE['host'].';dbname='.$DATABASE;
-      parent::__construct($host,DATABASE['user'],DATABASE['pass'],array(
-        PDO::ATTR_EMULATE_PREPARES => false,
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
-      ));
+
+      switch ($MOTOR) {
+        case 'sqlite':
+          parent::__construct('sqlite:'.$DATABASE);
+        break;
+        case 'cubrid':
+          parent::__construct('cubrid:host='.DATABASE['host'].';dbname='.$DATABASE.';port='.DATABASE['port'],DATABASE['user'],DATABASE['pass'],array(
+          PDO::ATTR_EMULATE_PREPARES => false,
+          PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+        break;
+        case 'firebird':
+          parent::__construct('firebird:dbname='.DATABASE['host'].':'.$DATABASE,DATABASE['user'],DATABASE['pass'],array(
+          PDO::ATTR_EMULATE_PREPARES => false,
+          PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+        break;
+        case 'odbc';
+          parent::__construct('odbc:'.$DATABASE);
+        break;
+        case 'oracle':
+          parent::__construct('oci:dbname=(DESCRIPTION =
+            (ADDRESS_LIST =
+              (ADDRESS = (PROTOCOL = '.DATABASE['protocol'].')(HOST = '.DATABASE['motor'].')(PORT = '.DATABASE['port'].'))
+            )
+            (CONNECT_DATA =
+              (SERVICE_NAME = '.$DATABASE.')
+            )
+          );charset=utf8',DATABASE['user'],DATABASE['pass'],
+          array(PDO::ATTR_EMULATE_PREPARES => false,
+          PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+          PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC));
+        break;
+        case 'postgresql':
+          parent::__construct('pgsql:host='.DATABASE['host'].';dbname='.$DATABASE.';charset=utf8',DATABASE['user'],DATABASE['pass'],array(
+          PDO::ATTR_EMULATE_PREPARES => false,
+          PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+        break;
+        case 'mysql':
+          parent::__construct('mysql:host='.DATABASE['host'].';dbname='.$DATABASE,DATABASE['user'],DATABASE['pass'],array(
+          PDO::ATTR_EMULATE_PREPARES => false,
+          PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+          PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
+        break;
+      }
+
     } catch (PDOException $e) {
       if(IS_API) {
         die(json_encode(array('success' => 0, 'message' => 'Error intentando conectar con la base de datos.')));

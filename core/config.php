@@ -10,7 +10,7 @@ defined('INDEX_DIR') OR exit('Ocrend software says .i.');
 
 //------------------------------------------------
 
-#timezone
+# Timezone DOC http://php.net/manual/es/timezones.php
 date_default_timezone_set('America/Caracas');
 
 //------------------------------------------------
@@ -45,12 +45,25 @@ try {
   * @param user 'usuario de la base de datos'
   * @param pass 'password del usuario de la base de datos'
   * @param name 'nombre de la base de datos'
+  * @param port 'puerto de la base de datos (no necesario en la mayoría de motores)'
+  * @param protocol 'protocolo de conexión (no necesario en la mayoría de motores)'
+  * @param motor 'motor de conexión por defecto'
+  * MOTORES VALORES:
+  *        mysql
+  *        sqlite
+  *        oracle
+  *        postgresql
+  *        cubrid
+  *        firebird
+  *        odbc
 */
 define('DATABASE', array(
   'host' => 'localhost',
   'user' => 'root',
   'pass' => '',
   'name' => 'ocrend',
+  'port' => 1521,
+  'protocol' => 'TCP',
   'motor' => 'mysql'
 ));
 
@@ -86,6 +99,6 @@ define('FIREWALL', true);
 //------------------------------------------------
 
 #Activación del DEBUG, solo para desarrollo
-define('DEBUG', false);
+define('DEBUG', true);
 
 ?>
