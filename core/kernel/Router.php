@@ -64,7 +64,7 @@ class Router {
     * Retorna el controlador actual
   */
   public function getController() : string {
-    return $this->controller;
+    return trim($this->controller);
   }
 
   //------------------------------------------------

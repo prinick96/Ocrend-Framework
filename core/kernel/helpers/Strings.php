@@ -154,7 +154,7 @@ final class Strings {
     * @return string del texto sin espacios
   */
   final public static function remove_spaces(string $s) : string {
-    return str_replace(' ','',$s);
+    return trim(str_replace(' ','',$s));
   }
 
   //------------------------------------------------
