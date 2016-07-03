@@ -16,7 +16,8 @@ final class Firewall {
     'LOG_FILE' => '__logs__',
     'PROTECTION_UNSET_GLOBALS' => true,
     'PROTECTION_RANGE_IP_DENY' => true,
-    'PROTECTION_RANGE_IP_SPAM' => true,
+    # Puede dar problemas en algunos servidores, activarlo y si no arroja ningún mensaje, es estable.
+    'PROTECTION_RANGE_IP_SPAM' => false,
     'PROTECTION_URL' => true,
     'PROTECTION_REQUEST_SERVER' => true,
     'PROTECTION_BOTS' => true,

@@ -33,7 +33,7 @@ Para colocar el framework en producción se requiere un VPS, Dedicado o Hosting 
 * PHP 7
 * APACHE 2
 * MySQL 5
-* Python 2 para utilizar el generador de código (no necesario para el funcionamiento del framework)
+* Python para utilizar el generador de código (no necesario para el funcionamiento del framework)
 
 ## Instalación
 ### Descarga
@@ -159,7 +159,7 @@ Acceder a http://url.com/hola/
 
 ## Generador de código PHP
 
-__Requiere Python 2.7 instalado para funcionar__
+__Requiere Python instalado para funcionar__
 
 El generador de código PHP, es muy sencillo y está escrito en Python, se encuentra en __./gen.py__ y es de libre edición como todo el framework, la idea de este generador es tener una pequeña herramienta para agilizar el proceso de escribir muchas veces el mismo molde al momento de crear Modelos, Vistas o Controladores para empezar a programar.
 
