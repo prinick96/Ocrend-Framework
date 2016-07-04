@@ -69,6 +69,32 @@ final class Files {
   //------------------------------------------------
 
   /**
+    * Devuelve el tamaño en Kbytes de un fichero
+    *
+    * @param string $file: path del fichero
+    *
+    * @return int con el tamaño del fichero
+  */
+  final public static function file_size(string $file) : int {
+  	return round(filesize($file)*0.0009765625, 1);
+  }
+
+  //------------------------------------------------
+
+  /**
+    * Devuelve la fecha y hora exacta de creación de un fichero
+    *
+    * @param string $file: path del fichero
+    *
+    * @return string con la fecha del fichero en el formato d-m-y h:i:s
+  */
+  final public static function date_file(string $file) : string {
+  	return date('d-m-Y h:i:s', filemtime($file));
+  }
+
+  //------------------------------------------------
+
+  /**
     * Devuelve en un arreglo numérico, la ruta de todos los ficheros en un directorio filtrado por tipos
     *
     * @param string $dir: directorio completo
@@ -89,7 +115,7 @@ final class Files {
   //------------------------------------------------
 
   /**
-    * Crea un directorio 
+    * Crea un directorio
     *
     * @param string $dir: Directorio a crear
     * @param int $permisos: Permisos del directorio a crear, por defecto es "todos los permisos"

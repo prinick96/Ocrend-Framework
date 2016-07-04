@@ -20,9 +20,9 @@ final class Conexion extends PDO {
     *
     * @return la instancia de conexión
   */
-  final public static function Start($DATABASE = DATABASE['name'], $MOTOR = DATABASE['motor']) {
+  final public static function Start($DATABASE = DATABASE['name'], $MOTOR = DATABASE['motor'], $new_instance = false) {
 
-    if(!self::$inst instanceof self) {
+    if(!self::$inst instanceof self or $new_instance) {
       self::$inst = new self($DATABASE,$MOTOR);
     }
 
