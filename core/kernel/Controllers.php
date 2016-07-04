@@ -17,21 +17,6 @@ abstract class Controllers {
   //------------------------------------------------
 
   /**
-    * Cargador de funciones para Plates
-    *
-    * @return void
-  */
-  private function loadFunctions() {
-
-    $this->template->registerFunction('url_amigable', function ($var) {
-      return Strings::url_amigable($var);
-    });
-
-  }
-
-  //------------------------------------------------
-
-  /**
     * Constructor, inicializa los alcances de todos los Controladores
     *
     * @param bool $LOGED: Si el controlador en cuestión será exclusivamente para usuarios logeados, se pasa TRUE
@@ -60,7 +45,6 @@ abstract class Controllers {
 
     # Carga del template
     $this->template = new League\Plates\Engine('templates','phtml');
-    $this->loadFunctions();
 
     # Debug
     if(DEBUG) {
