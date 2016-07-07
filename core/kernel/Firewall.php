@@ -16,8 +16,7 @@ final class Firewall {
     'LOG_FILE' => '__logs__',
     'PROTECTION_UNSET_GLOBALS' => true,
     'PROTECTION_RANGE_IP_DENY' => true,
-    # Puede dar problemas en algunos servidores, activarlo y si no arroja ningún mensaje, es estable.
-    'PROTECTION_RANGE_IP_SPAM' => false,
+    'PROTECTION_RANGE_IP_SPAM' => true,
     'PROTECTION_URL' => true,
     'PROTECTION_REQUEST_SERVER' => true,
     'PROTECTION_BOTS' => true,
@@ -38,6 +37,23 @@ final class Firewall {
     'PROTECTION_SERVER_DEDIBOX_BY_IP' => true,
     'PROTECTION_SERVER_DIGICUBE_BY_IP' => true
    );
+
+  /*
+    Lista de IP's bloqueadas. Si la parte de la IP de tu servidor, se encuentra aquí, debes quitarla.
+    Para saber la IP de tu servidor, basta con hacer desde cualquier terminal
+    ping -a tupagina.com
+  */
+  const IPLIST = array(
+    # Si los dos primeros dígitos de tu IP, coinciden con alguno de estos, elimínalo.
+    'SERVER_OVH_BY_IP' => ['87.98','91.121','94.23','213.186','213.251'],
+    'DEDIBOX_BY_IP' => '88.191',
+    'DIGICUBE_BY_IP' => '95.130',
+    # Si el primer dígito de tu IP, coinciden con alguno de estos, elimínalo.
+    'RANGE_IP_DENY' => ['0', '1', '2', '5', '10', '14', '23', '27', '31', '36', '37', '39', '42', '46',
+    '49', '50', '100', '101', '102', '103', '104', '105', '106', '107', '114', '172', '176', '177', '179',
+    '181', '185', '192', '223', '224'],
+    'RANGE_IP_SPAM' => ['24', '186', '189', '190', '200', '201', '202', '209', '212', '213', '217', '222']
+  );
 
    //------------------------------------------------
 
@@ -185,19 +201,19 @@ final class Firewall {
     * @return void
   */
   private function pushEmail(string $subject, string $msg) {
-    $headers = "From: Ocrend Software Firewall: ". self::FCONF['WEBMASTER_EMAIL'] ." <".self::FCONF['WEBMASTER_EMAIL'].">\r\n"
+    $headers = "From: Ocrend Framework Firewall: ". self::FCONF['WEBMASTER_EMAIL'] ." <".self::FCONF['WEBMASTER_EMAIL'].">\r\n"
 			."Reply-To: ".self::FCONF['WEBMASTER_EMAIL']."\r\n"
 			."Priority: urgent\r\n"
 			."Importance: High\r\n"
 			."Precedence: special-delivery\r\n"
-			."Organization: Ocrend Software\r\n"
+			."Organization: Ocrend Framework\r\n"
 			."MIME-Version: 1.0\r\n"
 			."Content-Type: text/plain\r\n"
 			."Content-Transfer-Encoding: 8bit\r\n"
 			."X-Priority: 1\r\n"
 			."X-MSMail-Priority: High\r\n"
 			."X-Mailer: PHP/" . phpversion() ."\r\n"
-			."X-Firewall: 1.0 by Ocrend Software\r\n"
+			."X-Firewall: 1.0 by Ocrend Framework\r\n"
 			."Date:" . date("D, d M Y H:s:i") . " +0100\n";
     if(self::FCONF['WEBMASTER_EMAIL'] != '') {
       mail(self::FCONF['WEBMASTER_EMAIL'], $subject, $msg, $headers);
@@ -217,12 +233,12 @@ final class Firewall {
     * @return void
   */
   private function Logs( string $type, string $ip, string $user_agent, string $referer) {
-    $f = fopen('./'. self::FCONF['LOG_FILE'] .'.txt', 'a');
+    $f = fopen('./'. self::FCONF['LOG_FILE'] .'.log', 'a');
     $msg = date('j-m-Y H:i:s') .' | ' . $type . ' | IP: '. $ip .' ] | DNS: '. gethostbyaddr($ip).' | Agent: '. $user_agent . PHP_EOL;
     fwrite($f, $msg);
     fclose($f);
     if (self::FCONF['PUSH_MAIL']) {
-      $this->pushEmail('Alert Ocrend Software Firewall '.strip_tags( $_SERVER['SERVER_NAME'] ) , " Firewall logs of ".strip_tags( $_SERVER['SERVER_NAME'] )."\n".str_replace('|', "\n", $msg ) );
+      $this->pushEmail('Alert Ocrend Framework Firewall '.strip_tags( $_SERVER['SERVER_NAME'] ) , " Firewall logs of ".strip_tags( $_SERVER['SERVER_NAME'] )."\n".str_replace('|', "\n", $msg ) );
     }
   }
 
@@ -301,7 +317,7 @@ final class Firewall {
 
     if(self::FCONF['PROTECTION_SERVER_OVH_BY_IP']) {
       $ip = explode('.', $GET_IP);
-      if(sizeof($ip) > 1 and in_array($ip[0].'.'.$ip[1],['87.98','91.121','94.23','213.186','213.251'])) {
+      if(sizeof($ip) > 1 and in_array($ip[0].'.'.$ip[1],self::IPLIST['SERVER_OVH_BY_IP'])) {
         $this->Logs('OVH Server IP',$GET_IP,$USER_AGENT,$GET_REFERER);
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_OVH)));
@@ -337,7 +353,7 @@ final class Firewall {
 
     if(self::FCONF['PROTECTION_SERVER_DEDIBOX_BY_IP']) {
       $ip = explode('.', $GET_IP);
-      if(sizeof($ip) > 1 and $ip[0].'.'.$ip[1] == '88.191') {
+      if(sizeof($ip) > 1 and $ip[0].'.'.$ip[1] == self::IPLIST['DEDIBOX_BY_IP']) {
         $this->Logs('DEDIBOX server IP',$GET_IP,$USER_AGENT,$GET_REFERER);
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DEDIBOX_IP)));
@@ -362,7 +378,7 @@ final class Firewall {
 
     if(self::FCONF['PROTECTION_SERVER_DIGICUBE_BY_IP']) {
       $ip = explode('.',$GET_IP);
-      if (sizeof($ip) > 1 and $ip[0].'.'.$ip[1] == '95.130') {
+      if (sizeof($ip) > 1 and $ip[0].'.'.$ip[1] == self::IPLIST['DIGICUBE_BY_IP']) {
         $this->Logs('DIGICUBE Server IP',$GET_IP,$USER_AGENT,$GET_REFERER);
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DIGICUBE_IP)));
@@ -376,8 +392,8 @@ final class Firewall {
 
     if(self::FCONF['PROTECTION_RANGE_IP_SPAM']) {
       $range_ip = explode('.',$GET_IP);
-      if(in_array($range_ip[0],['24', '186', '189', '190', '200', '201', '202', '209', '212', '213', '217', '222'])) {
-        $this->Logs('IPs Spam list',$GET_IP,$USER_AGENT,$GET_REFERER);
+      if(in_array($range_ip[0],self::IPLIST['RANGE_IP_SPAM'])) {
+        $this->Logs('IPs Spam list (Visitar framework.ocrend.com/phpfirewall/)',$GET_IP,$USER_AGENT,$GET_REFERER);
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_SPAM)));
         } else {
@@ -390,11 +406,8 @@ final class Firewall {
 
     if(self::FCONF['PROTECTION_RANGE_IP_DENY']) {
       $range_ip = explode('.',$GET_IP);
-      $ip_array = ['0', '1', '2', '5', '10', '14', '23', '27', '31', '36', '37', '39', '42', '46',
-      '49', '50', '100', '101', '102', '103', '104', '105', '106', '107', '114', '172', '176', '177', '179',
-      '181', '185', '192', '223', '224'];
-      if(in_array($range_ip[0],$ip_array)) {
-        $this->Logs('IPs Reserved list',$GET_IP,$USER_AGENT,$GET_REFERER);
+      if(in_array($range_ip[0],self::IPLIST['RANGE_IP_DENY'])) {
+        $this->Logs('IPs Reserved list (Visitar framework.ocrend.com/phpfirewall/)',$GET_IP,$USER_AGENT,$GET_REFERER);
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_SPAM_IP)));
         } else {
