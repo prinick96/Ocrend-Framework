@@ -125,10 +125,12 @@ final class Conexion extends PDO {
     * @return int/float/string sanados según sea el tipo de dato pasado por parámetro
   */
   final public function scape($e) {
-    if(is_int($e)) {
+    if(is_numeric($e)) {
+      $ex = explode('.',$e);
+      if($ex[0] != $e) {
+        return (float) $e;
+      }
       return (int) $e;
-    } else if (is_float($e)) {
-      return (float) $e;
     }
 
     $q = $this->quote($e);
