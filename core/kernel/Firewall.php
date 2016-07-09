@@ -26,8 +26,11 @@ final class Firewall {
     'PROTECTION_CLICK_ATTACK' => true,
     'PROTECTION_XSS_ATTACK' => true,
     'PROTECTION_COOKIES' => true,
+    'PROTECTION_COOKIES_LOGS' => true,
     'PROTECTION_POST' => true,
+    'PROTECTION_POST_LOGS' => true,
     'PROTECTION_GET' => true,
+    'PROTECTION_GET_LOGS' => true,
     'PROTECTION_SERVER_OVH' => true,
     'PROTECTION_SERVER_KIMSUFI' => true,
     'PROTECTION_SERVER_DEDIBOX' => true,
@@ -35,7 +38,8 @@ final class Firewall {
     'PROTECTION_SERVER_OVH_BY_IP' => true,
     'PROTECTION_SERVER_KIMSUFI_BY_IP' => true,
     'PROTECTION_SERVER_DEDIBOX_BY_IP' => true,
-    'PROTECTION_SERVER_DIGICUBE_BY_IP' => true
+    'PROTECTION_SERVER_DIGICUBE_BY_IP' => true,
+    'PROTECTION_ROUTER_STRICT' => false
    );
 
   /*
@@ -156,10 +160,14 @@ final class Firewall {
     * @return devuelve la cadena de la consulta de la petición de la página.
   */
   private function getQueryString() {
-    if($this->getEnv('QUERY_STRING')) {
-      return str_replace('%09', '%20', $this->getEnv('QUERY_STRING'));
+    if(self::FCONF['PROTECTION_ROUTER_STRICT']) {
+      return str_replace('%09', '%20', $_SERVER['REQUEST_URI']);
+    } else {
+      if($this->getEnv('QUERY_STRING')) {
+        return str_replace('%09', '%20', $this->getEnv('QUERY_STRING'));
+      }
+  		return '';
     }
-		return '';
 	}
 
   //------------------------------------------------
@@ -419,10 +427,12 @@ final class Firewall {
     //------------------------------------------------
 
     if (self::FCONF['PROTECTION_COOKIES']) {
-      foreach($_COOKIE as $value) {
+      foreach($_COOKIE as $i => $value) {
         if( $value != str_replace(self::CT_RULES, '*', $value)) {
-          $this->Logs('Cookie protect',$GET_IP,$USER_AGENT,$GET_REFERER);
-          unset($value);
+          if(self::FCONF['PROTECTION_COOKIES_LOGS']) {
+            $this->Logs('Cookie protect',$GET_IP,$USER_AGENT,$GET_REFERER);
+          }
+          $_COOKIE[$i] = htmlentities($value);
         }
       }
     }
@@ -432,7 +442,9 @@ final class Firewall {
     if(self::FCONF['PROTECTION_POST'] and $_POST) {
       foreach($_POST as $value ) {
         if( $value != str_replace(self::CT_RULES, '*', $value) ) {
-          $this->Logs('POST protect',$GET_IP,$USER_AGENT,$GET_REFERER);
+          if(self::FCONF['PROTECTION_POST_LOGS']) {
+            $this->Logs('POST protect',$GET_IP,$USER_AGENT,$GET_REFERER);
+          }
           unset($value);
         }
       }
@@ -441,10 +453,12 @@ final class Firewall {
     //------------------------------------------------
 
     if(self::FCONF['PROTECTION_GET'] and $_GET) {
-      foreach($_GET as $value ) {
+      foreach($_GET as $i => $value ) {
         if($value != str_replace(self::CT_RULES, '*', $value) ) {
-          $this->Logs('GET protect',$GET_IP,$USER_AGENT,$GET_REFERER);
-          unset($value);
+          if(self::FCONF['PROTECTION_GET_LOGS']) {
+            $this->Logs('GET protect',$GET_IP,$USER_AGENT,$GET_REFERER);
+          }
+          $_GET[$i] = htmlentities($value);
         }
       }
     }
@@ -471,7 +485,7 @@ final class Firewall {
       'new_password', 'nigga(', '%20nigga', 'nigga%20', '~nobody', 'org.apache',
       '+outfile+', '%20outfile%20', '*/outfile/*',' outfile ','outfile',
       'password=', 'passwd%20', '%20passwd', 'passwd(', 'phpadmin',
-      'perl%20', '/perl', 'phpbb_root_path','*/phpbb_root_path/*','p0hh',
+      'perl%20', '/perl','p0hh',
       'ping%20', '.pl', 'powerdown%20', 'rm(', '%20rm', 'rmdir%20',
       'mv(', 'rmdir(', 'phpinfo()', '<?php', 'reboot%20', '/robot.txt' ,
       '~root', 'root_path', 'rush=', '%20and%20', '%20xorg%20', '%20rush',
