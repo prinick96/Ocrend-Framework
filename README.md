@@ -1,7 +1,5 @@
 # Ocrend-Framework
 
-[![Descargas Totales](https://poser.pugx.org/prinick96/ocrend-framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Última Versión Estable](https://poser.pugx.org/prinick96/ocrend-framework/v/stable)](https://packagist.org/packages/bcit-ci/codeigniter)
 ![Hecho en PHP 7](https://img.shields.io/packagist/l/doctrine/orm.svg)
 ![Licencia MIT](https://img.shields.io/badge/php-7-blue.svg)
 
@@ -46,11 +44,6 @@ Clonando el repositorio.
 ```
   git clone https://github.com/prinick96/Ocrend-Framework.git
 ```
-Usando composer.
-```
-  composer require ocrend/ocrend-framework
-```
-
 
 Descargando el paquete manualmente.
 
