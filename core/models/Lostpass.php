@@ -19,22 +19,14 @@ final class Lostpass extends Models implements OCREND {
 			$u = uniqid();
 			$keypass = time();
 
-			$HTML = '
-			<html>
-			<head>
-			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-			</head>
-			<body style="font-family: Verdana;">
-				<section>
-					Hola <b>'. $user[0]['nombre'] .'</b>, has solicitado recuperar tu contraseña perdida, si no has realizado esta acción no necesitas hacer nada.
+			$HTML = 'Hola <b>'. $user[0]['nombre'] .'</b>, has solicitado recuperar tu contraseña perdida, si no has realizado esta acción no necesitas hacer nada.
 					<br />
 					<br />
-					Para cambiar tu contraseña has <a href="'. URL .'lostpass/cambiar/'.$keypass.'" target="_blank">clic aquí</a>.
-				</section>
-			</body>
-			</html>';
+					Para cambiar tu contraseña has <a href="'. URL .'lostpass/cambiar/'.$keypass.'" target="_blank">clic aquí</a>.';
 
-			$email = Func::send_mail($mail,$user[0]['nombre'],$HTML,'Recuperar contraseña perdida');
+			Helper::load('emails');
+			$dest[$mail] = $user[0]['nombre'];
+			$email = Emails::send_mail($dest,Emails::plantilla($HTML),'Recuperar contraseña perdida');
 			if(true === $email) {
 				$e = array(
 					'keypass' => $keypass,

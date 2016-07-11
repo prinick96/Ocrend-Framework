@@ -1,6 +1,5 @@
 .framework{background-color:#5c97bd}
-.framework a{color:#edf4f8!important}
-p{color:#edf4f8;}
+p{color:#edf4f8}
 .framework .logo{margin:100px auto 0;padding:15px;text-align:center;color:#edf4f8}
 .framework .content{width:400px;margin:40px auto}
 .framework .ocrend-welcome{margin-bottom:20px;color:#edf4f8;font-size:19px;font-weight:400!important}
@@ -36,10 +35,10 @@ p{color:#edf4f8;}
 @media (max-width:480px){.framework .logo{margin-top:30px;padding:0}
 .framework .content{width:245px}.framework .content h3{font-size:22px}
 .framework .checkbox{font-size:13px}}
-.btn.red:not(.btn-outline){color:#fff;background-color:#e75054;border-color:#e7505a;margin-bottom: 5px;}
+.btn.red:not(.btn-outline){color:#fff;background-color:#e75054;border-color:#e7505a;margin-bottom: 5px}
 .btn.red:not(.btn-outline).focus,.btn.red:not(.btn-outline):focus{color:#fff;background-color:#ad343d;border-color:#a1161f}
 .btn.red:not(.btn-outline).active,.btn.red:not(.btn-outline):active,.btn.red:not(.btn-outline):hover{color:#fff;background-color:#ad343d;border-color:#dc1e2b}
-.documentacion{font-size: 27px!important;}
+.documentacion{font-size: 27px!important}
 .documentacion a{text-decoration: none;color:#edf4f8!important}
-.documentacion a:hover{color:#425d6c!important;}
-.form-group label.cole{color:#edf4f8!important;}
+.documentacion a:hover{color:#425d6c!important}
+.form-group label.cole{color:#edf4f8!important}

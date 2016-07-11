@@ -21,7 +21,7 @@ final class Arrays {
     $i = 0;
     foreach ($a as $key => $val) {
       if($key == $index) {
-        return $i;
+        return (int) $i;
       }
       $i++;
     }
@@ -57,7 +57,7 @@ final class Arrays {
       return false;
     }
 
-    return array_keys($a) !== range(0, count($a) - 1);
+    return (bool) (array_keys($a) !== range(0, count($a) - 1));
   }
 
   //------------------------------------------------

@@ -5,6 +5,18 @@ defined('INDEX_DIR') OR exit('Ocrend software says .i.');
 
 //------------------------------------------------
 
+/*
+$app->post('/example',function($request, $response){
+
+  $e = new Example;
+  $response->withJson($e->Foo($_POST));
+
+  return $response;
+});
+*/
+
+//------------------------------------------------
+
 /**
   * Registro de un usuario
   * @return Devuelve un json con información acerca del éxito o posibles errores.

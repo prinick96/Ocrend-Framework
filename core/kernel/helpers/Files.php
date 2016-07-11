@@ -126,7 +126,7 @@ final class Files {
     if(is_dir($dir)) {
       return false;
     } else {
-      return mkdir($dir,$permisos,true);
+      return (bool) mkdir($dir,$permisos,true);
     }
   }
 

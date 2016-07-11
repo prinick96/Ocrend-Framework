@@ -4,12 +4,11 @@
   * Ocrend Framework - MVC Architecture for Web Applications
   * PHP Version 7
   * @package Ocrend Framework
-  * @package Slim Framework 3
-  * @version v1.0.0
+  * @version v1.0.7
   * @author Brayan Narváez (Prinick) <prinick@ocrend.com> <youtube.com/user/prinick96>
   * @copyright 2016 - Ocrend Software
   * @license	http://opensource.org/licenses/MIT	MIT License
-  * @link http://www.ocrend.com/framework
+  * @link http://framework.ocrend.com/
 */
 
 //------------------------------------------------
@@ -50,6 +49,21 @@ if($_GET) {
 if($_POST) {
   include('http/post.php');
 }
+
+//------------------------------------------------
+
+# Peticiones DELETE
+include('http/delete.php');
+
+//------------------------------------------------
+
+# Peticiones PUT
+include('http/put.php');
+
+//------------------------------------------------
+
+# Peticiones GET
+include('http/map.php');
 
 //------------------------------------------------
 

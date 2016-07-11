@@ -2,12 +2,12 @@
 
 ![Hecho en PHP 7](https://img.shields.io/packagist/l/doctrine/orm.svg)
 ![Licencia MIT](https://img.shields.io/badge/php-7-blue.svg)
-![Versión Estable](https://img.shields.io/badge/stable-1.0.6-blue.svg)
+![Versión Estable](https://img.shields.io/badge/stable-1.0.7-blue.svg)
 
 ## Introducción
 ### ¿Qué es Ocrend Framework?
 
-Es un framework sencillo escrito en **PHP 7** que utiliza la arquitectura **MVC** como base de su aplicación en el desarrollo web, adicionalmente pretende acelerar el proceso de desarrollo con unas cuantas herramientas. La forma de programar con Ocrend Framework es muy fácil de aprender, en cuestión de 10 minutos ya se comprende el concepto y la intención de la arquitectura forzada por el framework, inclusive para aquellos que jamás han programado utilizando MVC.
+Es un framework sencillo escrito en **PHP 7** que utiliza la arquitectura **MVC** como base de su aplicación en el desarrollo web, adicionalmente pretende acelerar el proceso de desarrollo con unas cuantas herramientas. La curva de aprendizaje es bastante baja, el concepto del framework es ofrecer una arquitectura de sencillo manejo, inclusive para aquellos que jamás han programado utilizando MVC.
 
 ### ¿Por qué utilizarlo?
 
@@ -20,7 +20,7 @@ Es un framework sencillo escrito en **PHP 7** que utiliza la arquitectura **MVC*
 * No estás interesado en aprender un framework gigante como Symfony, Laravel o ZendFramework
 * No necesitas gestionar rutas usando namespaces o requires/includes, el framework lo hace por tí
 * Incluye Slim framework 3 en sus dependencias, para manejo de API REST correctamente configurado
-* Soporte de múltiples bases de datos con distintos motores usando PDO
+* Soporte de múltiples bases de datos con distintos motores usando PDO **simultáneamente**
   * MySQL 5.1+
   * Oracle
   * PostgreSQL
@@ -97,13 +97,6 @@ __./core/config.php__
   #Establecer en FALSE una vez esté todo el producción, en desarrollo es recomendando mantener en TRUE
   define('DEBUG', true);
 ```
-__./core/models/Func.php__
-```php
-  #En caso de obtener error de send_mail con PHPMailer, comentar esta línea:
-  $mail->isSMTP();
-  #Descomentar (no disponible su funcionamiento en localhost sin configuración previa):
-  $mail->isSendMail();
-```
 __./core/kernel/Firewall.php__
 ```php
   #Línea 14
@@ -172,11 +165,11 @@ Ir a la consola, sea en Windows, Linux o Mac y escribir:
 ```
   ~$ cd /ruta/en/donde/esta/el/framework/
 ```
-A continuación escribir el comando para generar un módulo completo (Modelo,Vista y Controlador):
+A continuación escribir el comando para generar un módulo completo (Modelo, Vista, Controlador y Petición GET API REST):
 ```
-  ~$ python gen.py mvc Ejemplo
+  ~$ python gen.py mvca:get Ejemplo
 ```
-Debería de aparecer en consola, tres mensajes que indican la creación de tres archivos, entonces ya podríamos entrar a http://url.com/ejemplo/
+Debería de aparecer en consola, tres mensajes que indican la creación de tres archivos, entonces ya podríamos entrar a http://url.com/ejemplo/ e interactuar con el formulario ajax que se nos ha generado.
 
 Para __más información acerca de los comandos__ escribir:
 ```
@@ -186,3 +179,4 @@ Para __más información acerca de los comandos__ escribir:
 ## Documentación
 
 [Github Wiki](https://github.com/prinick96/Ocrend-Framework/wiki)
+[Web Oficial](http://framework.ocrend.com)
