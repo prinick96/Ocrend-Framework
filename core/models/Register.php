@@ -11,7 +11,7 @@ final class Register extends Models implements OCREND {
 
   final public function SignUp(array $data) : array {
 
-    if($this->AllFull($data)) {
+    if(Func::all_full($data)) {
 
       $this->user = $this->db->scape($data['user']);
       $this->email = $this->db->scape($data['email']);

@@ -57,7 +57,7 @@ final class Emails {
     * @param bool $is_smtp: Define si se hará la conexión a través de SMTP o no
     * @param array $adj: Arreglo con direccion local de los adjuntos a enviar, con la forma array(
     *                                                                                       'ruta archivo 1',
-    *                                                                                       'ruta archivo 2',
+    *                                                                                       'ruta archivo 2'
     *                                                                                       )
     *
     * @return true si fue enviado correctamente, string con el Error descrito por PHPMailer

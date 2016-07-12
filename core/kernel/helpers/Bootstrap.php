@@ -12,21 +12,22 @@ final class Bootstrap {
     *
     * @param string $name: Nombre del dropdown
     * @param array $elements: Arreglo con los enlaces del dropdown, de la forma array(
-    *                                                                           'http://url' => 'nombre',
-    *                                                                           'http://url2' => 'nombre2'
+    *                                                                           'nombre' => 'http://url',
+    *                                                                           'nombre2' => 'http://url2'
     *                                                                           )
     * @param bool $up: Hace que el dropdown se despliegue hacia arriba
+    * @param string $extra_css: Css extra anidado en la etiqueta class
     *
     * @return string con el dropdown realizado
   */
-  final public static function dropdown(string $name, array $elements, bool $up = false) : string {
+  final public static function dropdown(string $name, array $elements, bool $up = false, string $extra_css = '') : string {
 
     $links = '';
-    foreach ($elements as $url => $e) {
+    foreach ($elements as $e => $url) {
       $links .= '<li><a href="'.$url.'">'.$e.'</a></li>';
     }
 
-    return '<div class="'. ($up ? 'dropup' : 'dropdown') . '">
+    return '<div class="'. ($up ? 'dropup' : 'dropdown') . ' '. $extra_css .'">
       <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         '.$name.'
         <span class="caret"></span>
@@ -42,21 +43,22 @@ final class Bootstrap {
     *
     * @param string $name: Nombre del dropdown
     * @param array $elements: Arreglo con los enlaces del dropdown, de la forma array(
-    *                                                                           'http://url' => 'nombre',
-    *                                                                           'http://url2' => 'nombre2'
+    *                                                                           'nombre' => 'http://url',
+    *                                                                           'nombre2' => 'http://url2'
     *                                                                           )
     * @param bool $vertical: Hace que el dropdown se despliegue hacia arriba
+    * @param string $extra_css: Css extra anidado en la etiqueta class
     *
     * @return string con el dropdown realizado
   */
-  final public static function button_dropdown(string $name, array $elements, string $type = 'default', bool $vertical = false) : string {
+  final public static function button_dropdown(string $name, array $elements, string $type = 'default', bool $vertical = false, string $extra_css = '') : string {
 
     $links = '';
-    foreach ($elements as $url => $e) {
+    foreach ($elements as $e => $url) {
       $links .= '<li><a href="'.$url.'">'.$e.'</a></li>';
     }
 
-    return '<div class="btn-group '. (!$vertical ?'': 'dropup') .'">
+    return '<div class="btn-group '. (!$vertical ?'': 'dropup') .' '. $extra_css .'">
       <button type="button" class="btn btn-'.$type.'">'.$name.'</button>
       <button type="button" class="btn btn-'.$type.' dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="caret"></span>
@@ -130,7 +132,7 @@ final class Bootstrap {
       }
     }
 
-    return '<select name="'.$name.'" id="id_'.$name.'" class="form-control '.$extra_css.'" '.(!$multi ?'': 'multiple').'>
+    return '<select name="'.$name.''.(!$multi ?'': '[]').'" id="id_'.$name.'" class="form-control '.$extra_css.'" '.(!$multi ?'': 'multiple').'>
       '.$opt.'
     </select>';
   }
@@ -282,12 +284,12 @@ final class Bootstrap {
     * @param string $link: Formato de URL de continuidad para el paginador, ejemplo /controlador/otras/rutas/
     * @param int $total_pags: Número de páginas totales
     * @param int/null $get_pag: Variable que contiene la página actual, tiene que provenir de $this->route probablemente
-    * @param array $conf: Arreglo con la forma de la constante PAGER_CONFIG, contiene configuración
     * @param string $extra_css: Css extra anidado en la etiqueta class
+    * @param array $conf: Arreglo con la forma de la constante PAGER_CONFIG, contiene configuración
     *
     * @return string con el paginador funcional
   */
-  final public static function pager(string $link, int $total_pags, $get_pag, array $conf = self::PAGER_CONFIG, string $extra_css = '') : string {
+  final public static function pager(string $link, int $total_pags, $get_pag, string $extra_css = '', array $conf = self::PAGER_CONFIG) : string {
     $paginador = '<nav><ul class="pagination '.$extra_css.'">';
         if(null == $get_pag) {
           $paginador .= '<li class="disabled"> <a>'.$conf['anterior'].'</a> </li>';
@@ -333,7 +335,7 @@ final class Bootstrap {
     *                                                                                 array('elemento 1','elemento 2','elemento 3'),
     *                                                                                 array('elemento 1','elemento 2','elemento 3')
     *                                                                                )
-    * Cada posición del arreglo principal correspnderá a un TR, y cada posición de los arreglos internos un TD
+    * Cada posición del arreglo principal corresponderá a un TR, y cada posición de los arreglos internos un TD
     *
     * @param string $extra_css: Css extra anidado en la etiqueta class
     *

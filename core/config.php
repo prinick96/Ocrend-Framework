@@ -29,7 +29,7 @@ session_start([
 try {
   setlocale(LC_ALL,'es_ES');
 } catch (Error $e) {
-  die('Comentar líneas 15 hasta 20 en ./core/config.php');
+  die('Comentar líneas 26 hasta 34 en ./core/config.php');
 }
 
 //------------------------------------------------
@@ -39,7 +39,7 @@ try {
   if(0 == CRYPT_BLOWFISH)
     throw new Exception(true);
 } catch (Exception $e) {
-  die('CRYPT_BLOWFISH no soportado, encriptado de hash actual no funcional.');
+  die('CRYPT_BLOWFISH no soportado, algoritmo de hash actual no funcional.');
 }
 
 //------------------------------------------------
@@ -78,9 +78,6 @@ define('DATABASE', array(
 define('URL', 'http://localhost/Ocrend-Framework/');
 define('APP', 'Ocrend Framework');
 define('SESS_APP_ID', 'app_id');
-
-//------------------------------------------------
-
 /**
   * Define la carpeta en la cual se encuentra instalado el framework.
   * @example "/" si para acceder al framework colocamos http://url.com en la URL, ó http://localhost

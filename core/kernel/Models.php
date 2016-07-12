@@ -44,25 +44,6 @@ abstract class Models {
   //------------------------------------------------
 
   /**
-    * Aanaliza que TODOS los elementos de un arreglo estén llenos, útil para analizar por ejemplo que todos los elementos de un formulario esté llenos
-    * pasando como parámetro $_POST
-    *
-    * @param array $array, arreglo a analizar
-    *
-    * @return true si están todos llenos, false si al menos uno está vacío
-  */
-  protected function AllFull(array $array) : bool {
-    foreach($array as $e) {
-      if(empty($e) and $e != '0') {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  //------------------------------------------------
-
-  /**
     * Destructor, finaliza cualquier modelo y cierra la conexión inicializada en el constructor
     *
     * @return void

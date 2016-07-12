@@ -49,6 +49,25 @@ final class Func {
   //------------------------------------------------
 
   /**
+    * Aanaliza que TODOS los elementos de un arreglo estén llenos, útil para analizar por ejemplo que todos los elementos de un formulario esté llenos
+    * pasando como parámetro $_POST
+    *
+    * @param array $array, arreglo a analizar
+    *
+    * @return true si están todos llenos, false si al menos uno está vacío
+  */
+  final static function all_full(array $array) : bool {
+    foreach($array as $e) {
+      if(empty($e) and $e != '0') {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  //------------------------------------------------
+
+  /**
     * Retorna la URL de un gravatar, según el email
     *
     * @param string  $email: El email del usuario a extraer el gravatar

@@ -62,7 +62,7 @@ include('http/put.php');
 
 //------------------------------------------------
 
-# Peticiones GET
+# Peticiones GET ó POST
 include('http/map.php');
 
 //------------------------------------------------
