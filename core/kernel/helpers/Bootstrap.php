@@ -123,12 +123,12 @@ final class Bootstrap {
 
     $opt = '';
     if(is_array($selected)) {
-      foreach ($options as $value => $name) {
-        $opt .= '<option value="'.$value.'"'. (!(in_array($value, $selected)) ?'': 'selected=""') .'>'.$name.'</option>';
+      foreach ($options as $value => $n) {
+        $opt .= '<option value="'.$value.'"'. (!(in_array($value, $selected)) ?'': 'selected=""') .'>'.$n.'</option>';
       }
     } else {
-      foreach ($options as $value => $name) {
-        $opt .= '<option value="'.$value.'"'. ($selected != $value ?'': 'selected=""') .'>'.$name.'</option>';
+      foreach ($options as $value => $n) {
+        $opt .= '<option value="'.$value.'"'. ($selected != $value ?'': 'selected=""') .'>'.$n.'</option>';
       }
     }
 

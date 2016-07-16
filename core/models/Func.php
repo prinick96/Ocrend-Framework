@@ -49,25 +49,6 @@ final class Func {
   //------------------------------------------------
 
   /**
-    * Aanaliza que TODOS los elementos de un arreglo estén llenos, útil para analizar por ejemplo que todos los elementos de un formulario esté llenos
-    * pasando como parámetro $_POST
-    *
-    * @param array $array, arreglo a analizar
-    *
-    * @return true si están todos llenos, false si al menos uno está vacío
-  */
-  final static function all_full(array $array) : bool {
-    foreach($array as $e) {
-      if(empty($e) and $e != '0') {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  //------------------------------------------------
-
-  /**
     * Retorna la URL de un gravatar, según el email
     *
     * @param string  $email: El email del usuario a extraer el gravatar
@@ -78,6 +59,55 @@ final class Func {
        return 'http://www.gravatar.com/avatar/' . md5($email) . '?s=' . (int) abs($size);
    }
 
+   //------------------------------------------------
+
+   /**
+     * Alias de Empty, más completo
+     *
+     * @param midex $var: Variable a analizar
+     *
+     * @return true si está vacío, false si no, un espacio en blanco cuenta como vacío
+   */
+   final static function emp($var) : bool {
+     return empty(trim(str_replace(' ','',$var)));
+   }
+
+   //------------------------------------------------
+
+   /**
+     * Aanaliza que TODOS los elementos de un arreglo estén llenos, útil para analizar por ejemplo que todos los elementos de un formulario esté llenos
+     * pasando como parámetro $_POST
+     *
+     * @param array $array, arreglo a analizar
+     *
+     * @return true si están todos llenos, false si al menos uno está vacío
+   */
+   final static function all_full(array $array) : bool {
+     foreach($array as $e) {
+       if(self::emp($e) and $e != '0') {
+         return false;
+       }
+     }
+     return true;
+   }
+
+   //------------------------------------------------
+
+   /**
+     * Alias de Empty() pero soporta más de un parámetro
+     *
+     * @param infinitos parámetros
+     *
+     * @return true si al menos uno está vacío, false si todos están llenos
+   */
+    final public static function e() : bool  {
+      for ($i = 0, $nargs = func_num_args(); $i < $nargs; $i++) {
+        if(self::emp(func_get_arg($i)) and func_get_arg($i) != '0') {
+          return true;
+        }
+      }
+      return false;
+    }
 
 }
 
