@@ -155,7 +155,7 @@ final class Files {
         }
         $currentPath = $dir . '/' . $file;
         if (is_dir($currentPath)) {
-            self::rmdir($currentPath);
+            self::rm_dir($currentPath);
         } elseif (!unlink($currentPath)) {
           throw new \RuntimeException('No se puede borrar ' . $currentPath);
         }
