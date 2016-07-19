@@ -351,8 +351,8 @@ final class Bootstrap {
     $tbody = '<tbody>';
     foreach ($values as $array) {
       $tbody .= '<tr>';
-      foreach ($array as $key => $value) {
-        $tbody .= "<td>$key</td>";
+      foreach ($array as $value) {
+        $tbody .= "<td>$value</td>";
       }
       $tbody .= '</tr>';
     }
