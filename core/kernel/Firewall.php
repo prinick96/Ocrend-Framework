@@ -21,7 +21,9 @@ final class Firewall {
     'PROTECTION_REQUEST_SERVER' => true,
     'PROTECTION_BOTS' => true,
     'PROTECTION_REQUEST_METHOD' => true,
-    'PROTECTION_DOS' => true,
+    # el primer true corresponde al uso de esta protección para la API REST
+    # el segundo true corresponde al uso de esta protección para forma de acceso común
+    'PROTECTION_DOS' => IS_API ? true : true,
     'PROTECTION_UNION_SQL' => true,
     'PROTECTION_CLICK_ATTACK' => true,
     'PROTECTION_XSS_ATTACK' => true,
