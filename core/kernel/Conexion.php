@@ -20,7 +20,7 @@ final class Conexion extends PDO {
     *
     * @return la instancia de conexión
   */
-  final public static function Start($DATABASE = DATABASE['name'], $MOTOR = DATABASE['motor'], $new_instance = false) {
+  final public static function Start($DATABASE = DATABASE['name'], $MOTOR = DATABASE['motor'], $new_instance = false) : Conexion {
 
     if(!self::$inst instanceof self or $new_instance) {
       self::$inst = new self($DATABASE,$MOTOR);
@@ -111,7 +111,7 @@ final class Conexion extends PDO {
     *
     * @return numero de filas encontradas
   */
-  final public function rows($query) : int {
+  final public function rows(PDOStatement $query) : int {
     return $query->rowCount();
   }
 
@@ -149,7 +149,7 @@ final class Conexion extends PDO {
     *
     * @return object PDOStatement
   */
-  final public function query(string $q) {
+  final public function query(string $q) : PDOStatement {
     try {
 
       if(DEBUG) {
@@ -173,7 +173,7 @@ final class Conexion extends PDO {
     *
     * @return object PDOStatement
   */
-  final public function delete(string $table, string $where, string $limit = 'LIMIT 1')  {
+  final public function delete(string $table, string $where, string $limit = 'LIMIT 1') : PDOStatement {
     return $this->query("DELETE FROM $table WHERE $where $limit;");
   }
 
@@ -188,7 +188,7 @@ final class Conexion extends PDO {
     *
     * @return object PDOStatement
   */
-  final public function insert(string $table, array $e) {
+  final public function insert(string $table, array $e) : PDOStatement {
     if (sizeof($e) == 0) {
       trigger_error('El arreglo pasado por $this->db->insert(...) está vacío.', E_USER_ERROR);
 
@@ -221,7 +221,7 @@ final class Conexion extends PDO {
     *
     * @return object PDOStatement
   */
-  final public function update(string $table, array $e, string $where, string $limit = 'LIMIT 1') {
+  final public function update(string $table, array $e, string $where, string $limit = 'LIMIT 1') : PDOStatement {
     if (sizeof($e) == 0) {
       trigger_error('El arreglo pasado por $this->db->update(...) está vacío.', E_USER_ERROR);
 
