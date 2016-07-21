@@ -5,6 +5,16 @@ defined('INDEX_DIR') OR exit('Ocrend software says .i.');
 
 //------------------------------------------------
 
+# Alerta de versión
+try {
+  if (version_compare(phpversion(), '7.0.0', '<'))
+    throw new Exception(true);
+} catch (Exception $e) {
+  die('La versión actual de <b>PHP</b> es <b>' . phpversion() . '</b> y como mínimo se require la versión <b>7.0.0</b>');
+}
+
+//------------------------------------------------
+
 # Definimos desde donde se accede a los controllers
 define('IS_API',false);
 
