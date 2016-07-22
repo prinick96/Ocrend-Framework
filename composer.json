@@ -15,6 +15,7 @@
       "league/plates": "^3.1",
       "phpmailer/phpmailer": "^5.2",
       "slim/slim": "^3.4",
-      "league/oauth2-google": "^1.0"
+      "league/oauth2-google": "^1.0",
+        "paypal/rest-api-sdk-php": "*"
     }
 }

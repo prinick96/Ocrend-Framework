@@ -95,6 +95,13 @@ define('PHPMAILER_PORT', 465);
 
 //------------------------------------------------
 
+# PayPal SDK
+define('PAYPAL_MODE','sandbox'); # sandbox ó live
+define('PAYPAL_CLIENT_ID','');
+define('PAYPAL_CLIENT_SECRET','');
+
+//------------------------------------------------
+
 # Activación del Firewall
 define('FIREWALL', true);
 
