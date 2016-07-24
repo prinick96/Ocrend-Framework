@@ -48,18 +48,36 @@ final class Paypal {
   //------------------------------------------------
 
   /**
+    *  Chequea que todos los parámetros de confirmación por la URL necesarios existan
+    *
+    * @param string $hash: Es una variable de tipo string que se pasar por referencia y almacena el hash
+    * de el paymentId que llega por la URL para su posterior verificación
+    *
+    *
+    * @return array con información de éxito, posible hash del paymentId y paymentId
+  */
+  final public static function check_pay() : array {
+    $hash = null;
+    $s = false;
+    $id = null;
+    if(isset($_GET['success']) and isset($_GET['paymentId']) and ((int) $_GET['success']) == 1) {
+      Helper::load('strings');
+      $id = $_GET['paymentId'];
+      $hash = Strings::hash($id);
+
+      $s = true;
+    }
+
+    return array('success' => $s, 'hash' => $hash, 'id' => $id);
+  }
+
+  //------------------------------------------------
+
+  /**
     * Crea un pago con la API SDK de Paypal
     *
-    * @param array $config: Array con la forma array('success' => , 'error' => , 'descripcion' => )
-    * @param array $items: Matriz con todos los items y la forma array(
-    *                                                               array(
-    *                                                                  'nombre' => 'Item 1',
-    *                                                                  'cantidad' => 1,
-    *                                                                  'precio' => 7.5,
-    *                                                                  'envio' => 0,
-    *                                                                  'tax' => 0
-    *                                                                  )
-    *                                                              )
+    * @param array $config: Array con la forma array('url' => 'url a donde retorna')
+    * @param array $items: Matriz con todos los items MÁS INFORMACIÓN: http://framework.ocrend.com/helpers/paypal/
     * @param bool $individual: Indica si los costes de tax y shipping son individuales para cada producto, o totales
     * @param string $currency: Moneda
     *
@@ -108,8 +126,8 @@ final class Paypal {
         ->setInvoiceNumber(uniqid());
 
     $redirectUrls = new \PayPal\Api\RedirectUrls;
-    $redirectUrls->setReturnUrl(URL . $config['success'])
-        ->setCancelUrl(URL . $config['error']);
+    $redirectUrls->setReturnUrl(URL . $config['url'] . '/?success=1')
+        ->setCancelUrl(URL . $config['url'] . '/?success=0');
 
     $payment = new \PayPal\Api\Payment;
     $payment->setIntent('sale')
@@ -123,14 +141,17 @@ final class Paypal {
       $payment->create(self::init());
 
       $id = $payment->getID();
+      Helper::load('strings');
+      $hash = Strings::hash($id);
       $success = 1;
       $message = 'Conexión realizada';
       $url = $payment->getApprovalLink();
 
     } catch (PayPal\Exception\PayPalConnectionException $ex) {
 
-      $id = $payment->getID();
-      $success = 1;
+      $id = null;
+      $hash = null;
+      $success = 0;
       $message = $ex->getData();
       $url = '#';
 
@@ -138,6 +159,7 @@ final class Paypal {
 
     return array(
       'id' => $id,
+      'hash' => $hash,
       'success' => $success,
       'message' => $message,
       'url' => $url
