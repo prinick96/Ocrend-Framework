@@ -217,11 +217,11 @@ final class Conexion extends PDO {
     * @param array $e: Arreglo asociativo de elementos, con la estrctura 'campo_en_la_tabla' => 'valor_a_insertar_en_ese_campo',
     *                  todos los elementos del arreglo $e, serán sanados por el método sin necesidad de hacerlo manualmente al crear el arreglo
     * @param string $where: Condición que indica quienes serán modificados
-    * @param string $limite: Límite de elementos modificados, por defecto solo modifica el primero que cumpla la condición
+    * @param string $limite: Límite de elementos modificados, por defecto los modifica a todos
     *
     * @return object PDOStatement
   */
-  final public function update(string $table, array $e, string $where, string $limit = 'LIMIT 1') : PDOStatement {
+  final public function update(string $table, array $e, string $where, string $limit = '') : PDOStatement {
     if (sizeof($e) == 0) {
       trigger_error('El arreglo pasado por $this->db->update(...) está vacío.', E_USER_ERROR);
 

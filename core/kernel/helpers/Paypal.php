@@ -50,10 +50,6 @@ final class Paypal {
   /**
     *  Chequea que todos los parámetros de confirmación por la URL necesarios existan
     *
-    * @param string $hash: Es una variable de tipo string que se pasar por referencia y almacena el hash
-    * de el paymentId que llega por la URL para su posterior verificación
-    *
-    *
     * @return array con información de éxito, posible hash del paymentId y paymentId
   */
   final public static function check_pay() : array {
