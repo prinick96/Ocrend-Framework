@@ -2,7 +2,7 @@
 
 ![Hecho en PHP 7](https://img.shields.io/packagist/l/doctrine/orm.svg)
 ![Licencia MIT](https://img.shields.io/badge/php-7-blue.svg)
-![Versión Estable](https://img.shields.io/badge/stable-1.0.8-blue.svg)
+![Versión Estable](https://img.shields.io/badge/stable-1.0.9-blue.svg)
 
 ## Introducción
 ### ¿Qué es Ocrend Framework?
@@ -36,7 +36,6 @@ Para colocar el framework en producción se requiere un VPS, Dedicado o Hosting 
 
 * PHP 7
 * APACHE 2
-* MySQL 5
 * Python para utilizar el generador de código (no necesario para el funcionamiento del framework)
 
 ## Instalación
