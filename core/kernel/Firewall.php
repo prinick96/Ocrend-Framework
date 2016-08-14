@@ -403,7 +403,7 @@ final class Firewall {
     if(self::FCONF['PROTECTION_RANGE_IP_SPAM']) {
       $range_ip = explode('.',$GET_IP);
       if(in_array($range_ip[0],self::IPLIST['RANGE_IP_SPAM'])) {
-        $this->Logs('IPs Spam list (Visitar framework.ocrend.com/phpfirewall/)',$GET_IP,$USER_AGENT,$GET_REFERER);
+        $this->Logs('IPs (ip:'.$range_ip[0].') Spam list (Visitar framework.ocrend.com/phpfirewall/)',$GET_IP,$USER_AGENT,$GET_REFERER);
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_SPAM)));
         } else {
@@ -417,7 +417,7 @@ final class Firewall {
     if(self::FCONF['PROTECTION_RANGE_IP_DENY']) {
       $range_ip = explode('.',$GET_IP);
       if(in_array($range_ip[0],self::IPLIST['RANGE_IP_DENY'])) {
-        $this->Logs('IPs Reserved list (Visitar framework.ocrend.com/phpfirewall/)',$GET_IP,$USER_AGENT,$GET_REFERER);
+        $this->Logs('IPs (ip:'.$range_ip[0].') Reserved list (Visitar framework.ocrend.com/phpfirewall/)',$GET_IP,$USER_AGENT,$GET_REFERER);
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_SPAM_IP)));
         } else {
