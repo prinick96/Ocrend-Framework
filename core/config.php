@@ -15,16 +15,6 @@ date_default_timezone_set('America/Caracas');
 
 //------------------------------------------------
 
-# Control global de sesiones DOC http://php.net/manual/es/session.configuration.php
-session_start([
-  'use_strict_mode' => true,
-  'use_cookies' => true,
-  'cookie_httponly' => true, # Evita el acceso a la cookie mediante lenguajes de script (cómo javascript)
-  'hash_function' => 5 # sha256, para obtener una lista completa print_r(hash_algos());
-]);
-
-//------------------------------------------------
-
 # Idioma base
 try {
   setlocale(LC_ALL,'es_ES');
@@ -74,16 +64,32 @@ define('DATABASE', array(
 
 //------------------------------------------------
 
-# Constantes fundamentales
-define('URL', 'http://localhost/Ocrend-Framework/');
-define('APP', 'Ocrend Framework');
-define('SESS_APP_ID', 'app_id');
 /**
   * Define la carpeta en la cual se encuentra instalado el framework.
   * @example "/" si para acceder al framework colocamos http://url.com en la URL, ó http://localhost
   * @example "/Ocrend-Framework/" si para acceder al framework colocamos http://url.com/Ocrend-Framework, ó http://localhost/Ocrend-Framework/
 */
 define('__ROOT__', '/Ocrend-Framework/');
+
+//------------------------------------------------
+
+# Constantes fundamentales
+define('URL', 'http://localhost/Ocrend-Framework/');
+define('APP', 'Ocrend Framework');
+
+//------------------------------------------------
+
+# Control de sesiones
+define('DB_SESSION', true);
+define('SESSION_TIME', 18000); # Tiempo de vida para las sesiones 5 horas = 18000 segundos.
+define('SESS_APP_ID', 'app_id');
+session_start([
+  'use_strict_mode' => true,
+  'use_cookies' => true,
+  'cookie_lifetime' => SESSION_TIME,
+  'cookie_httponly' => true, # Evita el acceso a la cookie mediante lenguajes de script (cómo javascript)
+  'hash_function' => 5 # sha256, para obtener una lista completa print_r(hash_algos());
+]);
 
 //------------------------------------------------
 

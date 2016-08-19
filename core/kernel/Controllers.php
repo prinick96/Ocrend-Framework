@@ -13,6 +13,7 @@ abstract class Controllers {
   protected $isset_id;
   protected $method;
   protected $route;
+  protected $session = null;
 
   //------------------------------------------------
 
@@ -31,6 +32,12 @@ abstract class Controllers {
     # Accedemos a el router para URL's amigables
     $this->route = $router;
 
+    # Control de vida de sesiones
+    if(DB_SESSION) {
+      $this->session = new Sessions;
+      $this->session->check_life();
+    }
+    
     # Restricción para usuarios logeados
     if($LOGED and !isset($_SESSION[SESS_APP_ID])) {
       Func::redir();

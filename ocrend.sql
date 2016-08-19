@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-07-2016 a las 00:20:11
+-- Tiempo de generación: 19-08-2016 a las 19:37:35
 -- Versión del servidor: 10.1.10-MariaDB
 -- Versión de PHP: 7.0.3
 
@@ -37,15 +37,16 @@ CREATE TABLE `users` (
   `nacimiento` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
   `telefono` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `keypass` int(11) NOT NULL DEFAULT '0',
-  `keypass_tmp` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+  `keypass_tmp` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `session` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`id`, `user`, `email`, `pass`, `dni`, `nombre`, `pais`, `nacimiento`, `telefono`, `keypass`, `keypass_tmp`) VALUES
-(1, 'test', 'test@ocrend.com', '$2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G', 'V-123456789', 'Tester', 'Venezuela', '28/10/1996', '584149392600', 0, '');
+INSERT INTO `users` (`id`, `user`, `email`, `pass`, `dni`, `nombre`, `pais`, `nacimiento`, `telefono`, `keypass`, `keypass_tmp`, `session`) VALUES
+(1, 'test', 'test@ocrend.com', '$2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G', 'V-123456789', 'Tester', 'Venezuela', '28/10/1996', '584149392600', 0, '', 0);
 
 --
 -- Índices para tablas volcadas
