@@ -270,6 +270,62 @@ final class Strings {
     return nl2br(preg_replace($BBcode,$HTML,$string));
   }
 
+  //------------------------------------------------
+
+  /**
+    * Dice si un string comienza con un caracter especificado
+    *
+    * @param string $sx: Caracter de inicio
+    * @param string $str: String a evaluar
+    * @param bool $case_sensitive: Boolean para definir si será seible a mayúsculas o no
+    *
+    * @return bool: True si comienza con el caracter especificado, False si no
+  */
+  final public static function begin_with(string $sx, string $str) : bool {
+    return (bool) (strlen($str) > 0 and $str[0] == $sx);
+  }
+
+  //------------------------------------------------
+
+  /**
+    * Dice si un string termina con una caracter especificado
+    *
+    * @param string $sx: Caracter del final
+    * @param string $str: String a evaluar
+    *
+    * @return bool: True si termina con el caracter especificado, False si no
+  */
+  final public static function end_with(string $sx, string $str) : bool {
+    return (bool) (strlen($str) > 0 and $str[strlen($str) - 1] == $sx);
+  }
+
+  //------------------------------------------------
+
+  /**
+    * Ver si un string está contenido en otro
+    *
+    * @param $s: String contenido en $str
+    * @param $str: String a evaluar
+    *
+    * @return bool: True si $s está dentro de $str, False si no
+  */
+  final public static function contain(string $s, string $str) : bool {
+    return (bool) (strpos($str, $s) !== false);
+  }
+
+  //------------------------------------------------
+
+  /**
+    * Devuelve la cantidad de palabras en un string
+    *
+    * @param $str: String a evaluar
+    *
+    * @return int: Cantidad de palabras
+  */
+  final public static function count_words(string $s) : int {
+    return str_word_count($s,0);
+  }
+
 }
 
 ?>

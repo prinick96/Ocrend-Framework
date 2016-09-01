@@ -1,5 +1,10 @@
 <?php
 
+# Seguridad
+defined('INDEX_DIR') OR exit('Ocrend software says .i.');
+
+//------------------------------------------------
+
 final class Register extends Models implements OCREND {
 
   public function __construct() {
@@ -18,14 +23,14 @@ final class Register extends Models implements OCREND {
         throw new Exception('<b>Error:</b> Todos los campos son necesarios.');
       }
 
-      $user = $this->db->scape($data['user']);
-      $email = $this->db->scape($data['email']);
-
       Helper::load('strings');
 
-      if(!Strings::is_email($email, FILTER_VALIDATE_EMAIL)) {
+      if(!Strings::is_email($data['email'])) {
         throw new Exception('<b>Error:</b> Email no tiene un formato válido.');
       }
+
+      $user = $this->db->scape($data['user']);
+      $email = $this->db->scape($data['email']);
 
       $u = $this->db->select('user','users',"user='$user' OR email='$email'",'LIMIT 1');
       if(false != $u) {
@@ -53,11 +58,7 @@ final class Register extends Models implements OCREND {
       'user' => $data['user'],
       'pass' => Strings::hash($data['pass']),
       'email' => $data['email'],
-      'dni' => $data['dni'],
-      'nombre' => $data['nombre'],
-      'pais' => $data['pais'],
       'session' => DB_SESSION ? (time() + SESSION_TIME) : 0,
-      'nacimiento' => $data['nacimiento'],
       'telefono' => str_replace([',','+','.',' '],'',$data['telefono'])
     );
     $this->db->insert('users',$e);

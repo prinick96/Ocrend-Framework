@@ -1,5 +1,10 @@
 <?php
 
+# Seguridad
+defined('INDEX_DIR') OR exit('Ocrend software says .i.');
+
+//------------------------------------------------
+
 class logoutController extends Controllers {
 
   public function __construct() {

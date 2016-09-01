@@ -4,7 +4,7 @@
   * Ocrend Framework - MVC Architecture for Web Applications
   * PHP Version 7
   * @package Ocrend Framework
-  * @version v1.1.0
+  * @version v1.1.1
   * @author Brayan Narváez (Prinick) <prinick@ocrend.com> <youtube.com/user/prinick96>
   * @copyright 2016 - Ocrend Software
   * @license	http://opensource.org/licenses/MIT	MIT License

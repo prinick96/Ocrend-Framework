@@ -20,7 +20,7 @@ final class Conexion extends PDO {
     *
     * @return la instancia de conexión
   */
-  final public static function Start($DATABASE = DATABASE['name'], $MOTOR = DATABASE['motor'], $new_instance = false) : Conexion {
+  final public static function Start(string $DATABASE = DATABASE['name'], string $MOTOR = DATABASE['motor'], bool $new_instance = false) : Conexion {
 
     if(!self::$inst instanceof self or $new_instance) {
       self::$inst = new self($DATABASE,$MOTOR);
@@ -38,7 +38,7 @@ final class Conexion extends PDO {
     *
     * @return void
   */
-  final public function __construct($DATABASE = DATABASE['name'], $MOTOR = DATABASE['motor']) {
+  final public function __construct(string $DATABASE = DATABASE['name'], string $MOTOR = DATABASE['motor']) {
     try {
 
       switch ($MOTOR) {
@@ -98,8 +98,21 @@ final class Conexion extends PDO {
         die('Error intentando conectar con la base de datos.');
       }
     } finally {
-      unset($host);
+      unset($MOTOR,$DATABASE);
     }
+  }
+
+  //------------------------------------------------
+
+  /**
+    * Devuelve un arreglo asociativo de todos los resultados arrojados por una query
+    *
+    * @param object PDOStatement $query, valor devuelto de la query
+    *
+    * @return arreglo asociativo
+  */
+  final public function fetch_array(PDOStatement $query) : array {
+    return $query->fetchAll(PDO::FETCH_ASSOC);
   }
 
   //------------------------------------------------
@@ -126,24 +139,19 @@ final class Conexion extends PDO {
   */
   final public function scape($e) {
     if(is_numeric($e)) {
-      $ex = explode('.',$e);
-      if($ex[0] != $e) {
+      if(explode('.',$e)[0] != $e) {
         return (float) $e;
       }
       return (int) $e;
     }
 
-    $q = $this->quote($e);
-    $q[0] = '';
-    $q[strlen($q) - 1] = '';
-
-    return (string) trim($q);
+    return (string) trim(str_replace(['\\',"\x00",'\n','\r',"'",'"',"\x1a"],['\\\\','\\0','\\n','\\r',"\'",'\"','\\Z'],$e));
   }
 
   //------------------------------------------------
 
   /**
-    * Realiza una query, y si está en modo debug analiza que query fue ejecutada y el peso de esta en memoria
+    * Realiza una query, y si está en modo debug analiza que query fue ejecutada
     *
     * @param SQL string, recibe la consulta SQL a ejecutar
     *
@@ -190,9 +198,7 @@ final class Conexion extends PDO {
   */
   final public function insert(string $table, array $e) : PDOStatement {
     if (sizeof($e) == 0) {
-      trigger_error('El arreglo pasado por $this->db->insert(...) está vacío.', E_USER_ERROR);
-
-      return false;
+      trigger_error('El arreglo pasado por $this->db->insert(...) está vacío.', E_ERROR);
     }
 
     $query = "INSERT INTO $table (";
@@ -223,9 +229,7 @@ final class Conexion extends PDO {
   */
   final public function update(string $table, array $e, string $where, string $limit = '') : PDOStatement {
     if (sizeof($e) == 0) {
-      trigger_error('El arreglo pasado por $this->db->update(...) está vacío.', E_USER_ERROR);
-
-      return false;
+      trigger_error('El arreglo pasado por $this->db->update(...) está vacío.', E_ERROR);
     }
 
     $query = "UPDATE $table SET ";
@@ -252,15 +256,14 @@ final class Conexion extends PDO {
   */
   final public function select(string $e, string $table, string $where = '1 = 1', string $limit = "") {
     $sql = $this->query("SELECT $e FROM $table WHERE $where $limit;");
-    if($this->rows($sql) > 0) {
-      foreach ($sql as $d) {
-        $s[] = $d;
-      }
-    } else {
-      $s = false;
+    $result = $sql->fetchAll();
+    $sql->closeCursor();
+
+    if(sizeof($result) > 0) {
+      return $result;
     }
 
-    return $s;
+    return false;
   }
 
   //------------------------------------------------
@@ -271,7 +274,7 @@ final class Conexion extends PDO {
     * @return void
   */
   final public function __clone() {
-    trigger_error('Estás intentando clonar la Conexión', E_USER_ERROR);
+    trigger_error('Estás intentando clonar la Conexión', E_ERROR);
   }
 
 }

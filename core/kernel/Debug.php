@@ -109,6 +109,7 @@ final class Debug {
     //------------------------------------------------
     echo '<b class="cab">Archivo:</b> "' , $_SERVER['PHP_SELF'], '"<br />';
     echo '<b class="cab">PHP:</b> ', phpversion(), '<br />';
+    echo '<b class="cab">FRAMEWORK:</b> ', VERSION , '<br />';
     echo '<strong class="cab">Controller: </strong> ', $router->getController() ,'<br />';
     //------------------------------------------------
 

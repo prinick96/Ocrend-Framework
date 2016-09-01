@@ -101,7 +101,7 @@ def main():
         view = arg[2].lower()
         count = 0
 
-        if view in ['models','controllers','ocrend','firewall','debug','conexion','router','helper','arrays','files','strings']:
+        if view in ['models','controllers','ocrend','firewall','debug','conexion','router','helper','arrays','files','strings','paypal','bootstrap']:
             print ('El modulo existe en el Kernel, no puede crearse.')
         else:
             api = False

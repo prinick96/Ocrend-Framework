@@ -1,5 +1,10 @@
 <?php
 
+# Seguridad
+defined('INDEX_DIR') OR exit('Ocrend software says .i.');
+
+//------------------------------------------------
+
 class Sessions extends Models implements OCREND {
 
   public function __construct() {

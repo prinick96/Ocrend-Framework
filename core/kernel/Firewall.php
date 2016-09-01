@@ -15,8 +15,8 @@ final class Firewall {
     'PUSH_MAIL' => false,
     'LOG_FILE' => '__logs__',
     'PROTECTION_UNSET_GLOBALS' => true,
-    'PROTECTION_RANGE_IP_DENY' => true,
-    'PROTECTION_RANGE_IP_SPAM' => true,
+    'PROTECTION_RANGE_IP_DENY' => false,
+    'PROTECTION_RANGE_IP_SPAM' => false,
     'PROTECTION_URL' => true,
     'PROTECTION_REQUEST_SERVER' => true,
     'PROTECTION_BOTS' => true,
@@ -243,7 +243,7 @@ final class Firewall {
     * @return void
   */
   private function Logs( string $type, string $ip, string $user_agent, string $referer) {
-    $f = fopen('./'. self::FCONF['LOG_FILE'] .'.log', 'a');
+    $f = fopen((IS_API ? '../' : './') . self::FCONF['LOG_FILE'] .'.log', 'a');
     $msg = date('j-m-Y H:i:s') .' | ' . $type . ' | IP: '. $ip .' ] | DNS: '. gethostbyaddr($ip).' | Agent: '. $user_agent . PHP_EOL;
     fwrite($f, $msg);
     fclose($f);
@@ -319,7 +319,8 @@ final class Firewall {
       if(IS_API) {
         die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_OVH)));
       } else {
-        die(self::MSG_PROTECTION_OVH);
+        Func::redir();
+        return;
       }
     }
 
@@ -332,7 +333,8 @@ final class Firewall {
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_OVH)));
         } else {
-          die(self::MSG_PROTECTION_OVH);
+          Func::redir();
+          return;
         }
       }
     }
@@ -344,7 +346,8 @@ final class Firewall {
       if(IS_API) {
         die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_KIMSUFI)));
       } else {
-        die(self::MSG_PROTECTION_KIMSUFI);
+        Func::redir();
+        return;
       }
     }
 
@@ -355,7 +358,8 @@ final class Firewall {
       if(IS_API) {
         die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DEDIBOX)));
       } else {
-        die(self::MSG_PROTECTION_DEDIBOX);
+        Func::redir();
+        return;
       }
     }
 
@@ -368,7 +372,8 @@ final class Firewall {
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DEDIBOX_IP)));
         } else {
-          die(self::MSG_PROTECTION_DEDIBOX_IP);
+          Func::redir();
+          return;
         }
       }
     }
@@ -380,7 +385,8 @@ final class Firewall {
       if(IS_API) {
         die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DIGICUBE)));
       } else {
-        die(self::MSG_PROTECTION_DIGICUBE);
+        Func::redir();
+        return;
       }
     }
 
@@ -393,7 +399,8 @@ final class Firewall {
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DIGICUBE_IP)));
         } else {
-          die(self::MSG_PROTECTION_DIGICUBE_IP);
+          Func::redir();
+          return;
         }
       }
     }
@@ -510,7 +517,8 @@ final class Firewall {
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_URL)));
         } else {
-          die(self::MSG_PROTECTION_URL);
+          Func::redir();
+          return;
         }
       }
     }
@@ -523,7 +531,8 @@ final class Firewall {
       if(IS_API) {
         die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_OTHER_SERVER)));
       } else {
-        die(self::MSG_PROTECTION_OTHER_SERVER);
+        Func::redir();
+        return;
       }
     }
 
@@ -582,7 +591,8 @@ final class Firewall {
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_BOTS)));
         } else {
-          die(self::MSG_PROTECTION_BOTS);
+          Func::redir();
+          return;
         }
   		}
       //------------------------------------------------
@@ -595,7 +605,8 @@ final class Firewall {
       if(IS_API) {
         die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_REQUEST)));
       } else {
-        die(self::MSG_PROTECTION_REQUEST);
+        Func::redir();
+        return;
       }
     }
 
@@ -606,7 +617,8 @@ final class Firewall {
       if(IS_API) {
         die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DOS)));
       } else {
-        die(self::MSG_PROTECTION_DOS);
+        Func::redir();
+        return;
       }
     }
 
@@ -627,7 +639,8 @@ final class Firewall {
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_UNION)));
         } else {
-          die(self::MSG_PROTECTION_UNION);
+          Func::redir();
+          return;
         }
       }
     }
@@ -639,7 +652,8 @@ final class Firewall {
       if(IS_API) {
         die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_CLICK)));
       } else {
-        die(self::MSG_PROTECTION_CLICK);
+        Func::redir();
+        return;
       }
   	}
 
@@ -655,7 +669,8 @@ final class Firewall {
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_XSS)));
         } else {
-          die(self::MSG_PROTECTION_XSS);
+          Func::redir();
+          return;
         }
   		}
   	}

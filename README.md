@@ -2,7 +2,7 @@
 
 ![Hecho en PHP 7](https://img.shields.io/packagist/l/doctrine/orm.svg)
 ![Licencia MIT](https://img.shields.io/badge/php-7-blue.svg)
-![Versión Estable](https://img.shields.io/badge/stable-1.1.0-blue.svg)
+![Versión Estable](https://img.shields.io/badge/stable-1.1.1-blue.svg)
 
 ## Introducción
 ### ¿Qué es Ocrend Framework?
@@ -104,7 +104,7 @@ __./core/kernel/Firewall.php__
     'PUSH_MAIL' => false, //En caso de ataque, aquí se activa el envío de un email de alerta al correo en WEBMASTER_EMAIL
 ```
 
-Adicionalmente **db.sql** contiene una tabla llamada users, la cual contiene un usuario de ejemplo, debemos subirla a nuestra base de datos para poder utilizar el login/lostpass/registro que viene previamente programado.
+Adicionalmente **ocrend.sql** contiene una tabla llamada users, la cual contiene un usuario de ejemplo, debemos subirla a nuestra base de datos para poder utilizar el login/lostpass/registro que viene previamente programado.
 
 
 **usuario:** test
@@ -177,5 +177,5 @@ Para __más información acerca de los comandos__ escribir:
 
 ## Documentación
 
-[Github Wiki](https://github.com/prinick96/Ocrend-Framework/wiki)
+[Github Wiki](https://github.com/prinick96/Ocrend-Framework/wiki) -
 [Web Oficial](http://framework.ocrend.com)

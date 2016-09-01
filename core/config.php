@@ -15,25 +15,6 @@ date_default_timezone_set('America/Caracas');
 
 //------------------------------------------------
 
-# Idioma base
-try {
-  setlocale(LC_ALL,'es_ES');
-} catch (Error $e) {
-  die('Comentar líneas 26 hasta 34 en ./core/config.php');
-}
-
-//------------------------------------------------
-
-# Prevención de errores en el hash
-try {
-  if(0 == CRYPT_BLOWFISH)
-    throw new Exception(true);
-} catch (Exception $e) {
-  die('CRYPT_BLOWFISH no soportado, algoritmo de hash actual no funcional.');
-}
-
-//------------------------------------------------
-
 /**
   * Configuración de la conexión con la base de datos.
   * @param host 'hosting local/remoto'
@@ -115,5 +96,10 @@ define('FIREWALL', true);
 
 # Activación del DEBUG, solo para desarrollo
 define('DEBUG', false);
+
+//------------------------------------------------
+
+# Versión actual del framework
+define('VERSION', '1.1.1');
 
 ?>

@@ -109,6 +109,53 @@ final class Func {
       return false;
     }
 
+    //------------------------------------------------
+
+    /**
+      * Alias de date() pero devuele días y meses en español
+      *
+      * @param string $format: Formato de salida (igual que en date())
+      * @param int $time: Tiempo, por defecto es time() (igual que en date())
+      *
+      * @return string con la fecha en formato humano (y en español)
+    */
+     final public static function fecha(string $format, int $time = 0) : string  {
+       $date = date($format,$time == 0 ? time() : $time);
+       $cambios = array(
+         'Monday'=> 'Lunes',
+         'Tuesday'=> 'Martes',
+         'Wednesday'=> 'Miércoles',
+         'Thursday'=> 'Jueves',
+         'Friday'=> 'Viernes',
+         'Saturday'=> 'Sábado',
+         'Sunday'=> 'Domingo',
+         'January'=> 'Enero',
+         'February'=> 'Febrero',
+         'March'=> 'Marzo',
+         'April'=> 'Abril',
+         'May'=> 'Mayo',
+         'June'=> 'Junio',
+         'July'=> 'Julio',
+         'August'=> 'Agosto',
+         'September'=> 'Septiembre',
+         'October'=> 'Octubre',
+         'November'=> 'Noviembre',
+         'December'=> 'Diciembre',
+         'Mon'=> 'Lun',
+         'Tue'=> 'Mar',
+         'Wed'=> 'Mie',
+         'Thu'=> 'Jue',
+         'Fri'=> 'Vie',
+         'Sat'=> 'Sab',
+         'Sun'=> 'Dom',
+         'Jan'=> 'Ene',
+         'Aug'=> 'Ago',
+         'Apr'=> 'Abr',
+         'Dec'=> 'Dic'
+       );
+       return str_replace(array_keys($cambios),array_values($cambios),$date);
+     }
+
 }
 
 ?>

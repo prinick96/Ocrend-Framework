@@ -43,6 +43,25 @@ final class Files {
   //------------------------------------------------
 
   /**
+    * Borra un archivo en un directorio
+    *
+    * @param string $route: Ruta del fichero
+    *
+    * @return bool true si borró el fichero, false si no (porque no existía)
+  */
+  final public static function delete_file(string $route) : bool {
+    if(file_exists($route)) {
+      unlink($route);
+
+      return true;
+    }
+
+    return false;
+  }
+
+  //------------------------------------------------
+
+  /**
     * Devuelve la extensión de un archivo cualquiera, da igual si es solo el nombre o la ruta con el nombre
     *
     * @param string $file_name: Nombre del archivo, da igual si es solo el nombre o la ruta con el nombre
@@ -63,7 +82,7 @@ final class Files {
     * @return true si es una imagen, false si no lo es
   */
   final public static function is_image(string $file_name) : bool {
-    return in_array(self::get_file_ext($file_name),['jpg','png','jpeg','gif','JPG','PNG','JPEG','GIF']);
+    return (bool) in_array(self::get_file_ext($file_name),['jpg','png','jpeg','gif','JPG','PNG','JPEG','GIF']);
   }
 
   //------------------------------------------------
@@ -163,6 +182,74 @@ final class Files {
     }
 
     return true;
+  }
+
+  //------------------------------------------------
+
+  /**
+    * Devuelve la cantidad de imágenes contenidas dentro de un directorio
+    *
+    * @param string $dir: Directorio en donde están las imagenes
+    *
+    * @return bool true si todo se borró con éxito
+  */
+  final public static function images_in_dir(string $dir) : int {
+    return sizeof(glob($dir . '{*.jpg,*.gif,*.png,*.gif,*.jpeg,*.JPG,*.GIF,*.PNG,*.JPEG}',GLOB_BRACE));
+  }
+
+  //------------------------------------------------
+
+  /**
+    * Copia todos los ficheros de un directorio a un directorio nuevo, si el directorio nuevo no existe, es creado.
+    * Si en el directorio nuevo existe un archivo con el mismo nombre de alguno en el viejo, este será sobreescrito.
+    *
+    * @param string $old_dir: Ruta del directorio viejo (de donde se moverán los ficheros)
+    * @param string $new_dir: Ruta del directorio nuevo (hacia donde se moverán los ficheros)
+    * @param bool $only_images: Pasar como TRUE, si sólo quiere pasar imagenes
+    * @param bool $delete_old: Pasar como TRUE, si se quiere borrar todo el contenido del viejo directorio al pasarse
+    *
+    * @return void
+  */
+  final public static function move_from_dir(string $old_dir, string $new_dir, bool $only_images = false, bool $delete_old = false) {
+
+    self::create_dir($new_dir);
+
+    foreach(glob($new_dir . ($only_images ? '{*.jpg,*.gif,*.png,*.gif,*.jpeg,*.JPG,*.GIF,*.PNG,*.JPEG}' : '*'),GLOB_BRACE) as $file) {
+      $name = explode('/',$file);
+      $name = end($file);
+
+      if(file_exists($new_dir . $name)) {
+          unlink($new_dir . $name);
+      }
+
+      copy($file,$new_dir . $name);
+
+      if($delete_old) {
+        unlink($file);
+      }
+    }
+  }
+
+  //------------------------------------------------
+
+  /**
+    * Carga un fichero desde una ruta temporal (con $_FILES)
+    *
+    * @param string $tempFile: Directorio temporal ($_FILES['nombre']['tmp_name'])
+    * @param string $name: Nombre que se le quiere dar al archivo (Ej: $_FILES['nombre']['name'] ó imagen.jpg)
+    * @param string $dir: Directorio a subir
+    * @param bool $sobr: Si se pasa TRUE, sobrescribe archivos con el mismo nombre, si no, copia el archivo
+    * de conflicto con un nombre aleatorio para no sobrescribir nada.
+    *
+    * @return bool true si subió el archivo, false si no
+  */
+  final public static function upload_file(string $name, string $tempFile, string $dir, bool $sobr = false) : bool {
+
+    if(move_uploaded_file($tempFile,(file_exists($dir . $name) && !$sobr) ? ($dir . time() . $name) : ($dir . $name))) {
+      return true;
+    }
+
+    return false;
   }
 
 }

@@ -1,5 +1,10 @@
 <?php
 
+# Seguridad
+defined('INDEX_DIR') OR exit('Ocrend software says .i.');
+
+//------------------------------------------------
+
 final class Login extends Models implements OCREND {
 
   private $user;
