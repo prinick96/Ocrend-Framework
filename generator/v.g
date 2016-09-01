@@ -12,9 +12,6 @@
     </div>
     <div class="form-actions">
       <p>Ejemplo generador</p>
-
-      <?= $this->insert('overall/modules') ?>
-
     </div>
 
     <?= $this->insert('overall/footer') ?>

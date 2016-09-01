@@ -24,7 +24,6 @@
         </div>
       </form>
 
-      <?= $this->insert('overall/modules') ?>
     </div>
 
     <?= $this->insert('overall/footer') ?>
