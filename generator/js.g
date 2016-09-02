@@ -12,7 +12,7 @@ $('#{{view}}').click(function(){
 
   $.ajax({
     type : "{{method}}",
-    url : "api/{{view}}",
+    url : "api/{{api_rest}}",
     data : $('#{{view}}_form').serialize(),
     success : function(json) {
       var obj = jQuery.parseJSON(json);

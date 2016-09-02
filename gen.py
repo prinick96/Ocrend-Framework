@@ -12,60 +12,87 @@ R_MODELS = './core/models/'
 R_CONTROLLERS = './core/controllers/'
 R_VIEWS = './templates/'
 
-def create_file(route,filename,ext,api):
+def create_file(route,filename,ext,api,crud,php_method):
     if ext == '.phtml':
         if not os.path.isdir(route + filename + '/'):
             os.mkdir(route + filename + '/')
 
-        e = open(route + filename + '/' + filename + ext,'a')
+        if True == crud:
+            e = open(route + filename + '/' + php_method + ext,'a')
+        else:
+            e = open(route + filename + '/' + filename + ext,'a')
     else:
         e = open(route + filename + ext,'a')
 
     if route == R_MODELS:
-        if api:
-            amodel = open('./generator/ma.g','r')
+        if True == crud:
+            amodel = open('./generator/crud/m.g','r')
         else:
-            amodel = open('./generator/m.g','r')
+            if api:
+                amodel = open('./generator/ma.g','r')
+            else:
+                amodel = open('./generator/m.g','r')
 
         content = amodel.read()
         amodel.close()
-        e.write(content.replace('{{model}}',filename))
+        content = content.replace('{{model}}',filename)
+        content = content.replace('{{view}}',filename.replace('Controller', '').lower())
+        e.write(content)
     elif route == R_CONTROLLERS:
-        acontroller = open('./generator/c.g','r')
+        if True == crud:
+            acontroller = open('./generator/crud/c.g','r')
+        else:
+            acontroller = open('./generator/c.g','r')
+
         content = acontroller.read()
         acontroller.close()
         content = content.replace('{{controller}}',filename)
+        content = content.replace('{{model}}',filename.replace('Controller', '').capitalize())
         content = content.replace('{{view}}',filename.replace('Controller', ''))
         e.write(content)
     else:
         route = route + filename + '/'
-        if api:
-            aview = open('./generator/va.g','r')
-            content = aview.read()
-            content = content.replace('{{action}}',filename.lower())
-            aview.close()
+        if True == crud:
+            if 'editar' == php_method:
+                creado = route + 'editar' + ext
+                aview = open('./generator/crud/v_edit.g','r')
+            elif 'crear' == php_method:
+                creado = route + 'crear' + ext
+                aview = open('./generator/crud/v_add.g','r')
+            else:
+                creado = route + filename + ext
+                aview = open('./generator/crud/v_list.g','r')
         else:
-            aview = open('./generator/v.g','r')
-            content = aview.read()
-            aview.close()
+            creado = route + filename + ext
+            if api:
+                aview = open('./generator/va.g','r')
+            else:
+                aview = open('./generator/v.g','r')
 
+        content = aview.read()
+        content = content.replace('{{action}}',filename.lower())
+        content = content.replace('{{model}}',filename.capitalize())
+        aview.close()
         e.write(content)
 
     e.close()
-    print ("Creado " + route + filename + ext)
+    if ext == '.phtml':
+        print (creado)
+    else:
+        print ("Creado " + route + filename + ext)
 
-def check_file(route,filename,ext = '.php',api = False):
+def check_file(route,filename,ext = '.php',api = False,crud = False,php_method = 'Foo'):
     if os.path.exists(route + filename + ext) or os.path.exists(route + filename + '/' + filename + ext):
         print ("ERROR: El archivo " + filename + ext + " ya existe")
     else:
-        create_file(route,filename,ext,api)
+        create_file(route,filename,ext,api,crud,php_method)
 
-def write_api(method,name):
+def write_api(method,name,crud,php_method):
 
     e = open('./api/http/' + method + '.php','a+')
-    e.write('\n/**\n')
+    e.write('\n\n/**\n')
     e.write('\t* ¿que hace (el modelo que se invoca desde aqui)?\n')
-    e.write('\t* @return ¿que retorna?, ¡un json por favor! \n')
+    e.write('\t* @return Devuelve un json con información acerca del éxito o posibles errores. \n')
     e.write('*/\n')
 
     if method == 'get':
@@ -73,24 +100,42 @@ def write_api(method,name):
     else:
         m = '$app->post(\'/'
 
-    e.write(m + name.lower() + '\',function($request, $response) {\n\n')
+    if True == crud:
+        e.write(m + name.lower() + '/' + php_method.lower() + '\',function($request, $response) {\n\n')
+    else:
+        e.write(m + name.lower() + '\',function($request, $response) {\n\n')
+
     e.write('\t$model = new '  + name.capitalize() + ';\n')
-    e.write('\t$response->withJson($model->Foo($_' + method.upper() + '));\n\n')
+    e.write('\t$response->withJson($model->' + php_method.lower() + '($_' + method.upper() + '));\n\n')
     e.write('\treturn $response;')
     e.write('\n});')
     e.close()
 
-    c = open('./views/app/js/' + name.lower() + '.js','a')
     ajs = open('./generator/js.g','r')
     content = ajs.read()
     ajs.close()
+
     content = content.replace('{{view}}',name.lower())
     content = content.replace('{{method}}',method.upper())
+
+    if True == crud:
+        if not os.path.isdir('./views/app/js/' + name.lower() + '/'):
+            os.mkdir('./views/app/js/' + name.lower() + '/')
+
+        c = open('./views/app/js/' + name.lower() + '/' + php_method.lower() +'.js','a')
+        content = content.replace('{{api_rest}}',name.lower() + '/' + php_method.lower())
+    else:
+        c = open('./views/app/js/' + name.lower() + '.js','a')
+        content = content.replace('{{api_rest}}',name.lower())
+
     c.write(content)
     c.close()
 
     print ('Modificado ./api/http/' + method + '.php')
-    print ('Creado ./views/app/js/' + name.lower() + '.js')
+    if True == crud:
+        print ('Creado ./views/app/js/' + name.lower() + '/' + php_method.lower() + '.js')
+    else:
+        print ('Creado ./views/app/js/' + name.lower() + '.js')
 
 def main():
     print ("")
@@ -104,39 +149,49 @@ def main():
         if view in ['models','controllers','ocrend','firewall','debug','conexion','router','helper','arrays','files','strings','paypal','bootstrap']:
             print ('El modulo existe en el Kernel, no puede crearse.')
         else:
-            api = False
-            if 'm' in arg[1]:
-                count += 1
-                if 'a:post' in arg[1]:
-                    write_api('post',view)
-                    api = True
-                elif 'a:get' in arg[1]:
-                    write_api('get',view)
-                    api = True
 
-                check_file(R_MODELS,model,'.php',api)
+            if arg[1] == 'crud':
+                write_api('post',view,True,'editar')
+                write_api('post',view,True,'crear')
+                check_file(R_MODELS,model,'.php',True,True)
+                check_file(R_CONTROLLERS,controller,'.php',True,True)
+                check_file(R_VIEWS,view,'.phtml',True,True,'editar')
+                check_file(R_VIEWS,view,'.phtml',True,True,'crear')
+                check_file(R_VIEWS,view,'.phtml',True,True,view)
+            else:
+                api = False
+                if 'm' in arg[1]:
+                    count += 1
+                    if 'a:post' in arg[1]:
+                        write_api('post',view,False,'foo')
+                        api = True
+                    elif 'a:get' in arg[1]:
+                        write_api('get',view,False,'foo')
+                        api = True
 
-            if 'v' in arg[1]:
-                count += 1
-                if 'm' in arg[1] and 'a:post' in arg[1]:
-                    api = True
-                elif 'm' in arg[1] and 'a:get' in arg[1]:
-                    api = True
+                    check_file(R_MODELS,model,'.php',api)
 
-                check_file(R_VIEWS,view,'.phtml',api)
+                if 'v' in arg[1]:
+                    count += 1
+                    if 'm' in arg[1] and 'a:post' in arg[1]:
+                        api = True
+                    elif 'm' in arg[1] and 'a:get' in arg[1]:
+                        api = True
 
-            if 'c' in arg[1]:
-                count += 1
-                check_file(R_CONTROLLERS,controller)
+                    check_file(R_VIEWS,view,'.phtml',api)
 
-            if count == 0:
-                print ("Modulo no encontrado, escribir en consola: \"python gen.py -ayuda\"")
+                if 'c' in arg[1]:
+                    count += 1
+                    check_file(R_CONTROLLERS,controller)
 
+                if count == 0:
+                    print ("Modulo no encontrado, escribir en consola: \"python gen.py -ayuda\"")
     elif len(arg) == 1:
         print ("Es necesario escribir los modulos a crear")
     else:
         if arg[1] == '-ayuda':
             print ('======================= AYUDA =======================')
+            print ('\n-Crear CRUD COMPLETO: python gen.py crud Modulo')
             print ('-Crear Modelo: python gen.py m Modulo')
             print ('-Crear Modelo y Peticion GET API REST: python gen.py ma:get Modulo')
             print ('-Crear Modelo y Peticion POST API REST: python gen.py ma:post Modulo\n')
@@ -152,7 +207,7 @@ def main():
             print ('-Crear Modelo, Peticion GET API REST, Vista y Controlador: python gen.py mvca:get Modulo')
             print ('-Crear Modelo, Peticion POST API REST, Vista y Controlado: python gen.py mvca:post Modulo\n')
             print ('-Crear Controlador y Vista: python gen.py cv Modulo\n')
-            print ('Para mas informacion visitar framework.ocrend.com')
+            print ('Para mas informacion visitar framework.ocrend.com/generador/')
         else:
             print ("Es necesario escribir el nombre del modulo a crear")
 
