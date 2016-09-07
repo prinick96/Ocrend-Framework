@@ -37,10 +37,10 @@ abstract class Controllers {
       $this->session = new Sessions;
       $this->session->check_life();
     }
-    
+
     # Restricción para usuarios logeados
     if($LOGED and !isset($_SESSION[SESS_APP_ID])) {
-      Func::redir();
+      Func::redir(URL . '/logout');
       exit;
     }
 

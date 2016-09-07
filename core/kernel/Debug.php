@@ -46,23 +46,6 @@ final class Debug {
   //------------------------------------------------
 
   /**
-    * Muestra información acerca de una variable
-    *
-    * @param type $var: variable a desglosar
-    *
-    * @return string de la variable correctamente desglosada
-  */
-  final private function showinfo($var) : string {
-    $var = print_r($var, true);
-    $var = str_replace('=>','<span class="b">=></span>',$var);
-    $var = str_replace(' [', ' <br />&nbsp;[', $var);
-
-    return $var;
-  }
-
-  //------------------------------------------------
-
-  /**
     * Lista un arreglo, mostrando la información que contiene
     *
     * @param array $VAR: Variable a desglosar
@@ -77,7 +60,7 @@ final class Debug {
       if($key == '___QUERY_DEBUG___') {
         null;
       } else {
-        echo '<li><span class="variable">', $variable ,'</span><span class="b">[\'</span>', $key ,'<span class="b">\']</span> = ', $this->showinfo($value) ,'</li>';
+        echo '<li><span class="variable">', $variable ,'</span><span class="b">[\'</span>', $key ,'<span class="b">\']</span>', d($value) ,'</li>';
       }
     }
     echo '</ul>';
@@ -98,8 +81,7 @@ final class Debug {
 
     //------------------------------------------------
     # Fin de test de velocidad
-    $endtime = microtime();
-    $endtime = explode(" ",$endtime);
+    $endtime = explode(" ",microtime());
     $endtime = $endtime[0] + $endtime[1];
     $memory = Func::convert(memory_get_usage());
     //------------------------------------------------

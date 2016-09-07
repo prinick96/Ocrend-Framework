@@ -14,7 +14,7 @@ final class Lostpass extends Models implements OCREND {
 	final public function RepairPass(array $data) : array {
 
 		$mail = $this->db->scape($data['email']);
-		$user = $this->db->select('id,nombre','users',"email='$mail'",'LIMIT 1');
+		$user = $this->db->select('id,user','users',"email='$mail'",'LIMIT 1');
 
 		if(false == $user) {
 			$success = 0;
@@ -24,13 +24,13 @@ final class Lostpass extends Models implements OCREND {
 			$u = uniqid();
 			$keypass = time();
 
-			$HTML = 'Hola <b>'. $user[0]['nombre'] .'</b>, has solicitado recuperar tu contraseña perdida, si no has realizado esta acción no necesitas hacer nada.
+			$HTML = 'Hola <b>'. $user[0]['user'] .'</b>, has solicitado recuperar tu contraseña perdida, si no has realizado esta acción no necesitas hacer nada.
 					<br />
 					<br />
 					Para cambiar tu contraseña has <a href="'. URL .'lostpass/cambiar/'.$keypass.'" target="_blank">clic aquí</a>.';
 
 			Helper::load('emails');
-			$dest[$mail] = $user[0]['nombre'];
+			$dest[$mail] = $user[0]['user'];
 			$email = Emails::send_mail($dest,Emails::plantilla($HTML),'Recuperar contraseña perdida');
 			if(true === $email) {
 				$e = array(

@@ -16,6 +16,7 @@
       "phpmailer/phpmailer": "^5.2",
       "slim/slim": "^3.4",
       "league/oauth2-google": "^1.0",
-        "paypal/rest-api-sdk-php": "*"
+        "paypal/rest-api-sdk-php": "*",
+        "raveren/kint": "^1.0"
     }
 }

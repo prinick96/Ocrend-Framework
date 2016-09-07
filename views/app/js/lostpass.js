@@ -1,9 +1,4 @@
-/* #lostpass es el ID del botón que acciona este código. */
-/* #ajax_lostpass es el ID del DIV que muestra resultados y proceso de carga. */
-/* #lostpass_form es el ID del formulario del cual se recogen todos los datos. */
-
-$('#lostpass').click(function(){
-
+function _ini_lostpass() {
 	var error_icon = '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> ',
 		success_icon = '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ',
 		process_icon = '<span class="fa fa-spinner fa-spin" aria-hidden="true"></span> ';
@@ -37,4 +32,22 @@ $('#lostpass').click(function(){
 			window.alert('#lostpass ERORR');
 		}
 	});
-});
+}
+
+if(document.getElementById('lostpass')) {
+	document.getElementById('lostpass').onclick = function() {
+	  _ini_lostpass();
+	};
+}
+
+if(document.getElementById('lostpass_form')) {
+	document.getElementById('lostpass_form').onkeypress = function(e) {
+	    if (!e) e = window.event;
+	    var keyCode = e.keyCode || e.which;
+	    if (keyCode == '13'){
+	      _ini_lostpass();
+				
+				return false;
+	    }
+	};
+}

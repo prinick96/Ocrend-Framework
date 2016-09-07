@@ -1,5 +1,4 @@
-$('#register').click(function(){
-
+function _ini_register() {
   var error_icon = '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> ',
       success_icon = '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ',
       process_icon = '<span class="fa fa-spinner fa-spin" aria-hidden="true"></span> ';
@@ -33,4 +32,22 @@ $('#register').click(function(){
       window.alert('#register ERORR');
     }
   });
-});
+};
+
+if(document.getElementById('register')) {
+  document.getElementById('register').onclick = function() {
+    _ini_register();
+  };
+}
+
+if(document.getElementById('register')) {
+  document.getElementById('register_form').onkeypress = function(e) {
+      if (!e) e = window.event;
+      var keyCode = e.keyCode || e.which;
+      if (keyCode == '13'){
+        _ini_register();
+        
+        return false;
+      }
+  };
+}

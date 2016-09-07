@@ -138,7 +138,7 @@ final class Conexion extends PDO {
     * @return int/float/string sanados según sea el tipo de dato pasado por parámetro
   */
   final public function scape($e) {
-    if(is_numeric($e)) {
+    if(is_numeric($e) and $e <= 2147483647) {
       if(explode('.',$e)[0] != $e) {
         return (float) $e;
       }
@@ -166,7 +166,8 @@ final class Conexion extends PDO {
 
       return parent::query($q);
     } catch (Exception $e) {
-      die('Error en la query: <b>' . $q . '<b/><br /><br />' . $e->getMessage());
+      $message = 'Error en la query: <b>' . $q . '<b/><br /><br />' . $e->getMessage();
+      die(IS_API ? json_encode(array('success' => 0, 'message' => $message)) : $message);
     }
   }
 

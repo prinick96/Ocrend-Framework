@@ -33,8 +33,8 @@ require('vendor/autoload.php');
 
 # Test de velocidad de el Debug
 if(DEBUG) {
-  $startime = microtime();
-  $startime = explode(" ",$startime);
+  Kint::$theme = 'aante-light';
+  $startime = explode(" ",microtime());
   $startime = $startime[0] + $startime[1];
 }
 

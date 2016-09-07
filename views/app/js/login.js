@@ -1,5 +1,4 @@
-$('#login').click(function(){
-
+function _ini_login() {
   var error_icon = '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> ',
       success_icon = '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ',
       process_icon = '<span class="fa fa-spinner fa-spin" aria-hidden="true"></span> ';
@@ -33,4 +32,22 @@ $('#login').click(function(){
       window.alert('#login ERORR');
     }
   });
-});
+};
+
+if(document.getElementById('login')) {
+  document.getElementById('login').onclick = function() {
+    _ini_login();
+  };
+}
+
+if(document.getElementById('login_form')) {
+  document.getElementById('login_form').onkeypress = function(e) {
+      if (!e) e = window.event;
+      var keyCode = e.keyCode || e.which;
+      if (keyCode == '13'){
+        _ini_login();
+        
+        return false;
+      }
+  };
+}
