@@ -142,8 +142,6 @@ Crear __./templates/hola/hola.phtml__
     <div class="form-actions">
       <p>¡Hola mundo!</p>
 
-      <?= $this->insert('overall/modules') ?>
-
     </div>
 
     <?= $this->insert('overall/footer') ?>
