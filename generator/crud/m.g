@@ -12,7 +12,7 @@ final class {{model}} extends Models implements OCREND {
   }
 
   # Control de errores
-  final public function errores(array $data) {
+  final private function errores(array $data) {
     try {
 
       /*if(Func::emp($data['ejemplo'])) {

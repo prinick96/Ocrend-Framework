@@ -56,12 +56,12 @@ final class Conexion extends PDO {
           PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
         break;
         case 'odbc';
-          parent::__construct('odbc:'.$DATABASE);
+          parent::__construct('odbc:'.$DATABASE,DATABASE['user'],DATABASE['pass']);
         break;
         case 'oracle':
           parent::__construct('oci:dbname=(DESCRIPTION =
             (ADDRESS_LIST =
-              (ADDRESS = (PROTOCOL = '.DATABASE['protocol'].')(HOST = '.DATABASE['motor'].')(PORT = '.DATABASE['port'].'))
+              (ADDRESS = (PROTOCOL = '.DATABASE['protocol'].')(HOST = '.$MOTOR.')(PORT = '.DATABASE['port'].'))
             )
             (CONNECT_DATA =
               (SERVICE_NAME = '.$DATABASE.')
@@ -138,6 +138,10 @@ final class Conexion extends PDO {
     * @return int/float/string sanados según sea el tipo de dato pasado por parámetro
   */
   final public function scape($e) {
+    if(!isset($e)) {
+      return '';
+    }
+
     if(is_numeric($e) and $e <= 2147483647) {
       if(explode('.',$e)[0] != $e) {
         return (float) $e;

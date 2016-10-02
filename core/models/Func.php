@@ -69,7 +69,7 @@ final class Func {
      * @return true si está vacío, false si no, un espacio en blanco cuenta como vacío
    */
    final static function emp($var) : bool {
-     return empty(trim(str_replace(' ','',$var)));
+     return (isset($var) && empty(trim(str_replace(' ','',$var))));
    }
 
    //------------------------------------------------

@@ -29,10 +29,12 @@ abstract class Models {
     * Constructor, inicializa los alcances de todos los Modelos
     *
     * @param string $DATABASE, se pasa de forma opcional una base de datos distinta a la definida en DATABASE['name'] para conectar
+    * @param string $MOTOR, se pasa de forma opcional un motor distinto al definido en DATABASE['motor']
+    * @param bool $new_instance se pasa de forma opcional para permitir una instancia duplicada de la conexión
     *
     * @return void
   */
-  protected function __construct($DATABASE = DATABASE['name'], $MOTOR = DATABASE['motor'], $new_instance = false) {
+  protected function __construct(string $DATABASE = DATABASE['name'], string $MOTOR = DATABASE['motor'], bool $new_instance = false) {
 
     global $router;
 

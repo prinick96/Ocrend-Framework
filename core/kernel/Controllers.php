@@ -40,7 +40,7 @@ abstract class Controllers {
 
     # Restricción para usuarios logeados
     if($LOGED and !isset($_SESSION[SESS_APP_ID])) {
-      Func::redir(URL . '/logout');
+      Func::redir(URL . 'logout/');
       exit;
     }
 
