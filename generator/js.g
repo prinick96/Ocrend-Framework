@@ -1,4 +1,13 @@
-$('#{{view}}').click(function(){
+$('#{{view}}').click(function(e){
+
+  /* START Prevención de doble clic */
+  var js = $(this);
+  e.preventDefault();
+  if ( js.data('requestRunning') ) {
+      return;
+  }
+  js.data('requestRunning', true);
+  /* END Prevención de doble clic */
 
   var error_icon = '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> ',
       success_icon = '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ',

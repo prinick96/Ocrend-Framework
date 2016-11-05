@@ -53,6 +53,13 @@ abstract class Controllers {
     # Carga del template
     $this->template = new League\Plates\Engine('templates','phtml');
 
+    /*
+    # Insertar por defecto, en TODOS los templates un elemento o más
+    $this->template->addData(array(
+      'elemento' => $variable,
+    ));
+    */
+
     # Debug
     if(DEBUG) {
       $_SESSION['___QUERY_DEBUG___'] = array();
