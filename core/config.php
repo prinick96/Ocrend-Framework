@@ -32,6 +32,7 @@ date_default_timezone_set('America/Caracas');
   *        cubrid
   *        firebird
   *        odbc
+  *        mssql: DOC https://github.com/prinick96/Ocrend-Framework/issues/7
 */
 define('DATABASE', array(
   'host' => 'localhost',

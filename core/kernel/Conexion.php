@@ -82,6 +82,18 @@ final class Conexion extends PDO {
           PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
           PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
         break;
+        case 'mssql':
+          # Añadido por marc2684
+          # DOC: https://github.com/prinick96/Ocrend-Framework/issues/7
+          parent::__construct('sqlsrv:Server='.DATABASE['host'].';Database='.$DATABASE.';ConnectionPooling=0',
+          DATABASE['user'],
+          DATABASE['pass'],
+          array( PDO::ATTR_EMULATE_PREPARES => false,
+                PDO::SQLSRV_ENCODING_UTF8,
+                PDO::ATTR_ERRMODE =>
+                PDO::ERRMODE_EXCEPTION
+          ));
+        break;
         default:
           if(IS_API) {
             die(json_encode(array('success' => 0, 'message' => 'Motor de conexión no identificado.')));
