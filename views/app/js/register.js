@@ -35,7 +35,8 @@ function _ini_register() {
 };
 
 if(document.getElementById('register')) {
-  document.getElementById('register').onclick = function() {
+  document.getElementById('register').onclick = function(e) {
+    e.preventDefault();
     _ini_register();
   };
 }
@@ -46,7 +47,7 @@ if(document.getElementById('register')) {
       var keyCode = e.keyCode || e.which;
       if (keyCode == '13'){
         _ini_register();
-        
+
         return false;
       }
   };

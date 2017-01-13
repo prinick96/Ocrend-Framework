@@ -35,7 +35,8 @@ function _ini_lostpass() {
 }
 
 if(document.getElementById('lostpass')) {
-	document.getElementById('lostpass').onclick = function() {
+	document.getElementById('lostpass').onclick = function(e) {
+		e.preventDefault();
 	  _ini_lostpass();
 	};
 }
@@ -46,7 +47,7 @@ if(document.getElementById('lostpass_form')) {
 	    var keyCode = e.keyCode || e.which;
 	    if (keyCode == '13'){
 	      _ini_lostpass();
-				
+
 				return false;
 	    }
 	};

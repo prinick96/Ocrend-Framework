@@ -35,7 +35,8 @@ function _ini_login() {
 };
 
 if(document.getElementById('login')) {
-  document.getElementById('login').onclick = function() {
+  document.getElementById('login').onclick = function(e) {
+    e.preventDefault();
     _ini_login();
   };
 }
@@ -46,7 +47,7 @@ if(document.getElementById('login_form')) {
       var keyCode = e.keyCode || e.which;
       if (keyCode == '13'){
         _ini_login();
-        
+
         return false;
       }
   };
