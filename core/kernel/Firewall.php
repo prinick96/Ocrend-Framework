@@ -164,12 +164,13 @@ final class Firewall {
   private function getQueryString() {
     if(self::FCONF['PROTECTION_ROUTER_STRICT']) {
       return str_replace('%09', '%20', $_SERVER['REQUEST_URI']);
-    } else {
-      if($this->getEnv('QUERY_STRING')) {
-        return str_replace('%09', '%20', $this->getEnv('QUERY_STRING'));
-      }
-  		return '';
     }
+
+    if($this->getEnv('QUERY_STRING')) {
+      return str_replace('%09', '%20', $this->getEnv('QUERY_STRING'));
+    }
+
+    return '';
 	}
 
   //------------------------------------------------
@@ -318,10 +319,10 @@ final class Firewall {
       $this->Logs('OVH Server list',$GET_IP,$USER_AGENT,$GET_REFERER);
       if(IS_API) {
         die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_OVH)));
-      } else {
-        Func::redir();
-        return;
       }
+
+      Func::redir();
+      return;
     }
 
     //------------------------------------------------
@@ -332,10 +333,10 @@ final class Firewall {
         $this->Logs('OVH Server IP',$GET_IP,$USER_AGENT,$GET_REFERER);
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_OVH)));
-        } else {
-          Func::redir();
-          return;
         }
+
+        Func::redir();
+        return;
       }
     }
 
@@ -345,10 +346,10 @@ final class Firewall {
       $this->Logs('KIMSUFI Server list',$GET_IP,$USER_AGENT,$GET_REFERER);
       if(IS_API) {
         die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_KIMSUFI)));
-      } else {
-        Func::redir();
-        return;
       }
+
+      Func::redir();
+      return;
     }
 
     //------------------------------------------------
@@ -357,10 +358,10 @@ final class Firewall {
       $this->Logs('DEDIBOX Server list',$GET_IP,$USER_AGENT,$GET_REFERER);
       if(IS_API) {
         die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DEDIBOX)));
-      } else {
-        Func::redir();
-        return;
       }
+
+      Func::redir();
+      return;
     }
 
     //------------------------------------------------
@@ -371,10 +372,10 @@ final class Firewall {
         $this->Logs('DEDIBOX server IP',$GET_IP,$USER_AGENT,$GET_REFERER);
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DEDIBOX_IP)));
-        } else {
-          Func::redir();
-          return;
         }
+
+        Func::redir();
+        return;
       }
     }
 
@@ -384,10 +385,10 @@ final class Firewall {
       $this->Logs('DIGICUBE Server list',$GET_IP,$USER_AGENT,$GET_REFERER);
       if(IS_API) {
         die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DIGICUBE)));
-      } else {
-        Func::redir();
-        return;
       }
+
+      Func::redir();
+      return;
     }
 
     //------------------------------------------------
@@ -398,10 +399,10 @@ final class Firewall {
         $this->Logs('DIGICUBE Server IP',$GET_IP,$USER_AGENT,$GET_REFERER);
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DIGICUBE_IP)));
-        } else {
-          Func::redir();
-          return;
         }
+
+        Func::redir();
+        return;
       }
     }
 
@@ -413,9 +414,9 @@ final class Firewall {
         $this->Logs('IPs (ip:'.$range_ip[0].') Spam list (Visitar framework.ocrend.com/phpfirewall/)',$GET_IP,$USER_AGENT,$GET_REFERER);
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_SPAM)));
-        } else {
-          die(self::MSG_PROTECTION_SPAM);
         }
+
+        die(self::MSG_PROTECTION_SPAM);
       }
     }
 
@@ -427,9 +428,9 @@ final class Firewall {
         $this->Logs('IPs (ip:'.$range_ip[0].') Reserved list (Visitar framework.ocrend.com/phpfirewall/)',$GET_IP,$USER_AGENT,$GET_REFERER);
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_SPAM_IP)));
-        } else {
-          die(self::MSG_PROTECTION_SPAM_IP);
         }
+
+        die(self::MSG_PROTECTION_SPAM_IP);
       }
     }
 
@@ -516,10 +517,10 @@ final class Firewall {
         $this->Logs('URL protect',$GET_IP,$USER_AGENT,$GET_REFERER);
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_URL)));
-        } else {
-          Func::redir();
-          return;
         }
+
+        Func::redir();
+        return;
       }
     }
 
@@ -530,10 +531,10 @@ final class Firewall {
       $this->Logs('Posting another server',$GET_IP,$USER_AGENT,$GET_REFERER);
       if(IS_API) {
         die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_OTHER_SERVER)));
-      } else {
-        Func::redir();
-        return;
       }
+
+      Func::redir();
+      return;
     }
 
     //------------------------------------------------
@@ -590,10 +591,10 @@ final class Firewall {
   			$this->Logs('Bots attack',$GET_IP,$USER_AGENT,$GET_REFERER );
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_BOTS)));
-        } else {
-          Func::redir();
-          return;
         }
+
+        Func::redir();
+        return;
   		}
       //------------------------------------------------
   	}
@@ -604,10 +605,10 @@ final class Firewall {
       $this->Logs('Invalid request',$GET_IP,$USER_AGENT,$GET_REFERER);
       if(IS_API) {
         die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_REQUEST)));
-      } else {
-        Func::redir();
-        return;
       }
+
+      Func::redir();
+      return;
     }
 
     //------------------------------------------------
@@ -616,10 +617,10 @@ final class Firewall {
       $this->Logs('Dos attack',$GET_IP,$USER_AGENT,$GET_REFERER);
       if(IS_API) {
         die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_DOS)));
-      } else {
-        Func::redir();
-        return;
       }
+
+      Func::redir();
+      return;
     }
 
     //------------------------------------------------
@@ -638,10 +639,10 @@ final class Firewall {
         $this->Logs('Union attack',$GET_IP,$USER_AGENT,$GET_REFERER);
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_UNION)));
-        } else {
-          Func::redir();
-          return;
         }
+
+        Func::redir();
+        return;
       }
     }
 
@@ -651,10 +652,10 @@ final class Firewall {
       $this->Logs('Click attack',$GET_IP,$USER_AGENT,$GET_REFERER);
       if(IS_API) {
         die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_CLICK)));
-      } else {
-        Func::redir();
-        return;
       }
+
+      Func::redir();
+      return;
   	}
 
     //------------------------------------------------
@@ -668,10 +669,10 @@ final class Firewall {
   			$this->Logs('XSS attack',$GET_IP,$USER_AGENT,$GET_REFERER);
         if(IS_API) {
           die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_XSS)));
-        } else {
-          Func::redir();
-          return;
         }
+
+        Func::redir();
+        return;
   		}
   	}
 
