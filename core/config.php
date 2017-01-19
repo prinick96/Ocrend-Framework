@@ -101,6 +101,6 @@ define('DEBUG', false);
 //------------------------------------------------
 
 # Versión actual del framework
-define('VERSION', '1.1.2');
+define('VERSION', '1.1.3');
 
 ?>

@@ -2,7 +2,7 @@
 
 ![Hecho en PHP 7](https://img.shields.io/packagist/l/doctrine/orm.svg)
 ![Licencia MIT](https://img.shields.io/badge/php-7-blue.svg)
-![Versión Estable](https://img.shields.io/badge/stable-1.1.2-blue.svg)
+![Versión Estable](https://img.shields.io/badge/stable-1.1.3-blue.svg)
 
 ## Introducción
 ### ¿Qué es Ocrend Framework?
@@ -72,7 +72,7 @@ __./core/config.php__
   ));
 
    #Url en donde está instalado el framework, importante el "/" al final
-  define('URL', 'http://prinick-notebook/Ocrend-Framework/');
+  define('URL', 'http://localhost/Ocrend-Framework/');
 
   #Nombre de la aplicación, este también sale en <title></title>, correos, footer y demás
   define('APP', 'Ocrend Framework');
