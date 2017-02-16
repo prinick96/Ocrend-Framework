@@ -11,15 +11,18 @@ final class Lostpass extends Models implements OCREND {
 		parent::__construct();
 	}
 
+	# Envía el correo
 	final public function RepairPass(array $data) : array {
+		try {
 
-		$mail = $this->db->scape($data['email']);
-		$user = $this->db->select('id,user','users',"email='$mail'",'LIMIT 1');
+			$mail = $this->db->scape($data['email']);
+			$user = $this->db->select('id,user','users',"email='$mail'",'LIMIT 1');
 
-		if(false == $user) {
-			$success = 0;
-			$message = 'El <b>email</b> introducido no existe.';
-		} else {
+			# Filtro
+			if(false == $user) {
+				throw new Exception('El <b>email</b> introducido no existe.');
+			}
+
 			$id = $user[0]['id'];
 			$u = uniqid();
 			$keypass = time();
@@ -32,6 +35,7 @@ final class Lostpass extends Models implements OCREND {
 			Helper::load('emails');
 			$dest[$mail] = $user[0]['user'];
 			$email = Emails::send_mail($dest,Emails::plantilla($HTML),'Recuperar contraseña perdida');
+
 			if(true === $email) {
 				$e = array(
 					'keypass' => $keypass,
@@ -41,15 +45,15 @@ final class Lostpass extends Models implements OCREND {
 				$success = 1;
 				$message = 'Hemos enviado un email a <b>' . $mail . '</b> para recuperar su contraseña.';
 			} else {
-				$success = 0;
-				$message = $email;
+				throw new Exception($email);
 			}
 
+		} catch (Exception $e) {
+			return array('success' => 0, 'message' => $e->getMessage());
 		}
-
-		return array('success' => $success, 'message' => $message);
 	}
 
+	# Actualiza la contraseña
 	final public function UpdatePass() {
 		$u = $this->db->select('id,keypass_tmp','users',"keypass='$this->id' AND keypass <> '0'",'LIMIT 1');
 

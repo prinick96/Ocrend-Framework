@@ -70,7 +70,7 @@ final class {{model}} extends Models implements OCREND {
       return $this->db->select('*','{{view}}');
     }
 
-    return $this->db->select('*','{{view}}',"id='$this->id'");
+    return $this->db->select('*','{{view}}',"id='$this->id'",'LIMIT 1');
   }
 
   public function __destruct() {

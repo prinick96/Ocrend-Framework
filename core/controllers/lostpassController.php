@@ -8,7 +8,7 @@ defined('INDEX_DIR') OR exit('Ocrend software says .i.');
 class lostpassController extends Controllers {
 
 	public function __construct() {
-		parent::__construct(false,true);
+		parent::__construct(false,true);		
 		switch ($this->method) {
 			case 'cambiar':
 				if($this->isset_id) {
