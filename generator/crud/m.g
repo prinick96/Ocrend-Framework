@@ -15,9 +15,7 @@ final class {{model}} extends Models implements OCREND {
   final private function errores(array $data) {
     try {
 
-      /*if(Func::emp($data['ejemplo'])) {
-        throw new Exception('Error campo vacío.');
-      }*/
+      {{errores_php}}
 
       return false;
     } catch(Exception $e) {
@@ -32,10 +30,7 @@ final class {{model}} extends Models implements OCREND {
       return $error;
     }
 
-    /*$i = array(
-      'ejemplo' => $data['ejemplo']
-    );
-    $this->db->insert('{{view}}',$i);*/
+    {{crear_php}}
 
     return array('success' => 1, 'message' => '<b>Creado</b> con éxito.');
   }
@@ -50,27 +45,24 @@ final class {{model}} extends Models implements OCREND {
       return $error;
     }
 
-    /*$i = array(
-      'ejemplo' => $data['ejemplo']
-    );
-    $this->db->update('{{view}}',$i,"id='$this->id'",'LIMIT 1');*/
+    {{editar_php}}
 
     return array('success' => 1, 'message' => '<b>Editado</b> con éxito.');
   }
 
   # Borrar un elemento
   final public function borrar() {
-    $this->db->delete('{{view}}',"id='$this->id'");
-    Func::redir(URL . '{{view}}/');
+    $this->db->delete('{{table_name}}',"id='$this->id'");
+    Func::redir(URL . '{{view}}/?success=true');
   }
 
   # Leer uno o todos los elementos
   final public function leer(bool $multi = true) {
     if($multi) {
-      return $this->db->select('*','{{view}}');
+      return $this->db->select('*','{{table_name}}');
     }
 
-    return $this->db->select('*','{{view}}',"id='$this->id'",'LIMIT 1');
+    return $this->db->select('*','{{table_name}}',"id='$this->id'",'LIMIT 1');
   }
 
   public function __destruct() {

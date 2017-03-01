@@ -5,7 +5,7 @@ defined('INDEX_DIR') OR exit('Ocrend software says .i.');
 
 //------------------------------------------------
 
-final class Func {
+final class Func extends Twig_Extension {
 
   /**
     * Calcula el porcentaje de una cantidad
@@ -155,6 +155,36 @@ final class Func {
        );
        return str_replace(array_keys($cambios),array_values($cambios),$date);
      }
+
+    //------------------------------------------------
+
+  /**
+   * Se obtiene de Twig_Extension y sirve para que cada función esté disponible como etiqueta en twig
+    *
+   * @return array: Todas las funciones con sus respectivos nombres de acceso en plantillas twig
+  */
+   public function getFunctions() : array {
+      return array(
+       new Twig_Function('percent', array($this, 'percent')),
+       new Twig_Function('convert', array($this, 'convert')),
+       new Twig_Function('get_gravatar', array($this, 'get_gravatar')),
+       new Twig_Function('emp', array($this, 'emp')),
+       new Twig_Function('e_dynamic', array($this, 'e')),
+       new Twig_Function('all_full', array($this, 'all_full')),
+       new Twig_Function('fecha', array($this, 'fecha'))
+     );
+   }
+
+   //------------------------------------------------
+
+  /**
+    * Identificador único para la extensión de twig
+    *
+    * @return string: Nombre de la extensión
+  */
+  public function getName() : string {
+     return 'ocrend_framework_func_class';
+  }
 
 }
 

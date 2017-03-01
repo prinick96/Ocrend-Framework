@@ -2,7 +2,8 @@
 
 ![Hecho en PHP 7](https://img.shields.io/packagist/l/doctrine/orm.svg)
 ![Licencia MIT](https://img.shields.io/badge/php-7-blue.svg)
-![Versión Estable](https://img.shields.io/badge/stable-1.1.3-blue.svg)
+![Versión Estable](https://img.shields.io/badge/stable-1.2-blue.svg)
+![Escribiendo Doc](https://img.shields.io/badge/Escribiendo%20documentaci%C3%B3n-1.2-blue.svg)
 
 ## Introducción
 ### ¿Qué es Ocrend Framework?
@@ -11,7 +12,7 @@ Es un framework sencillo escrito en **PHP 7** que utiliza la arquitectura **MVC*
 
 ### ¿Por qué utilizarlo?
 
-* No requiere manejo de una shell (aunque existe la posibilidad con un pequeño programa escrito en python)
+* No requiere manejo de una shell (aunque existe la posibilidad con un pequeño programa escrito en php por consola)
 * Es pequeño y de muy fácil aprendizaje
 * Es eficiente y seguro
 * Fomenta la creación de código limpio, comentado, bien estructurado y eficiente
@@ -36,15 +37,13 @@ Para colocar el framework en producción se requiere un VPS, Dedicado o Hosting 
 
 * PHP 7
 * APACHE 2
-* Python para utilizar el generador de código (no necesario para el funcionamiento del framework)
 
-## Instalación
+## Instalación y Configuración
 ### Descarga
 Clonando el repositorio.
 ```
   git clone https://github.com/prinick96/Ocrend-Framework.git
 ```
-
 Descargando el paquete manualmente.
 
 [Ver Descargas](https://github.com/prinick96/Ocrend-Framework/releases)
@@ -72,7 +71,7 @@ __./core/config.php__
   ));
 
    #Url en donde está instalado el framework, importante el "/" al final
-  define('URL', 'http://localhost/Ocrend-Framework/');
+  define('URL', 'http://prinick-notebook/Ocrend-Framework/');
 
   #Nombre de la aplicación, este también sale en <title></title>, correos, footer y demás
   define('APP', 'Ocrend Framework');
@@ -90,12 +89,25 @@ __./core/config.php__
   */
   define('__ROOT__', '/Ocrend-Framework/');
 
+ # Control de sesiones
+ define('DB_SESSION', true); # Uso de sesiones con la base de datos
+ define('SESSION_TIME', 18000); # Tiempo de vida para las sesiones 5 horas = 18000 segundos.
+ define('SESS_APP_ID', 'app_id'); # Nombre de la variable de sesión que contendrá el ID del usuario activo
+ session_start([
+   'use_strict_mode' => true,
+   'use_cookies' => true,
+   'cookie_lifetime' => SESSION_TIME,
+   'cookie_httponly' => true, # Evita el acceso a la cookie mediante lenguajes de script (cómo javascript)
+   'hash_function' => 5 # sha256, para obtener una lista completa print_r(hash_algos());
+ ]);
+
   #Activación del firewall que ofrece protección contra múltiples ataques comunes
   define('FIREWALL', true);
 
   #Establecer en FALSE una vez esté todo el producción, en desarrollo es recomendando mantener en TRUE
   define('DEBUG', true);
 ```
+
 __./core/kernel/Firewall.php__
 ```php
   #Línea 14
@@ -125,52 +137,42 @@ Crear __./core/controllers/holaController.php__
 
   }
 ```
-Crear __./templates/hola/hola.phtml__
+Crear __./templates/plates/hola/hola.phtml__
 ```phtml
 <?= $this->insert('overall/header') ?>
-<body class="framework">
-
-  <div class="logo">
-    <h3><?= strtoupper(APP) ?></h3>
-  </div>
-
-  <div class="content">
-    <div class="ocrend-welcome">
-      <span class="ocrend-welcome">¡Hola!</span>
-      <span class="ocrend-welcome-subtitle">mundo.</span>
+  <body>
+    <div class="container">
+      <div class="presentacion center">
+        <div class="row">
+          <div class="col-xs-12">
+            <h1>HOLA MUNDOOOO!</h1>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="form-actions">
-      <p>¡Hola mundo!</p>
-
-    </div>
-
     <?= $this->insert('overall/footer') ?>
-
-  </div>
-</body>
+  </body>
 </html>
 ```
 Acceder a http://url.com/hola/
 
 ## Generador de código PHP
 
-__Requiere Python instalado para funcionar__
-
-El generador de código PHP, es muy sencillo y está escrito en Python, se encuentra en __./gen.py__ y es de libre edición como todo el framework, la idea de este generador es tener una pequeña herramienta para agilizar el proceso de escribir muchas veces el mismo molde al momento de crear Modelos, Vistas o Controladores para empezar a programar.
+El generador de código PHP, es muy sencillo y está escrito en PHP, se encuentra en __./gen.php__ y es de libre edición como todo el framework, la idea de este generador es tener una pequeña herramienta para agilizar el proceso de escribir muchas veces el mismo molde al momento de crear Modelos, Vistas o Controladores, tablas en la base de datos o cruds enteros para empezar a programar.
 
 Ir a la consola, sea en Windows, Linux o Mac y escribir:
 ```
   ~$ cd /ruta/en/donde/esta/el/framework/
 ```
-A continuación escribir el comando para generar un módulo completo (Modelo, Vista, Controlador y Petición GET API REST):
+A continuación escribir el comando para generar un módulo completo (Modelo,Vista y Controlador):
 ```
-  ~$ python gen.py mvca:get Ejemplo
+  ~$ php gen.php mvc Ejemplo
 ```
-Debería de aparecer en consola, tres mensajes que indican la creación de tres archivos, entonces ya podríamos entrar a http://url.com/ejemplo/ e interactuar con el formulario ajax que se nos ha generado.
+Debería de aparecer en consola, tres mensajes que indican la creación de tres archivos, entonces ya podríamos entrar a http://url.com/ejemplo/
 
 Para __más información acerca de los comandos__ escribir:
 ```
-  ~$ python gen.py -ayuda
+  ~$ php gen.php -ayuda
 ```
 
 ## Documentación

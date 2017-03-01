@@ -11,7 +11,7 @@ final class {{model}} extends Models implements OCREND {
     parent::__construct();
   }
 
-  final public function Foo(array $data) : array {
+  final public function foo(array $data) : array {
     # ...
     return array('success' => 0, 'message' => 'funcionando');
   }

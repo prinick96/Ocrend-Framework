@@ -62,15 +62,14 @@ define('APP', 'Ocrend Framework');
 //------------------------------------------------
 
 # Control de sesiones
-define('DB_SESSION', true);
+define('DB_SESSION', false);
 define('SESSION_TIME', 18000); # Tiempo de vida para las sesiones 5 horas = 18000 segundos.
 define('SESS_APP_ID', 'app_id');
 session_start([
   'use_strict_mode' => true,
   'use_cookies' => true,
   'cookie_lifetime' => SESSION_TIME,
-  'cookie_httponly' => true, # Evita el acceso a la cookie mediante lenguajes de script (cómo javascript)
-  'hash_function' => 5 # sha256, para obtener una lista completa print_r(hash_algos());
+  'cookie_httponly' => true # Evita el acceso a la cookie mediante lenguajes de script (cómo javascript)
 ]);
 
 //------------------------------------------------
@@ -100,7 +99,12 @@ define('DEBUG', false);
 
 //------------------------------------------------
 
+# Verifica cual es el motor de templates actual (TWIG:true o PLATESPHP:false)
+define('USE_TWIG_TEMPLATE_ENGINE', false);
+
+//------------------------------------------------
+
 # Versión actual del framework
-define('VERSION', '1.1.3');
+define('VERSION', '1.2');
 
 ?>

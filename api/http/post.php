@@ -56,3 +56,16 @@ $app->post('/lostpass',function($request, $response) {
 
 	return $response;
 });
+
+
+/**
+  * Ejemplo acceso rest
+  * @return Devuelve un json con información acerca del éxito o posibles errores.
+*/
+$app->post('/ejemplo',function($request, $response){
+
+  $e = new Ejemplo;
+  $response->withJson($e->foo($_POST));
+
+  return $response;
+});

@@ -182,7 +182,11 @@ final class Conexion extends PDO {
 
       return parent::query($q);
     } catch (Exception $e) {
-      $message = 'Error en la query: <b>' . $q . '<b/><br /><br />' . $e->getMessage();
+      if(defined(GENERATOR)) {
+        $message = "\nError en la query:\n $q \n\n" . $e->getMessage();
+      } else {
+        $message = 'Error en la query: <b>' . $q . '<b/><br /><br />' . $e->getMessage();
+      }
       die(IS_API ? json_encode(array('success' => 0, 'message' => $message)) : $message);
     }
   }

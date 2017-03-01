@@ -79,6 +79,9 @@ final class Debug {
 
     global $router;
 
+    # Nombre de templates
+    $template_engine = ['PlatesPHP','Twig'];
+
     //------------------------------------------------
     # Fin de test de velocidad
     $endtime = explode(" ",microtime());
@@ -92,6 +95,7 @@ final class Debug {
     echo '<b class="cab">Archivo:</b> "' , $_SERVER['PHP_SELF'], '"<br />';
     echo '<b class="cab">PHP:</b> ', phpversion(), '<br />';
     echo '<b class="cab">FRAMEWORK:</b> ', VERSION , '<br />';
+    echo '<b class="cab">Motor de Templates:</b> ', $template_engine[(int) USE_TWIG_TEMPLATE_ENGINE] , '<br />';
     echo '<strong class="cab">Controller: </strong> ', $router->getController() ,'<br />';
     //------------------------------------------------
 

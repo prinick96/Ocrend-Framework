@@ -1,44 +1,30 @@
-.framework{background-color:#5c97bd}
-p{color:#edf4f8}
-.framework .logo{margin:100px auto 0;padding:15px;text-align:center;color:#edf4f8}
-.framework .content{width:400px;margin:40px auto}
-.framework .ocrend-welcome{margin-bottom:20px;color:#edf4f8;font-size:19px;font-weight:400!important}
-.framework .ocrend-welcome-subtitle{color:#c9dce9;font-size:17px;font-weight:300!important;padding-left:10px}
-.framework .content h4{color:#555}
-.framework .content .hint{color:#b7d1e2;padding:0;font-size:14px;margin:15px 0 7px}
-.framework .content .forget-form,.framework .content .framework-form{padding:0;margin:0}
-.form-input {background-color:#6ba3c8;border:1px solid #6ba3c8;height:43px;color:#d9ecf9}
-.framework .content .form-control:active,.framework .content .form-control:focus{border:1px solid #83b8db}
-.framework .content .form-control::-moz-placeholder{color:#d9ecf9;opacity:1}
-.framework .content .form-control:-ms-input-placeholder{color:#d9ecf9}
-.framework .content .form-control::-webkit-input-placeholder{color:#d9ecf9}
-.framework .content select.form-control{padding-left:9px;padding-right:9px}
-.framework .content .forget-form,.framework .content .register-form{display:none}
-.framework .content .ocrend-welcome{font-weight:300;margin-bottom:25px}
-.framework .content .form-actions{clear:both;border:0;padding:0 30px 25px;margin-left:-30px;margin-right:-30px}
-.form-actions .firewall-status-block{padding-top:7px}
-.framework-options{margin-top:30px;padding-top:20px;padding-bottom:50px;border-top:1px solid #69a0c4;border-bottom:1px solid #69a0c4}
-.framework-options h4{margin-top:8px;font-weight:600;font-size:15px;color:#b7d1e2!important}
-.framework .firewall-status{font-size:14px}
-.framework .content .forget-form .form-actions{border:0;margin-bottom:0;padding-bottom:20px}
-.framework .content .register-form .form-actions{border:0;margin-bottom:0;padding-bottom:0}
-.framework .content .form-actions .checkbox{margin-top:8px;display:inline-block}
-.framework .content .form-actions .btn{margin-top:1px}
-.framework .content .firewall-status{color:#d7eaf7;font-size:15px}
-.framework .content .rememberme{margin-top:8px}.framework .content .mt-checkbox{color:#c9dce9!important}
-.framework .content .mt-checkbox>span:after{border-color:#c9dce9!important}
-.framework .content .create-account{text-align:center;margin-top:20px}
-.framework .content .create-account p a{font-weight:300;font-size:16px;color:#fff}
-.framework .content .create-account a{display:inline-block;margin-top:5px}
-.framework .copyright{text-align:center;margin:10px auto 30px 0;padding:10px;color:#c9dce9;font-size:13px}
-@media (max-width:1400px){.framework .logo{margin-top:100px}}
-@media (max-width:480px){.framework .logo{margin-top:30px;padding:0}
-.framework .content{width:245px}.framework .content h3{font-size:22px}
-.framework .checkbox{font-size:13px}}
-.btn.red:not(.btn-outline){color:#fff;background-color:#e75054;border-color:#e7505a;margin-bottom: 5px}
-.btn.red:not(.btn-outline).focus,.btn.red:not(.btn-outline):focus{color:#fff;background-color:#ad343d;border-color:#a1161f}
-.btn.red:not(.btn-outline).active,.btn.red:not(.btn-outline):active,.btn.red:not(.btn-outline):hover{color:#fff;background-color:#ad343d;border-color:#dc1e2b}
-.documentacion{font-size: 27px!important}
-.documentacion a{text-decoration: none;color:#edf4f8!important}
-.documentacion a:hover{color:#425d6c!important}
-.form-group label.cole{color:#edf4f8!important}
+.presentacion {
+  padding: 10px;
+}
+
+.center {
+  text-align: center;
+}
+
+.botones {
+  margin-top: 10px;
+}
+
+.documentacion {
+  font-size: 30px;
+}
+.documentacion a {
+  text-decoration: none!important;
+  color: rgb(32, 45, 52);
+}
+.documentacion a:hover {
+  color: rgb(67, 93, 107);
+}
+
+.show {
+  display: block!important;
+}
+
+.hide {
+  display: none!important;
+}

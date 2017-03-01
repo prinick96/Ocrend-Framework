@@ -50,15 +50,40 @@ abstract class Controllers {
       exit;
     }
 
-    # Carga del template
-    $this->template = new League\Plates\Engine('templates','phtml');
+    # TWIG ENGINE
+    if(USE_TWIG_TEMPLATE_ENGINE) {
+      # Más documentación http://gitnacho.github.io/Twig/
+      $this->template = new Twig_Environment(new Twig_Loader_Filesystem('./templates/twig/'), array(
+          # ruta donde se guardan los archivos compilados
+          'cache' => './templates/twig/.cache/',
+           # false para caché estricto, cero actualizaciones, recomendado para páginas 100% estáticas
+          'auto_reload' => true,
+          # en true, las plantillas generadas tienen un método __toString() para mostrar los nodos generados
+          'debug' => DEBUG
+      ));
 
-    /*
-    # Insertar por defecto, en TODOS los templates un elemento o más
-    $this->template->addData(array(
-      'elemento' => $variable,
-    ));
-    */
+      # Insertar por defecto, en TODOS los templates un elemento
+      $this->template->addGlobal('session', $_SESSION);
+      $this->template->addGlobal('get', $_GET);
+      $this->template->addGlobal('post', $_POST);
+      $this->template->addGlobal('route', $this->route);
+
+      # Añadimos por defecto al modelo Func como extensión de twig
+      $this->template->addExtension(new Func());
+    }
+
+    # PLATESPHP ENGINE
+    else {
+      # Carga del template
+      $this->template = new League\Plates\Engine('templates/plates','phtml');
+
+      /*
+      # Insertar por defecto, en TODOS los templates un elemento o más
+      $this->template->addData(array(
+        'elemento' => $variable,
+      ));
+      */
+    }
 
     # Debug
     if(DEBUG) {

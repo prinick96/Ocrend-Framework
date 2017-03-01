@@ -1,0 +1,22 @@
+<?php if (DEBUG): ?>
+  <script src="views/app/js/jdev.js"></script>
+<?php else: ?>
+  <script src="views/app/js/jquery.js"></script>
+<?php endif ?>
+
+<script src="views/app/js/jquery.numeric.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<?php if (!isset($_SESSION[SESS_APP_ID])): ?>
+  <?= $this->insert('overall/login') ?>
+  <?= $this->insert('overall/register') ?>
+  <?= $this->insert('overall/lostpass') ?>
+
+  <script src="views/app/js/login.js"></script>
+  <script src="views/app/js/register.js"></script>
+  <script src="views/app/js/lostpass.js"></script>
+<?php endif ?>
+
+<script>
+  $('.numeric').numeric();
+</script>

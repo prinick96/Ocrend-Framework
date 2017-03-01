@@ -5,7 +5,7 @@ defined('INDEX_DIR') OR exit('Ocrend software says .i.');
 
 //------------------------------------------------
 
-final class Bootstrap {
+final class Bootstrap extends Twig_Extension {
 
   /**
     * Crea un Dropdown de Boostrap
@@ -631,5 +631,40 @@ final class Bootstrap {
     ),$multi,$selected,$extra_css);
   }
 
+
+  //------------------------------------------------
+
+  /**
+    * Se obtiene de Twig_Extension y sirve para que cada función esté disponible como etiqueta en twig
+    *
+    * @return array: Todas las funciones con sus respectivos nombres de acceso en plantillas twig
+  */
+  public function getFunctions() : array {
+    return array(
+      new Twig_Function('dropdown', array($this, 'dropdown')),
+      new Twig_Function('button_dropdown', array($this, 'button_dropdown')),
+      new Twig_Function('button', array($this, 'button')),
+      new Twig_Function('basic_input', array($this, 'basic_input')),
+      new Twig_Function('basic_select', array($this, 'basic_select')),
+      new Twig_Function('checkbox', array($this, 'checkbox')),
+      new Twig_Function('radio', array($this, 'radio')),
+      new Twig_Function('textarea', array($this, 'textarea')),
+      new Twig_Function('alert', array($this, 'alert')),
+      new Twig_Function('pager', array($this, 'pager')),
+      new Twig_Function('table', array($this, 'table')),
+      new Twig_Function('paises', array($this, 'paises'))
+    );
+  }
+
+  //------------------------------------------------
+
+  /**
+    * Identificador único para la extensión de twig
+    *
+    * @return string: Nombre de la extensión
+  */
+  public function getName() : string {
+    return 'ocrend_framework_helper_bootstrap';
+  }
 
 }

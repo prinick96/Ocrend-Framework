@@ -10,14 +10,14 @@ class {{controller}} extends Controllers {
   public function __construct() {
     parent::__construct();
 
-    $m = new {{model}};
+    ${{variable}} = new {{model}};
 
     switch($this->method) {
       case 'crear':
         echo $this->template->render('{{view}}/crear');
       break;
       case 'editar':
-        if($this->isset_id and false !== ($item = $m->leer(false))) {
+        if($this->isset_id and false !== ($item = ${{variable}}->leer(false))) {
           echo $this->template->render('{{view}}/editar', array(
             'data' => $item[0]
           ));
@@ -26,12 +26,11 @@ class {{controller}} extends Controllers {
         }
       break;
       case 'eliminar':
-        $m->borrar();
+        ${{variable}}->borrar();
       break;
       default:
-        Helper::load('bootstrap');
         echo $this->template->render('{{view}}/{{view}}',array(
-          'data' => $m->leer()
+          'data' => ${{variable}}->leer()
         ));
       break;
     }

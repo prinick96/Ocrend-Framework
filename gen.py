@@ -6,8 +6,14 @@ import os
   * Ocrend Framework - PHP Code Generator
   * @author Brayan Narvaez (Prinick) <prinick@ocrend.com> <youtube.com/user/prinick96>
   * @copyright 2016 - Ocrend Software
+  ****************************************************************************************************
+  ****************************************************************************************************
+  **** DESCONTINUADO, mejor utilizar gen.php, tiene más posibilidades y no requiere python ***********
+  ****************************************************************************************************
+  ****************************************************************************************************
 '''
 
+'''
 R_MODELS = './core/models/'
 R_CONTROLLERS = './core/controllers/'
 R_VIEWS = './templates/'
@@ -26,12 +32,12 @@ def create_file(route,filename,ext,api,crud,php_method):
 
     if route == R_MODELS:
         if True == crud:
-            amodel = open('./generator/crud/m.g','r')
+            amodel = open('./generator/python/crud/m.g','r')
         else:
             if api:
-                amodel = open('./generator/ma.g','r')
+                amodel = open('./generator/python/ma.g','r')
             else:
-                amodel = open('./generator/m.g','r')
+                amodel = open('./generator/python/m.g','r')
 
         content = amodel.read()
         amodel.close()
@@ -40,9 +46,9 @@ def create_file(route,filename,ext,api,crud,php_method):
         e.write(content)
     elif route == R_CONTROLLERS:
         if True == crud:
-            acontroller = open('./generator/crud/c.g','r')
+            acontroller = open('./generator/python/crud/c.g','r')
         else:
-            acontroller = open('./generator/c.g','r')
+            acontroller = open('./generator/python/c.g','r')
 
         content = acontroller.read()
         acontroller.close()
@@ -55,19 +61,19 @@ def create_file(route,filename,ext,api,crud,php_method):
         if True == crud:
             if 'editar' == php_method:
                 creado = route + 'editar' + ext
-                aview = open('./generator/crud/v_edit.g','r')
+                aview = open('./generator/python/crud/v_edit.g','r')
             elif 'crear' == php_method:
                 creado = route + 'crear' + ext
-                aview = open('./generator/crud/v_add.g','r')
+                aview = open('./generator/python/crud/v_add.g','r')
             else:
                 creado = route + filename + ext
-                aview = open('./generator/crud/v_list.g','r')
+                aview = open('./generator/python/crud/v_list.g','r')
         else:
             creado = route + filename + ext
             if api:
-                aview = open('./generator/va.g','r')
+                aview = open('./generator/python/va.g','r')
             else:
-                aview = open('./generator/v.g','r')
+                aview = open('./generator/python/v.g','r')
 
         content = aview.read()
         content = content.replace('{{action}}',filename.lower())
@@ -111,7 +117,7 @@ def write_api(method,name,crud,php_method):
     e.write('\n});')
     e.close()
 
-    ajs = open('./generator/js.g','r')
+    ajs = open('./generator/python/js.g','r')
     content = ajs.read()
     ajs.close()
 
@@ -191,6 +197,7 @@ def main():
     else:
         if arg[1] == '-ayuda':
             print ('======================= AYUDA =======================')
+            print ('\n- RECOMENDADO USAR EL GENERADOR gen.php, VER DOC EN PAGINA OFICIAL.\n')
             print ('\n-Crear CRUD COMPLETO: python gen.py crud Modulo')
             print ('-Crear Modelo: python gen.py m Modulo')
             print ('-Crear Modelo y Peticion GET API REST: python gen.py ma:get Modulo')
@@ -210,6 +217,11 @@ def main():
             print ('Para mas informacion visitar framework.ocrend.com/generador/')
         else:
             print ("Es necesario escribir el nombre del modulo a crear")
+
+'''
+
+def main():
+    print ('\nEste generador ha sido descontinuado, revisar el generador PHP, en la documentacion oficial. \n\nEs algo tan facil como escribir:\n- php gen.php -ayuda')
 
 if __name__ == '__main__':
     main()

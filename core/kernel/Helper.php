@@ -24,11 +24,17 @@ final class Helper {
     *
     * @return void
   */
-  final static public function load(string $helper) {
-
-    $file = self::ROUTE . ucwords($helper) . '.php';
+  final static public function load(string $helper, Twig_Environment $object = null) {
+    $helper = ucwords($helper);
+    $file = self::ROUTE . $helper . '.php';
     if(file_exists($file)) {
       include_once($file);
+
+      # Integración a twig
+      if($object instanceof Twig_Environment) {
+        $object->addExtension(new $helper());
+      }
+
     } else {
       trigger_error('El helper ' . $helper . ' no existe en la librería de helpers.', E_USER_ERROR);
     }
