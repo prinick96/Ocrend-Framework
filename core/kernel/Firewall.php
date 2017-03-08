@@ -315,7 +315,7 @@ final class Firewall {
 
     //------------------------------------------------
 
-    if(self::FCONF['PROTECTION_SERVER_OVH'] and stristr($GET_HOST,'ovh')) {
+    if(self::FCONF['PROTECTION_SERVER_OVH'] and stristr($GET_HOST,'ovh') and !stristr($GET_HOST,'dsl.ovh')) {
       $this->Logs('OVH Server list',$GET_IP,$USER_AGENT,$GET_REFERER);
       if(IS_API) {
         die(json_encode(array('success' => 0, 'message' => self::MSG_PROTECTION_OVH)));
