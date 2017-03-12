@@ -14,6 +14,7 @@
 //------------------------------------------------
 
 # Carga del núcleo
+define('GENERATOR',false);
 define('INDEX_DIR',true);
 require('../core/api_core.php');
 
