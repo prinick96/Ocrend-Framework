@@ -572,10 +572,10 @@ $app->'.$method[$this->api].'\'/'. $this->viewName . $mode .'\',function($reques
 
     # Crear vista SIN api
     if($this->view && -1 == $this->api ) {
-      $this->generateFile(2,'./generator/'.self::TEMPLATE_EXTENSIONS[(int) USE_TWIG_TEMPLATE_ENGINE].'/v.g');
+      $this->generateFile(2,'./generator/'.self::TPL_FOLDER.'v.g');
     # Crear vista CON api (debe haber un modelo si o si)
     } else if ($this->model && $this->view && -1 < $this->api) {
-      $this->generateFile(2,'./generator/'.self::TEMPLATE_EXTENSIONS[(int) USE_TWIG_TEMPLATE_ENGINE].'/va.g');
+      $this->generateFile(2,'./generator/'.self::TPL_FOLDER.'va.g');
       $this->generateFile(3,'./generator/js.g',strtoupper($this->api_http[$this->api]),$this->viewName);
     }
 
