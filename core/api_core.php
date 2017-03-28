@@ -19,7 +19,14 @@ require('../core/config.php');
 require('../core/kernel/Ocrend.php');
 require('../vendor/autoload.php');
 
+//------------------------------------------------
+
 # Router para URL's amigables
 $router = new Router;
+
+//------------------------------------------------
+
+# Activación del Firewall
+!FIREWALL ?: new Firewall;
 
 ?>
