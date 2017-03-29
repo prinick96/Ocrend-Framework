@@ -40,12 +40,12 @@ if(DEBUG) {
 
 //------------------------------------------------
 
-# Router para URL's amigables
-$router = new Router;
+# Activación del Firewall
+!FIREWALL ?: new Firewall;
 
 //------------------------------------------------
 
-# Activación del Firewall
-!FIREWALL ?: new Firewall;
+# Router para URL's amigables
+$router = new Router;
 
 ?>
