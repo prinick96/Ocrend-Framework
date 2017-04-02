@@ -182,7 +182,7 @@ final class Conexion extends PDO {
 
       return parent::query($q);
     } catch (Exception $e) {
-      if(defined(GENERATOR)) {
+      if(defined('GENERATOR')) {
         $message = "\nError en la query:\n $q \n\n" . $e->getMessage();
       } else {
         $message = 'Error en la query: <b>' . $q . '<b/><br /><br />' . $e->getMessage();
