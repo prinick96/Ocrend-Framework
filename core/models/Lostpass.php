@@ -42,8 +42,8 @@ final class Lostpass extends Models implements OCREND {
 					'keypass_tmp' => $u
 				);
 				$this->db->update('users',$e,"id='$id'",'LIMIT 1');
-				$success = 1;
-				$message = 'Hemos enviado un email a <b>' . $mail . '</b> para recuperar su contraseña.';
+				
+				return array('success' => 1, 'message' => 'Hemos enviado un email a <b>' . $mail . '</b> para recuperar su contraseña.');
 			} else {
 				throw new Exception($email);
 			}
