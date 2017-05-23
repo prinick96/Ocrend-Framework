@@ -105,6 +105,6 @@ define('USE_TWIG_TEMPLATE_ENGINE', false);
 //------------------------------------------------
 
 # Versión actual del framework
-define('VERSION', '1.2');
+define('VERSION', '1.2.4');
 
 ?>

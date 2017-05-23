@@ -2,8 +2,7 @@
 
 ![Hecho en PHP 7](https://img.shields.io/packagist/l/doctrine/orm.svg)
 ![Licencia MIT](https://img.shields.io/badge/php-7-blue.svg)
-![Versión Estable](https://img.shields.io/badge/stable-1.2-blue.svg)
-![Escribiendo Doc](https://img.shields.io/badge/Escribiendo%20documentaci%C3%B3n-1.2-blue.svg)
+![Versión Estable](https://img.shields.io/badge/stable-1.2.4-blue.svg)
 
 ## Introducción
 ### ¿Qué es Ocrend Framework?
