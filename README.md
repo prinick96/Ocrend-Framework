@@ -6,7 +6,8 @@
 
 ## Importante
 
-Pronto estará lista la documentación de Ocrend Framework 2, tanto en vídeos como escrita. Cambia drásticamente la estructura del framework pero la escencia sigue siendo la misma, inclusive más sencillo que antes.
+* Pronto estará lista la documentación de Ocrend Framework 2, tanto en vídeos como escrita. Cambia drásticamente la estructura del framework pero la esencia sigue siendo la misma, inclusive más sencillo que antes.
+* El framework nuevo se subirá a éste mismo repositorio, la versión 2.0 de la documentación estará en framework.ocrend.com y la documentación escrita para las versiones 1.x estará todavía disponible en framework.ocrend.com/v1/
 
 ## Introducción
 ### ¿Qué es Ocrend Framework?
