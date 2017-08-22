@@ -4,6 +4,10 @@
 ![Licencia MIT](https://img.shields.io/badge/php-7-blue.svg)
 ![Versión Estable](https://img.shields.io/badge/stable-1.2.4-blue.svg)
 
+## Importante
+
+Pronto estará lista la documentación de Ocrend Framework 2, tanto en vídeos como escrita. Cambia drásticamente la estructura del framework pero la escencia sigue siendo la misma, inclusive más sencillo que antes.
+
 ## Introducción
 ### ¿Qué es Ocrend Framework?
 
