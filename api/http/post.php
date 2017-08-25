@@ -1,58 +1,45 @@
 <?php
 
-# Seguridad
-defined('INDEX_DIR') OR exit('Ocrend software says .i.');
-
-//------------------------------------------------
-
 /*
-$app->post('/example4',function($request, $response){
-
-  $e = new Example;
-  $response->withJson($e->Foo($_POST));
-
-  return $response;
-});
+ * This file is part of the Ocrend Framewok 2 package.
+ *
+ * (c) Ocrend Software <info@ocrend.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
 */
 
-//------------------------------------------------
+use app\models as Model;
 
 /**
-  * Registro de un usuario
-  * @return Devuelve un json con información acerca del éxito o posibles errores.
-*/
-$app->post('/register',function($request, $response){
+    * Inicio de sesión
+    *
+    * @return json
+*/  
+$app->post('/login', function() use($app) {
+    $u = new Model\Users;   
 
-  $reg = new Register;
-  $response->withJson($reg->SignUp($_POST));
-
-  return $response;
+    return $app->json($u->login());   
 });
 
-//------------------------------------------------
-
 /**
-  * Inicio de Sesión
-  * @return Devuelve un json con información acerca del éxito o posibles errores.
+    * Registro de un usuario
+    *
+    * @return json
 */
-$app->post('/login',function($request, $response) {
+$app->post('/register', function() use($app) {
+    $u = new Model\Users; 
 
-  $login = new Login;
-  $response->withJson($login->SignIn($_POST));
-
-  return $response;
+    return $app->json($u->register());   
 });
 
-//------------------------------------------------
-
 /**
-	* Recuperación de contraseña perdida
-	* @return Devuelve un json con información acerca del éxito o posibles errores.
+    * Recuperar contraseña perdida
+    *
+    * @return json
 */
-$app->post('/lostpass',function($request, $response) {
+$app->post('/lostpass', function() use($app) {
+    $u = new Model\Users; 
 
-	$model = new Lostpass;
-	$response->withJson($model->RepairPass($_POST));
-
-	return $response;
+    return $app->json($u->lostpass());   
 });

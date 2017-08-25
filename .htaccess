@@ -1,15 +1,16 @@
-<FilesMatch "(\.(bak|config|dist|fla|inc|ini|log|psd|sh|sql|json|lock|swp|py|xml|phtml|g)|~)$">
+<Files .htaccess>
+    Order allow,deny
+    Deny from all
+</Files>
+
+<FilesMatch "(\.(bak|config|dist|fla|inc|ini|log|psd|sh|sql|json|lock|swp|xml|twig|gitignore|yml|md)|~)$">
     Order allow,deny
     Deny from all
     Satisfy All
 </FilesMatch>
 
-<Files .htaccess>
-Order allow,deny
-Deny from all
-</Files>
-
 RewriteEngine On
+# RerwiteBase / # 1&1 host y derviados que presenten problemas con el Router
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ index.php [QSA,L]
+RewriteRule ^(.*)$ index.php?routing=$1 [QSA,L]

@@ -1,0 +1,15 @@
+{% extends 'overall/layout' %}
+{% block appBody %}
+    <div class="container">
+        <form role="form" id="{{view}}_form">
+{{hiddens}}
+{{inputs}}
+            <div class="form-group">
+                <button type="button" class="btn btn-primary" id="{{view}}">Enviar</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block appFooter %}
+    <script src="views/app/js/{{view}}/{{ajax_file_name}}.js"></script>
+{% endblock %}

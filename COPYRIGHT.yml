@@ -1,0 +1,9 @@
+version: 2.0.0
+package: Ocrend Framework 2
+doc: http://framework.ocrend.com
+github: http://github.com/prinick96/Ocrend-Framework
+programmers:
+  author: Brayan Narváez
+  email: prinick@ocrend.com
+  comments: "Desarrollo de software para web a medida."
+  web: http://www.ocrend.com

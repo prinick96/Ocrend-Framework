@@ -1,0 +1,18 @@
+{% extends 'overall/layout' %}
+{% block appBody %}
+    <div class="container">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <table class="table table-bordered">
+                <thead>
+{{thead}}
+                </thead>
+                <tbody>
+{{tbody}}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <a href="{{view}}/crear" class="btn btn-primary">+ Crear</a>
+        </div>
+    </div>
+{% endblock %}

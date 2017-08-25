@@ -1,41 +1,23 @@
 <?php
 
-/**
-  * Ocrend Framework - MVC Architecture for Web Applications
-  * PHP Version 7
-  * @package Ocrend Framework
-  * @version v1.2.4
-  * @author Brayan Narváez (Prinick) <prinick@ocrend.com> <youtube.com/user/prinick96>
-  * @copyright 2016 - Ocrend Software
-  * @license	http://opensource.org/licenses/MIT	MIT License
-  * @link http://framework.ocrend.com/
-*/
+/*
+ * This file is part of the Ocrend Framewok 2 package.
+ *
+ * (c) Ocrend Software <info@ocrend.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-//------------------------------------------------
+use Ocrend\Kernel\Router\Router;
 
-# Carga del núcleo
-define('INDEX_DIR',true);
-require('core/app_core.php');
+# Definir ruta de acceso permitida
+define('API_INTERFACE', '');
 
-//------------------------------------------------
+# Cargadores principales
+require 'Ocrend/vendor/autoload.php';
+require 'Ocrend/autoload.php';
+require 'Ocrend/Kernel/Config/Start.php';
 
-# Detección del controlador actual
-$Controller = $router->getController();
-
-//------------------------------------------------
-
-# Identificación del controlador en el sistema
-if(!is_readable('core/controllers/' . $Controller . '.php')) {
-  $Controller = 'errorController';
-}
-
-# Carga del controlador seleccionado
-require('core/controllers/' . $Controller . '.php');
-new $Controller;
-
-//------------------------------------------------
-
-# Modo debug
-!DEBUG ?: new Debug($startime);
-
-?>
+# Ejecutar controlador solicitado
+(new Router)->executeController();

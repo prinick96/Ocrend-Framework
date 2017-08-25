@@ -1,16 +1,20 @@
 <?php
 
-# Seguridad
-defined('INDEX_DIR') OR exit('Ocrend software says .i.');
+/*
+ * This file is part of the Ocrend Framewok 2 package.
+ *
+ * (c) Ocrend Software <info@ocrend.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+*/
 
-//------------------------------------------------
+use app\models as Model;
 
 /*
-$app->put('/example5',function($request, $response){
+$app->put('/', function() use($app) {
 
-  $e = new Example;
-  $response->withJson($e->foo(array('informacion' => 'aqui')));
-
-  return $response;
+    return $app->json(array());
+    
 });
 */
