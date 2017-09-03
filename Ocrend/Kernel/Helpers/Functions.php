@@ -122,7 +122,7 @@ final class Functions extends \Twig_Extension {
    */
     final public function e() : bool  {
       for ($i = 0, $nargs = func_num_args(); $i < $nargs; $i++) {
-        if(null == func_get_arg($i) || (self::emp(func_get_arg($i)) && func_get_arg($i) != '0')) {
+        if(null === func_get_arg($i) || (self::emp(func_get_arg($i)) && func_get_arg($i) != '0')) {
           return true;
         }
       }
