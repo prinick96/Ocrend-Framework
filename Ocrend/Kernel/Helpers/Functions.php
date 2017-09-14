@@ -104,7 +104,7 @@ final class Functions extends \Twig_Extension {
      * @return bool con true si está vacío, false si no, un espacio en blanco cuenta como vacío
    */
    final public function emp($var) : bool {
-     return (isset($var) && empty(trim(str_replace(' ','',$var))));
+     return (null === $var || empty(trim(str_replace(' ','',$var))));
    }
 
    //------------------------------------------------
@@ -135,7 +135,7 @@ final class Functions extends \Twig_Extension {
    */
     final public function e() : bool  {
       for ($i = 0, $nargs = func_num_args(); $i < $nargs; $i++) {
-        if(null === func_get_arg($i) || ($this->emp(func_get_arg($i)) && func_get_arg($i) != '0')) {
+        if($this->emp(func_get_arg($i)) && func_get_arg($i) != '0') {
           return true;
         }
       }
@@ -263,18 +263,11 @@ final class Functions extends \Twig_Extension {
     
     $detail = explode('/',$fecha);
 
-    // Formato de día incorrecto
-    if($this->check_str_to_time(0,$detail,1)) {
-      return null;
-    }
-
-    // Formato de mes incorrecto
-    if($this->check_str_to_time(1,$detail,1) || intval($detail[1]) > 12) {
-      return null;
-    }
-
-    // Formato del año
-    if($this->check_str_to_time(2,$detail,1970)) {
+    // Formato de día incorrecto, mes y año incorrectos
+    if ($this->check_str_to_time(0,$detail,1) 
+    || $this->check_str_to_time(1,$detail,1) 
+    || intval($detail[1]) > 12 
+    || $this->check_str_to_time(2,$detail,1970)) {
       return null;
     }
 
@@ -301,72 +294,51 @@ final class Functions extends \Twig_Extension {
    * @return mixed
   */
   final public function desde_date(int $desde) {
-     # Obtener esta fecha
-     $hoy = date('d/m/Y/D',time());
-     $hoy = explode('/',$hoy);
+    # Obtener esta fecha
+    $hoy = date('d/m/Y/D',time());
+    $hoy = explode('/',$hoy);
 
+    # Arreglo de condiciones y subcondiciones
+    $fecha = array(
+       1 => date('d/m/Y', time()),
+       2 => date('d/m/Y', time() - (60*60*24)),
+       3 => array(
+         'Mon' => $hoy[0],
+         'Tue' => intval($hoy[0]) - 1,
+         'Wed' => intval($hoy[0]) - 2,
+         'Thu' => intval($hoy[0]) - 3,
+         'Fri' => intval($hoy[0]) - 4,
+         'Sat' => intval($hoy[0]) - 5,
+         'Sun' => intval($hoy[0]) - 6
+       ),
+       4 => '01/'. $this->cero_izq($hoy[1]) .'/' . $hoy[2],
+       5 => '01/01/' . $hoy[2]
+    );
 
-    switch($desde) {
-      # Hoy
-      case 1:
-        return date('d/m/Y', time());
+    if($desde == 3) {
+      # Dia actual
+      $dia = $fecha[3][$hoy[3]];
 
-      # Ayer
-      case 2:
-        return date('d/m/Y', time() - (60*60*24));
-        
-      # Semana
-      case 3:
-        # Día de la semana actual
-        switch($hoy[3]) {
-          case 'Mon':
-            $dia = $hoy[0];
-          break;
-          case 'Tue':
-            $dia = intval($hoy[0]) - 1;
-          break;
-          case 'Wed':
-            $dia = intval($hoy[0]) - 2;
-          break;
-          case 'Thu':
-            $dia = intval($hoy[0]) - 3;
-          break;
-          case 'Fri':
-            $dia = intval($hoy[0]) - 4;
-          break;
-          case 'Sat':
-            $dia = intval($hoy[0]) - 5;
-          break;
-          default: # 'Sun'
-            $dia = intval($hoy[0]) - 6;
-          break;
-        }
+      # Mes anterior y posiblemente, año también.
+      if($dia == 0) {
+        # Restante de la fecha
+        $real_fecha = $this->last_day_month($hoy[1],$hoy[2]) .'/'. $this->cero_izq($hoy[1] - 1) .'/';
 
-        # Mes anterior y posiblemente, año también.
-        if($dia == 0) {
-          # Verificamos si estamos en enero
-          if($hoy[1] == 1) {
-            return $this->last_day_month($hoy[1],$hoy[2]) .'/'. $this->cero_izq($hoy[1] - 1) .'/' . ($hoy[2] - 1);
-          }
-          
-          # Si no es enero, es el año actual
-          return $this->last_day_month($hoy[1],$hoy[2]) .'/'. $this->cero_izq($hoy[1] - 1) .'/' . $hoy[2];
+        # Verificamos si estamos en enero
+        if($hoy[1] == 1) {
+          return  $real_fecha . ($hoy[2] - 1);
         }
         
-        return $this->cero_izq($dia) .'/'. $this->cero_izq($hoy[1]) .'/' . $hoy[2];
-
-      # Mes
-      case 4:
-        return '01/'. $this->cero_izq($hoy[1]) .'/' . $hoy[2];
-       
-      # Año
-      case 5:
-        return '01/01/' . $hoy[2];
-
-      default:
-        throw new \RuntimeException('Problema con el valor $desde en desde_date()');
-       break;
+        # Si no es enero, es el año actual
+        return $real_fecha . $hoy[2];
+      }
+      
+      return $this->cero_izq($dia) .'/'. $this->cero_izq($hoy[1]) .'/' . $hoy[2];
+    } else if(array_key_exists($desde,$fecha)) {
+      return $fecha[$desde];
     }
+
+    throw new \RuntimeException('Problema con el valor $desde en desde_date()');
   }
 
   //------------------------------------------------
