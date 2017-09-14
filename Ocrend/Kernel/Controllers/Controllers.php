@@ -122,6 +122,11 @@ abstract class Controllers {
         # Extensiones
         $this->template->addExtension($this->functions);
 
+        # Debug disponible en twig
+        if($config['framework']['debug']) {
+          $this->template->addExtension(new \Twig_Extension_Debug());
+        }
+
         # Verificar para quién está permitido este controlador
         $this->knowVisitorPermissions();
 
