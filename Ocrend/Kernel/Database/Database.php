@@ -50,6 +50,120 @@ namespace Ocrend\Kernel\Database;
   }
 
   /**
+    * Motor de base de datos MySQL
+    *
+    * @param array $params: Lista de parámetros de configuración
+  */
+  final private function motor_mysql(array $params) {
+    parent::__construct('mysql:host='.$params['host'].';dbname='.$params['name'],
+    $params['user'],
+    $params['pass'],
+    array(\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8', 
+      \PDO::ATTR_EMULATE_PREPARES => false,
+      \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+    ));
+  }
+  
+  /**
+    * Motor de base de datos SQLite
+    *
+    * @param array $params: Lista de parámetros de configuración
+  */
+  final private function motor_sqlite(array $params) {
+    parent::__construct('sqlite:'.$params['name']);
+  }
+
+  /**
+    * Motor de base de datos Cubrid
+    *
+    * @param array $params: Lista de parámetros de configuración
+  */
+  final private function motor_cubrid(array $params) {
+    parent::__construct('cubrid:host='.$params['host'].';dbname='.$params['name'].';port='.$params['port'],
+    $params['user'],
+    $params['pass'],array(
+      \PDO::ATTR_EMULATE_PREPARES => false,
+      \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+    ));
+  }
+
+  /**
+    * Motor de base de datos Firebird
+    *
+    * @param array $params: Lista de parámetros de configuración
+  */
+  final private function motor_firebird(array $params) {
+    parent::__construct('firebird:dbname='.$params['host'].':'.$params['name'],
+    $params['user'],
+    $params['pass'],array(
+      \PDO::ATTR_EMULATE_PREPARES => false,
+      \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+    ));
+  }
+
+  /**
+    * Motor de base de datos ODBC
+    *
+    * @param array $params: Lista de parámetros de configuración
+  */
+  final private function motor_odbc(array $params) {
+    parent::__construct('odbc:'.$params['name'],
+      $params['user'],
+      $params['pass']
+    ); 
+  }
+
+  /**
+    * Motor de base de datos Oracle
+    *
+    * @param array $params: Lista de parámetros de configuración
+  */
+  final private function motor_oracle(array $params) {
+    parent::__construct('oci:dbname=(DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = '.$params['protocol'].')(HOST = '.$params['host'].')(PORT = '.$params['port'].'))
+    )
+    (CONNECT_DATA =
+      (SERVICE_NAME = '.$params['name'].')
+    )
+    );charset=utf8',$params['database']['user'],$params['database']['pass'],
+    array(\PDO::ATTR_EMULATE_PREPARES => false,
+      \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+      \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
+    ));
+  }
+
+  /**
+    * Motor de base de datos PostgreSQL
+    *
+    * @param array $params: Lista de parámetros de configuración
+  */
+  final private function motor_postgresql(array $params) {
+    parent::__construct('pgsql:host='.$params['host'].';dbname='.$params['name'].';charset=utf8',
+    $params['user'],
+    $params['pass'],array(
+      \PDO::ATTR_EMULATE_PREPARES => false,
+      \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+    ));
+  }
+
+  /**
+    * Motor de base de datos MSSQL
+    * Añadido por marc2684 https://github.com/prinick96/Ocrend-Framework/issues/7
+    *
+    * @param array $params: Lista de parámetros de configuración
+  */
+  final private function motor_mssql(array $params) {
+    parent::__construct('sqlsrv:Server='.$params['host'].';Database='.$params['name'].';ConnectionPooling=0',
+    $params['user'],
+    $params['pass'],array(\PDO::ATTR_EMULATE_PREPARES => false,
+      \PDO::SQLSRV_ENCODING_UTF8,
+      \PDO::ATTR_ERRMODE =>
+      \PDO::ERRMODE_EXCEPTION
+    ));
+  }
+
+  /**
     * Inicia la conexión con la base de datos seleccionada
     *
     * @param string|null $name : Nombre de la base de datos a conectar
@@ -63,70 +177,19 @@ namespace Ocrend\Kernel\Database;
   final public function __construct(string $name, string $motor) {
     global $config;
 
-    # Configuración común
-    $comun_config = array(
-      \PDO::ATTR_EMULATE_PREPARES => false,
-      \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
-    );
-
     try {
-      switch ($motor) {
-        case 'sqlite':
-          parent::__construct('sqlite:'.$name);
-        break;
-        case 'cubrid':
-          parent::__construct('cubrid:host='.$config['database']['host'].';dbname='.$name.';port='.$config['database']['port'],
-          $config['database']['user'],
-          $config['database']['pass'],
-          $comun_config);
-        break;
-        case 'firebird':
-          parent::__construct('firebird:dbname='.$config['database']['host'].':'.$name,
-          $config['database']['user'],
-          $config['database']['pass'],
-          $comun_config);
-        break;
-        case 'odbc';
-          parent::__construct('odbc:'.$name,
-          $config['database']['user'],
-          $config['database']['pass']);
-        break;
-        case 'oracle':
-          parent::__construct('oci:dbname=(DESCRIPTION =
-            (ADDRESS_LIST =
-              (ADDRESS = (PROTOCOL = '.$config['database']['protocol'].')(HOST = '.$motor.')(PORT = '.$config['database']['port'].'))
-            )
-            (CONNECT_DATA =
-              (SERVICE_NAME = '.$name.')
-            )
-          );charset=utf8',
-          $config['database']['user'],
-          $config['database']['pass'],
-          array_merge(array(\PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC),$comun_config));
-        break;
-        case 'postgresql':
-          parent::__construct('pgsql:host='.$config['database']['host'].';dbname='.$name.';charset=utf8',
-          $config['database']['user'],
-          $config['database']['pass'],
-          $comun_config);
-        break;
-        case 'mysql':
-          parent::__construct('mysql:host='.$config['database']['host'].';dbname='.$name,
-          $config['database']['user'],
-          $config['database']['pass'],
-          array_merge(array(\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'),$comun_config));
-        break;
-        case 'mssql':
-          # Añadido por marc2684
-          # DOC: https://github.com/prinick96/Ocrend-Framework/issues/7
-          parent::__construct('sqlsrv:Server='.$config['database']['host'].';Database='.$name.';ConnectionPooling=0',
-          $config['database']['user'],
-          $config['database']['pass'],
-          $comun_config);
-        break;
-        default:
-          throw new \RuntimeException('Motor '. $motor .' de conexión no identificado.');
-        break;
+      # Verificar existencia del motor
+      if(method_exists($this,'motor_' . $motor)) {
+        $this->{'motor_' . $motor}(array(
+          'host' => $config['database']['host'],
+          'name' => $name,
+          'user' => $config['database']['user'],
+          'pass' => $config['database']['pass'],
+          'port' => $config['database']['port'],
+          'protocol' => $config['database']['protocol']
+        ));
+      } else {
+        throw new \RuntimeException('Motor '. $motor .' de conexión no identificado.');
       }
     } catch(\PDOException $e) {
       throw new \RuntimeException('Problema al conectar con la base de datos: ' . $e->getMessage());

@@ -25,7 +25,8 @@ use Ocrend\Kernel\Controllers\IControllers;
 class homeController extends Controllers implements IControllers {
 
     public function __construct(IRouter $router) {
-        parent::__construct($router);   
+        parent::__construct($router);  
+        new Model\Users; 
         echo $this->template->render('home/home');
     }
 
