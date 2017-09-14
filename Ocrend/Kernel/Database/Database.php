@@ -157,7 +157,6 @@ namespace Ocrend\Kernel\Database;
     parent::__construct('sqlsrv:Server='.$params['host'].';Database='.$params['name'].';ConnectionPooling=0',
     $params['user'],
     $params['pass'],array(\PDO::ATTR_EMULATE_PREPARES => false,
-      \PDO::SQLSRV_ENCODING_UTF8,
       \PDO::ATTR_ERRMODE =>
       \PDO::ERRMODE_EXCEPTION
     ));
