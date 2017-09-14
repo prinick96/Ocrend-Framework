@@ -20,48 +20,42 @@ namespace Ocrend\Kernel\Helpers;
 final class Strings extends \Twig_Extension {
   //------------------------------------------------
   /**
-   * Convierte un tiempo dado al formato hace 1 minuto, hace 2 horas, hace 1 año ...
-   *
-   * @param int $from: Tiempo en segundo desde donde se desea contar
-   * @param int $to: Tiempo en segundo hasta donde se desea contar, si no se pasa por defecto es el tiempo actual
-   *
-   * @return string con la forma: hace 20 segundos, hace 1 minuto, hace 2 horas, hace 4 días, hace 1 semana, hace 3 meses, hace 1 año ...
-   */
-  final public static function amigable_time(int $from, int $to = 0) : string {
-    $to = $to == 0 ? time() : $to;
-    $form = new \DateTime(date('Y-m-d H:i:s', $from));
-    $to = new \DateTime(date('Y-m-d H:i:s', $to));
-    $diff = $form->diff($to);
-    if ($diff->y > 1) {
-        $text = $diff->y . ' años';
-    } elseif ($diff->y == 1) {
-        $text = '1 año';
-    } elseif ($diff->m > 1) {
-        $text = $diff->m . ' meses';
-    } elseif ($diff->m == 1) {
-        $text = '1 mes';
-    } elseif ($diff->d > 7) {
-        $text = ceil($diff->d/7) . ' semanas';
-    } elseif ($diff->d == 7) {
-        $text = '1 semana';
-    } elseif ($diff->d > 1) {
-        $text = $diff->d . ' días';
-    } elseif ($diff->d == 1) {
-        $text = '1 día';
-    } elseif ($diff->h > 1) {
-        $text = $diff->h . ' horas';
-    } elseif ($diff->h == 1) {
-        $text = ' 1 hora';
-    } elseif ($diff->i > 1) {
-        $text = $diff->i . ' minutos';
-    } elseif ($diff->i == 1) {
-        $text = '1 minuto';
-    } elseif ($diff->s > 1) {
-        $text = $diff->s . ' segundos';
-    } else {
-        $text = '1 segundo';
+    * Convierte un tiempo dado al formato hace 1 minuto, hace 2 horas, hace 1 año ...
+    *
+    * @param int $from: Tiempo en segundo desde donde se desea contar
+    * @param int $to: Tiempo en segundo hasta donde se desea contar, si no se pasa por defecto es el tiempo actual
+    *
+    * @return string con la forma: hace 20 segundos, hace 1 minuto, hace 2 horas, hace 4 días, hace 1 semana, hace 3 meses, hace 1 año ...
+  */
+  final public static function amigable_time(int $from, int $to = 0) : string {   
+    $intervalos = array("segundo", "minuto", "hora", "día", "semana", "mes", "año");
+    $duraciones = array("60","60","24","7","4.35","12");
+    $to = $to === 0 ? time() : $to;
+
+    if(empty($from)) {   
+        return "Fecha incorracta";
     }
-    return 'hace ' . trim($text);
+
+    if($to > $from) {   
+        $diferencia = $to - $from;
+        $tiempo = "Hace";
+    } else {
+        $diferencia = $from - $to;
+        $tiempo = "Dentro de";
+    }
+    
+    for($j = 0; $diferencia >= $duraciones[$j] && $j < count($duraciones)-1; $j++) {
+      $diferencia /= $duraciones[$j];
+    }
+    
+    $diferencia = round($diferencia);
+    
+    if($diferencia != 1) {
+      $intervalos[5].="e"; //MESES
+      $intervalos[$j].= "s";
+    }
+   
+    return "$tiempo $diferencia $intervalos[$j]";
   }
   //------------------------------------------------
   /**

@@ -12,6 +12,7 @@
 namespace Ocrend\Kernel\Router;
 
 use Ocrend\Kernel\Router\IRouter;
+use Ocrend\Kernel\Router\Rules;
 
 /**
  * Encargado de controlar las URL Amigables en cada controlador del sistema, es independiente al Routing de Silex.
@@ -155,29 +156,15 @@ final class Router implements IRouter {
 
         # Obtener la ruta nativa sin reglas
         $ruta = $this->routerCollection[$index];
+        $rules = new Rules;
 
         # Retornar ruta con la regla definida aplicada
-        switch ($this->routerCollectionRules[$index]) {
-            case 'none':
-                return $ruta;
-            case 'letters':
-                return preg_match("/^[a-zA-Z ]*$/", $ruta) ? $ruta : null;
-            case 'alphanumeric':
-                return preg_match('/^[a-zA-Z0-9 ]*$/', $ruta) ? $ruta : null;
-            case 'url':
-                return preg_match('/^[a-zA-Z0-9- ]*$/', $ruta) ? $ruta : null;
-            case 'integer':
-                return is_numeric($ruta) ? (int) $ruta : null;
-            case 'float':
-                return is_numeric($ruta) ? (float) $ruta : null;
-            case 'integer_positive':
-                return (is_numeric($ruta) && $ruta >= 0) ? (int) $ruta : null;
-            case 'float_positive':
-                return (is_numeric($ruta) && $ruta >= 0) ? (float) $ruta : null;
-            default:
-                throw new \RuntimeException('La regla ' . $this->routerCollectionRules[$index] . ' existe en RULES pero no está implementada.');
-            break;
-        }
+        if(method_exists($rules, $this->routerCollectionRules[$index])) {
+            return $rules->{$this->routerCollectionRules[$index]}($ruta);
+        } 
+
+        # No existe la regla solicitada
+        throw new \RuntimeException('La regla ' . $this->routerCollectionRules[$index] . ' existe en RULES pero no está implementada.');    
     }
 
     /**
@@ -211,8 +198,8 @@ final class Router implements IRouter {
      */
     final public function getId(bool $with_rules = false) {
         $id = $this->routerCollection['/id'];
-        if ($with_rules) {
-            return (null !== $id && is_numeric($id) && $id > 0) ? (int) $id : null;
+        if($with_rules && (!is_numeric($id) || $id <= 0)) {
+            return null;
         }
 
         return $id;

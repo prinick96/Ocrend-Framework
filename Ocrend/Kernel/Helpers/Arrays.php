@@ -50,32 +50,14 @@ final class Arrays extends \Twig_Extension {
     }
 
     # Recorrer el segundo arreglo
-    foreach ($b as $llave => $contenido) {
-
-      # Desnivel
-      if (is_array($contenido)) {
-        throw new \RuntimeException('El arreglo $b en la llave ' . $llave . ' es un arreglo y no puede operar.');
+    foreach($b as $llave => $contenido) {
+      # Verificar que no hay desnivel
+      if(!is_array($a[$llave]) && !is_array($b[$llave])) {
+        $a[$llave] += $b[$llave];
+      } else {
+        throw new \RuntimeException('Existe un problema para operar en la llave '.$llave.'.');
         break;
       }
-
-      # Existencia de la llave
-      if (array_key_exists($llave, $a)) {
-        # Excepciones de uso
-        if (is_array($a[$llave])) {
-          throw new \RuntimeException('El arreglo $a en la llave ' . $llave . ' es un arreglo y no puede operar.');
-          break;
-        } else if (!is_numeric($a[$llave]) && null !== $a[$llave]) {
-          throw new \RuntimeException('El arreglo $a en la llave ' . $llave . ' no es un número y no puede operar.');
-          break;
-        } else if (!is_numeric($b[$llave]) && null !== $b[$llave]) {
-          throw new \RuntimeException('El arreglo $b en la llave ' . $llave . ' no es un número y no puede operar.');
-          break;
-        }
-
-        # Operar
-        $a[$llave] += $b[$llave];
-      }
-
     }
 
     return $a;
