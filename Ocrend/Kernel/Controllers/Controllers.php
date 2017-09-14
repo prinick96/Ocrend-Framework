@@ -114,7 +114,7 @@ abstract class Controllers {
         $this->template->addGlobal('is_logged', $this->is_logged);
 
         # Datos del usuario actual
-        if($this->is_logged) {
+        if ($this->is_logged) {
           $this->user = (new Model\Users)->getOwnerUser();
           $this->template->addGlobal('owner_user', $this->user);
         }
@@ -131,13 +131,13 @@ abstract class Controllers {
     }
 
     /**
-      * Establece los parámetros de configuración de un controlador
-      *
-      * @param IRouter $router: Instancia de un Router
-      * @param array|null $config: Arreglo de configuración   
-      *
-      * @return void
-    */
+     * Establece los parámetros de configuración de un controlador
+     *
+     * @param IRouter $router: Instancia de un Router
+     * @param array|null $config: Arreglo de configuración   
+     *
+     * @return void
+     */
     private function setControllerConfig($config) {
       # Configuración por defecto
       $this->controllerConfig['twig_cache_reload'] = true;
@@ -145,35 +145,35 @@ abstract class Controllers {
       $this->controllerConfig['users_not_logged'] = false;
 
       # Establecer las configuraciones pasadas
-      if(null != $config) {
+      if (null != $config) {
         # Configura el autoreload del caché de twig
-        if(array_key_exists('twig_cache_reload',$config)) {
+        if (array_key_exists('twig_cache_reload', $config)) {
           $this->controllerConfig['twig_cache_reload'] = (bool) $config['twig_cache_reload'];
         }
         # Configura el controlador para solo ser visto por usuarios logeados
-        if(array_key_exists('users_logged',$config)) {
+        if (array_key_exists('users_logged', $config)) {
           $this->controllerConfig['users_logged'] = (bool) $config['users_logged'];
         }
         # Configura el controlador para solo ser visto por usuario no logeados
-        if(array_key_exists('users_not_logged',$config)) {
+        if (array_key_exists('users_not_logged', $config)) {
           $this->controllerConfig['users_not_logged'] = (bool) $config['users_not_logged'];
         }
       }
     }
     
     /**
-      * Acción que regula quién entra o no al controlador según la configuración
-      *
-      * @return void
-    */
+     * Acción que regula quién entra o no al controlador según la configuración
+     *
+     * @return void
+     */
     private function knowVisitorPermissions() {
       # Sólamente usuarios logeados
-      if($this->controllerConfig['users_logged'] && !$this->is_logged) {
+      if ($this->controllerConfig['users_logged'] && !$this->is_logged) {
         $this->functions->redir();
       }
 
       # Sólamente usuarios no logeados
-      if($this->controllerConfig['users_not_logged'] && $this->is_logged) {
+      if ($this->controllerConfig['users_not_logged'] && $this->is_logged) {
         $this->functions->redir();
       }
     }

@@ -18,28 +18,28 @@ namespace Ocrend\Kernel\Database;
  * @author Brayan Narváez <prinick@ocrend.com>
  */
 
- class Database extends \PDO {
+  class Database extends \PDO {
 
-   /**
+    /**
      * Contiene la instancia de conexión a la base de datos
      * 
      * @var Database
-   */
-   private static $inst;
+     */
+    private static $inst;
 
   /**
-    * Inicia la instancia de conexión, si esta ya ha sido declarada antes, no la duplica y ahorra memoria.
-    *
-    * @param string|null $name : Nombre de la base de datos a conectar
-    * @param string|null $motor: Motor de la base de datos a conectar
-    * @param bool $new_instance: true para iniciar una nueva instancia (al querer conectar a una DB distinta)
-    *
-    * @return Database : Instancia de conexión
-  */
+   * Inicia la instancia de conexión, si esta ya ha sido declarada antes, no la duplica y ahorra memoria.
+   *
+   * @param string|null $name : Nombre de la base de datos a conectar
+   * @param string|null $motor: Motor de la base de datos a conectar
+   * @param bool $new_instance: true para iniciar una nueva instancia (al querer conectar a una DB distinta)
+   *
+   * @return Database : Instancia de conexión
+   */
   final public static function Start($name = null, $motor = null, bool $new_instance = false) : Database {
     global $config;
 
-    if(!self::$inst instanceof self or $new_instance) {
+    if (!self::$inst instanceof self or $new_instance) {
       self::$inst = new self(
           null === $name ? $config['database']['name'] : $name,
           null === $motor ? $config['database']['motor'] : $motor
@@ -119,16 +119,16 @@ namespace Ocrend\Kernel\Database;
         case 'mssql':
           # Añadido por marc2684
           # DOC: https://github.com/prinick96/Ocrend-Framework/issues/7
-          parent::__construct('sqlsrv:Server='.$config['database']['host'].';Database='.$name.';ConnectionPooling=0',
+          parent::__construct('sqlsrv:Server=' . $config['database']['host'] . ';Database=' . $name . ';ConnectionPooling=0',
           $config['database']['user'],
           $config['database']['pass'],
           $comun_config);
         break;
         default:
-          throw new \RuntimeException('Motor '. $motor .' de conexión no identificado.');
+          throw new \RuntimeException('Motor ' . $motor . ' de conexión no identificado.');
         break;
       }
-    } catch(\PDOException $e) {
+    } catch (\PDOException $e) {
       throw new \RuntimeException('Problema al conectar con la base de datos: ' . $e->getMessage());
     } 
   }
@@ -163,18 +163,18 @@ namespace Ocrend\Kernel\Database;
     * @return mixed elemento sano
   */
   final public function scape($e) {
-    if(null === $e) {
+    if (null === $e) {
       return '';
     }
 
-    if(is_numeric($e) and $e <= 2147483647) {
-      if(explode('.',$e)[0] != $e) {
+    if (is_numeric($e) and $e <= 2147483647) {
+      if (explode('.', $e)[0] != $e) {
         return (float) $e;
       }
       return (int) $e;
     }
 
-    return (string) trim(str_replace(['\\',"\x00",'\n','\r',"'",'"',"\x1a"],['\\\\','\\0','\\n','\\r',"\'",'\"','\\Z'],$e));
+    return (string) trim(str_replace(['\\', "\x00", '\n', '\r', "'", '"', "\x1a"], ['\\\\', '\\0', '\\n', '\\r', "\'", '\"', '\\Z'], $e));
   }
 
   /**
@@ -202,7 +202,7 @@ namespace Ocrend\Kernel\Database;
   */
   final public function insert(string $table, array $e) : \PDOStatement {
       if (sizeof($e) == 0) {
-          throw new \RuntimeException('El arreglo pasado por $this->db->insert(\''.$table.'\',...) está vacío.');
+          throw new \RuntimeException('El arreglo pasado por $this->db->insert(\'' . $table . '\',...) está vacío.');
       }
 
       $query = "INSERT INTO $table (";
@@ -232,7 +232,7 @@ namespace Ocrend\Kernel\Database;
   */
   final public function update(string $table, array $e, string $where, string $limit = '') : \PDOStatement {
       if (sizeof($e) == 0) {
-          throw new \RuntimeException('El arreglo pasado por $this->db->update(\''.$table.'\'...) está vacío.');
+          throw new \RuntimeException('El arreglo pasado por $this->db->update(\'' . $table . '\'...) está vacío.');
       }
 
       $query = "UPDATE $table SET ";
@@ -269,7 +269,7 @@ namespace Ocrend\Kernel\Database;
     $result = $sql->fetchAll();
     $sql->closeCursor();
 
-    if(sizeof($result) > 0) {
+    if (sizeof($result) > 0) {
       return $result;
     }
 

@@ -20,13 +20,13 @@ namespace Ocrend\Kernel\Helpers;
 final class Strings extends \Twig_Extension {
   //------------------------------------------------
   /**
-    * Convierte un tiempo dado al formato hace 1 minuto, hace 2 horas, hace 1 año ...
-    *
-    * @param int $from: Tiempo en segundo desde donde se desea contar
-    * @param int $to: Tiempo en segundo hasta donde se desea contar, si no se pasa por defecto es el tiempo actual
-    *
-    * @return string con la forma: hace 20 segundos, hace 1 minuto, hace 2 horas, hace 4 días, hace 1 semana, hace 3 meses, hace 1 año ...
-  */
+   * Convierte un tiempo dado al formato hace 1 minuto, hace 2 horas, hace 1 año ...
+   *
+   * @param int $from: Tiempo en segundo desde donde se desea contar
+   * @param int $to: Tiempo en segundo hasta donde se desea contar, si no se pasa por defecto es el tiempo actual
+   *
+   * @return string con la forma: hace 20 segundos, hace 1 minuto, hace 2 horas, hace 4 días, hace 1 semana, hace 3 meses, hace 1 año ...
+   */
   final public static function amigable_time(int $from, int $to = 0) : string {
     $to = $to == 0 ? time() : $to;
     $form = new \DateTime(date('Y-m-d H:i:s', $from));
@@ -41,7 +41,7 @@ final class Strings extends \Twig_Extension {
     } elseif ($diff->m == 1) {
         $text = '1 mes';
     } elseif ($diff->d > 7) {
-        $text = ceil($diff->d / 7) . ' semanas';
+        $text = ceil($diff->d/7) . ' semanas';
     } elseif ($diff->d == 7) {
         $text = '1 semana';
     } elseif ($diff->d > 1) {
@@ -86,7 +86,7 @@ final class Strings extends \Twig_Extension {
     * @return string Hash, con la forma $2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G
   */
   final public static function hash(string $p) : string {
-    return crypt($p, '$2a$10$' . substr(sha1(mt_rand()),0,22));
+    return crypt($p, '$2a$10$' . substr(sha1(mt_rand()), 0, 22));
   }
   //------------------------------------------------
   /**
@@ -113,7 +113,7 @@ final class Strings extends \Twig_Extension {
     *
   */
   final public static function calculate_age(string $cumple) : int {
-    $age = explode('.', (string) (self::date_difference($cumple,date('d-m-Y',time())) / 365));
+    $age = explode('.', (string) (self::date_difference($cumple, date('d-m-Y', time()))/365));
     return (int) $age[0];
   }
   //------------------------------------------------
@@ -146,7 +146,7 @@ final class Strings extends \Twig_Extension {
     * @return string del texto sin espacios
   */
   final public static function remove_spaces(string $s) : string {
-    return trim(str_replace(' ','',$s));
+    return trim(str_replace(' ', '', $s));
   }
   //------------------------------------------------
   /**
@@ -191,18 +191,18 @@ final class Strings extends \Twig_Extension {
   */
   final public static function url_amigable(string $url) : string {
     $url = strtolower($url);
-    $url = str_replace (['á', 'é', 'í', 'ó', 'ú', 'ñ'],['a', 'e', 'i', 'o', 'u', 'n'], $url);
-    $url = str_replace([' ', '&', '\r\n', '\n', '+', '%'],'-',$url);
-    return preg_replace (['/[^a-z0-9\-<>]/', '/[\-]+/', '/<[^>]*>/'],['', '-', ''], $url);
+    $url = str_replace(['á', 'é', 'í', 'ó', 'ú', 'ñ'], ['a', 'e', 'i', 'o', 'u', 'n'], $url);
+    $url = str_replace([' ', '&', '\r\n', '\n', '+', '%'], '-', $url);
+    return preg_replace(['/[^a-z0-9\-<>]/', '/[\-]+/', '/<[^>]*>/'], ['', '-', ''], $url);
   }
   //------------------------------------------------
   /**
-    * Convierte código BBCode en su equivalente HTML
-    *
-    * @param string $string: Código con formato BBCode dentro
-    *
-    * @return string del código BBCode transformado en HTML
-  */
+   * Convierte código BBCode en su equivalente HTML
+   *
+   * @param string $string: Código con formato BBCode dentro
+   *
+   * @return string del código BBCode transformado en HTML
+   */
   final public static function bbcode(string $string) : string {
     $BBcode = array(
         '/\[i\](.*?)\[\/i\]/is',
@@ -246,7 +246,7 @@ final class Strings extends \Twig_Extension {
         '<span style="font-size: $1px">$2</span>',
         '<span style="font-family: $1">$2</span>'
     );
-    return nl2br(preg_replace($BBcode,$HTML,$string));
+    return nl2br(preg_replace($BBcode, $HTML, $string));
   }
   //------------------------------------------------
   /**

@@ -34,18 +34,18 @@ final class Functions extends \Twig_Extension {
 
    //------------------------------------------------
 
-   /**
-    * Redirecciona a una URL
-    *
-    * @param string $url: Sitio a donde redireccionará, si no se pasa, por defecto
-    * se redirecciona a la URL principal del sitio
-    *
-    * @return void
-  */
+    /**
+     * Redirecciona a una URL
+     *
+     * @param string $url: Sitio a donde redireccionará, si no se pasa, por defecto
+     * se redirecciona a la URL principal del sitio
+     *
+     * @return void
+     */
   final public function redir($url = null) {
     global $config;
     
-    if(null == $url) {
+    if (null == $url) {
       $url = $config['site']['url'];
     }
     
@@ -56,29 +56,29 @@ final class Functions extends \Twig_Extension {
   //------------------------------------------------
 
   /**
-    * Calcula el porcentaje de una cantidad
-    *
-    * @param float $por: El porcentaje a evaluar, por ejemplo 1, 20, 30 % sin el "%", sólamente el número
-    * @param float $n: El número al cual se le quiere sacar el porcentaje
-    *
-    * @return float con el porcentaje correspondiente
-  */
+   * Calcula el porcentaje de una cantidad
+   *
+   * @param float $por: El porcentaje a evaluar, por ejemplo 1, 20, 30 % sin el "%", sólamente el número
+   * @param float $n: El número al cual se le quiere sacar el porcentaje
+   *
+   * @return float con el porcentaje correspondiente
+   */
   final public function percent(float $por, float $n) : float {
-    return $n * ($por / 100);
+    return $n*($por/100);
   }
 
   //------------------------------------------------
 
   /**
-    * Da unidades de peso a un integer según sea su tamaño asumida en bytes
-    *
-    * @param int $size: Un entero que representa el tamaño a convertir
-    *
-    * @return string del tamaño $size convertido a la unidad más adecuada
-  */
+   * Da unidades de peso a un integer según sea su tamaño asumida en bytes
+   *
+   * @param int $size: Un entero que representa el tamaño a convertir
+   *
+   * @return string del tamaño $size convertido a la unidad más adecuada
+   */
   final public function convert(int $size) : string {
-      $unit = array('bytes','kb','mb','gb','tb','pb');
-      return round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
+      $unit = array('bytes', 'kb', 'mb', 'gb', 'tb', 'pb');
+      return round($size/pow(1024, ($i = floor(log($size, 1024)))), 2) . ' ' . $unit[$i];
   }
 
   //------------------------------------------------
@@ -104,7 +104,7 @@ final class Functions extends \Twig_Extension {
      * @return bool con true si está vacío, false si no, un espacio en blanco cuenta como vacío
    */
    final public function emp($var) : bool {
-     return (isset($var) && empty(trim(str_replace(' ','',$var))));
+     return (isset($var) && empty(trim(str_replace(' ', '', $var))));
    }
 
    //------------------------------------------------
@@ -186,7 +186,7 @@ final class Functions extends \Twig_Extension {
          'Apr'=> 'Abr',
          'Dec'=> 'Dic'
        );
-       return str_replace(array_keys($cambios),array_values($cambios),$date);
+       return str_replace(array_keys($cambios), array_values($cambios), $date);
      }
 
    //------------------------------------------------
@@ -206,13 +206,13 @@ final class Functions extends \Twig_Extension {
     # Revisar protocolo
     $base = $config['site']['router']['protocol'] . '://';
 
-    if(strtolower($www) == 'www') {
+    if (strtolower($www) == 'www') {
       $base .= 'www.' . $config['site']['router']['path'];
     } else {
       $base .= $config['site']['router']['path'];
     }
   
-    return '<base href="'.$base.'" />';
+    return '<base href="' . $base . '" />';
   }
   
   //------------------------------------------------
@@ -284,7 +284,7 @@ final class Functions extends \Twig_Extension {
     $year = intval($detail[2]);
 
     // Veriricar dia según mes
-    if($day > $this->last_day_month($month,$year)) {
+    if ($day > $this->last_day_month($month, $year)) {
       return null;
     }
 
@@ -318,7 +318,7 @@ final class Functions extends \Twig_Extension {
       # Semana
       case 3:
         # Día de la semana actual
-        switch($hoy[3]) {
+        switch ($hoy[3]) {
           case 'Mon':
             $dia = $hoy[0];
           break;
@@ -396,13 +396,13 @@ final class Functions extends \Twig_Extension {
        new \Twig_Function('e_dynamic', array($this, 'e')),
        new \Twig_Function('all_full', array($this, 'all_full')),
        new \Twig_Function('fecha', array($this, 'fecha')),
-       new \Twig_Function('base_assets',array($this, 'base_assets')),
-       new \Twig_Function('timestamp',array($this, 'timestamp')),
-       new \Twig_Function('desde_date',array($this, 'desde_date')),
-       new \Twig_Function('cero_izq',array($this, 'cero_izq')),
-       new \Twig_Function('last_day_month',array($this, 'last_day_month')),
-       new \Twig_Function('str_to_time',array($this, 'str_to_time')),
-       new \Twig_Function('desde_date',array($this, 'desde_date'))
+       new \Twig_Function('base_assets', array($this, 'base_assets')),
+       new \Twig_Function('timestamp', array($this, 'timestamp')),
+       new \Twig_Function('desde_date', array($this, 'desde_date')),
+       new \Twig_Function('cero_izq', array($this, 'cero_izq')),
+       new \Twig_Function('last_day_month', array($this, 'last_day_month')),
+       new \Twig_Function('str_to_time', array($this, 'str_to_time')),
+       new \Twig_Function('desde_date', array($this, 'desde_date'))
      );
    }
 

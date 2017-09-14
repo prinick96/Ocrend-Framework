@@ -23,17 +23,17 @@ use Symfony\Component\Yaml\Exception\ParseException;
 final class Config {
 
     /**
-      * Ruta con parámetros de configuración
-      *
-      * @var string   
-    */
+     * Ruta con parámetros de configuración
+     *
+     * @var string   
+     */
     const FILE_CONFIG_ROUTE = API_INTERFACE . 'Ocrend/Kernel/Config/Ocrend.ini.yml';
 
     /**
-      * Lee la configuración del archivo self::FILE_CONFIG_ROUTE 
-      *
-      * @return array : Arreglo con la configuración en el archivo .yml
-    */
+     * Lee la configuración del archivo self::FILE_CONFIG_ROUTE 
+     *
+     * @return array : Arreglo con la configuración en el archivo .yml
+     */
     final public function readConfig() : array {
         return Yaml::parse(file_get_contents(self::FILE_CONFIG_ROUTE));
     }
