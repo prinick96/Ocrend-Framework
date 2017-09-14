@@ -30,7 +30,7 @@ final class Files extends \Twig_Extension {
   */
   final public static function read_file(string $dir) : string {
     $lines = '';
-    $f = new SplFileObject($dir);
+    $f = new \SplFileObject($dir);
     while (!$f->eof()) {
         $lines .= $f->fgets();
     }
@@ -45,10 +45,10 @@ final class Files extends \Twig_Extension {
     * @param string $dir: Directorio del archivo escribir/crear
     * @param string $content: Contenido a escribir
     *
-    * @return catidad de bytes escritos en el archivo
+    * @return int catidad de bytes escritos en el archivo
   */
   final public static function write_file(string $dir, string $content) : int {
-    $f = new SplFileObject($dir,'w');
+    $f = new \SplFileObject($dir,'w');
     return (int) $f->fwrite($content);
   }
 
@@ -78,9 +78,9 @@ final class Files extends \Twig_Extension {
     *
     * @param string $file_name: Nombre del archivo, da igual si es solo el nombre o la ruta con el nombre
     *
-    * @return string con la extensión, devuelve un string '' si no existe información alguna acerca de la extensión
+    * @return mixed string con la extensión, devuelve un string '' si no existe información alguna acerca de la extensión
   */
-  final public static function get_file_ext(string $file_name) : string {
+  final public static function get_file_ext(string $file_name) {
     return pathinfo($file_name, PATHINFO_EXTENSION);
   }
 
@@ -91,7 +91,7 @@ final class Files extends \Twig_Extension {
     *
     * @param string $file_name: Nombre del archivo, da igual si es solo el nombre o la ruta con el nombre
     *
-    * @return true si es una imagen, false si no lo es
+    * @return bool true si es una imagen, false si no lo es
   */
   final public static function is_image(string $file_name) : bool {
     return (bool) in_array(self::get_file_ext($file_name),['jpg','png','jpeg','gif','JPG','PNG','JPEG','GIF']);
@@ -104,9 +104,9 @@ final class Files extends \Twig_Extension {
     *
     * @param string $file: path del fichero
     *
-    * @return int con el tamaño del fichero
+    * @return double con el tamaño del fichero
   */
-  final public static function file_size(string $file) : int {
+  final public static function file_size(string $file) : double {
   	return round(filesize($file)*0.0009765625, 1);
   }
 
@@ -151,9 +151,9 @@ final class Files extends \Twig_Extension {
     * @param string $dir: Directorio a crear
     * @param int $permisos: Permisos del directorio a crear, por defecto es "todos los permisos"
     *
-    * @return true si fue creado con éxito, false si el directorio ya existía o hubo algún error
+    * @return bool con true si fue creado con éxito, false si el directorio ya existía o hubo algún error
   */
-  final public static function create_dir(string $dir, int $permisos = 0777) : bool {
+  final public static function create_dir(string $dir, int $permisos = 0755) : bool {
     if(is_dir($dir)) {
       return false;
     }
@@ -230,14 +230,13 @@ final class Files extends \Twig_Extension {
 
     self::create_dir($new_dir);
 
-    foreach(glob($new_dir . ($only_images ? '{*.jpg,*.gif,*.png,*.gif,*.jpeg,*.JPG,*.GIF,*.PNG,*.JPEG}' : '*'),GLOB_BRACE) as $file) {
+    foreach(glob($old_dir . ($only_images ? '{*.jpg,*.gif,*.png,*.gif,*.jpeg,*.JPG,*.GIF,*.PNG,*.JPEG}' : '*'),GLOB_BRACE) as $file) {
+      if(file_exists($file)) {
+          unlink($file);
+      }
+      
       $name = explode('/',$file);
       $name = end($file);
-
-      if(file_exists($new_dir . $name)) {
-          unlink($new_dir . $name);
-      }
-
       copy($file,$new_dir . $name);
 
       if($delete_old) {
@@ -251,7 +250,7 @@ final class Files extends \Twig_Extension {
   /**
     * Se obtiene de Twig_Extension y sirve para que cada función esté disponible como etiqueta en twig
     *
-    * @return array: Todas las funciones con sus respectivos nombres de acceso en plantillas twig
+    * @return array con todas las funciones con sus respectivos nombres de acceso en plantillas twig
   */
   public function getFunctions() : array {
     return array(
@@ -269,7 +268,7 @@ final class Files extends \Twig_Extension {
   /**
     * Identificador único para la extensión de twig
     *
-    * @return string: Nombre de la extensión
+    * @return string con el nombre de la extensión
   */
   public function getName() : string {
     return 'ocrend_framework_helper_files';

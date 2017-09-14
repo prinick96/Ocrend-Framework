@@ -20,6 +20,21 @@ namespace Ocrend\Kernel\Helpers;
 final class Functions extends \Twig_Extension {
 
    /**
+      * Verifica parte de una fecha, método privado usado en str_to_time
+      * 
+      * @param int $index: Índice del arreglo
+      * @param array $detail: Arreglo
+      * @param int $max: Valor a comparar
+      *
+      * @return bool con el resultado de la comparación
+   */
+  final private function check_str_to_time(int $index, array $detail, int $max) : bool {
+    return !array_key_exists($index0,$detail) || !is_numeric($detail[$index]) || intval($detail[$index]) < $max;
+  }
+
+   //------------------------------------------------
+
+   /**
     * Redirecciona a una URL
     *
     * @param string $url: Sitio a donde redireccionará, si no se pasa, por defecto
@@ -84,9 +99,9 @@ final class Functions extends \Twig_Extension {
    /**
      * Alias de Empty, más completo
      *
-     * @param midex $var: Variable a analizar
+     * @param mixed $var: Variable a analizar
      *
-     * @return true si está vacío, false si no, un espacio en blanco cuenta como vacío
+     * @return bool con true si está vacío, false si no, un espacio en blanco cuenta como vacío
    */
    final public function emp($var) : bool {
      return (isset($var) && empty(trim(str_replace(' ','',$var))));
@@ -100,11 +115,11 @@ final class Functions extends \Twig_Extension {
      *
      * @param array $array, arreglo a analizar
      *
-     * @return true si están todos llenos, false si al menos uno está vacío
+     * @return bool con true si están todos llenos, false si al menos uno está vacío
    */
    final public function all_full(array $array) : bool {
      foreach($array as $e) {
-       if(self::emp($e) and $e != '0') {
+       if($this->emp($e) and $e != '0') {
          return false;
        }
      }
@@ -114,15 +129,13 @@ final class Functions extends \Twig_Extension {
    //------------------------------------------------
 
    /**
-     * Alias de Empty() pero soporta más de un parámetro
+     * Alias de Empty() pero soporta más de un parámetro (infinitos)
      *
-     * @param infinitos parámetros
-     *
-     * @return true si al menos uno está vacío, false si todos están llenos
+     * @return bool con true si al menos uno está vacío, false si todos están llenos
    */
     final public function e() : bool  {
       for ($i = 0, $nargs = func_num_args(); $i < $nargs; $i++) {
-        if(null === func_get_arg($i) || (self::emp(func_get_arg($i)) && func_get_arg($i) != '0')) {
+        if(null === func_get_arg($i) || ($this->emp(func_get_arg($i)) && func_get_arg($i) != '0')) {
           return true;
         }
       }
@@ -139,7 +152,7 @@ final class Functions extends \Twig_Extension {
       *
       * @return string con la fecha en formato humano (y en español)
     */
-     final public function fecha(string $format, int $time = 0) : string  {
+    final public function fecha(string $format, int $time = 0) : string  {
        $date = date($format,$time == 0 ? time() : $time);
        $cambios = array(
          'Monday'=> 'Lunes',
@@ -184,7 +197,7 @@ final class Functions extends \Twig_Extension {
     *
     * @return string <base href="ruta" />
   */
-  public function base_assets() : string {
+  final public function base_assets() : string {
     global $config, $http;
 
     # Revisar subdominio
@@ -210,9 +223,9 @@ final class Functions extends \Twig_Extension {
    * @param int $mes: Mes (1 a 12)
    * @param int $anio: Año (1975 a 2xxx)
    *
-   * @return int con el número del día
+   * @return string con el número del día
   */
-  public function last_day_month(int $mes, int $anio) : int {
+  final public function last_day_month(int $mes, int $anio) : string {
     return date('d', (mktime(0,0,0,$mes + 1, 1, $anio) - 1));
   }
 
@@ -225,7 +238,7 @@ final class Functions extends \Twig_Extension {
    *
    * @return string cifra con cero a la izquirda
   */
-  public function cero_izq(int $num) : string {
+  final public function cero_izq(int $num) : string {
     if($num < 10) {
       return '0' . $num;
     }
@@ -233,7 +246,7 @@ final class Functions extends \Twig_Extension {
     return $num;
   }
 
-   //------------------------------------------------
+  //------------------------------------------------
 
    /**
     * Devuelve el timestamp de una fecha, y null si su formato es incorrecto.
@@ -243,7 +256,7 @@ final class Functions extends \Twig_Extension {
     *
     * @return int|null con el timestamp
   */
-  public function str_to_time($fecha, string $hora = '00:00:00') {
+  final public function str_to_time($fecha, string $hora = '00:00:00') {
     if(null == $fecha) {
       return null;
     }
@@ -251,17 +264,17 @@ final class Functions extends \Twig_Extension {
     $detail = explode('/',$fecha);
 
     // Formato de día incorrecto
-    if(!array_key_exists(0,$detail) || !is_numeric($detail[0]) || intval($detail[0]) < 1) {
-      return null;
-    }
-
-    // Formato del año
-    if(!array_key_exists(2,$detail) || !is_numeric($detail[2])  || intval($detail[2]) < 1975) {
+    if($this->check_str_to_time(0,$detail,1)) {
       return null;
     }
 
     // Formato de mes incorrecto
-    if(!array_key_exists(1,$detail) || !is_numeric($detail[1])  || intval($detail[1]) < 1 || intval($detail[1]) > 12) {
+    if($this->check_str_to_time(1,$detail,1) || intval($detail[1]) > 12) {
+      return null;
+    }
+
+    // Formato del año
+    if($this->check_str_to_time(2,$detail,1970)) {
       return null;
     }
 
@@ -285,25 +298,25 @@ final class Functions extends \Twig_Extension {
    *
    * @param int $desde: Desde donde
    *
-   * @return string fecha
+   * @return mixed
   */
-   public function desde_date(int $desde) : string {
+  final public function desde_date(int $desde) {
      # Obtener esta fecha
      $hoy = date('d/m/Y/D',time());
      $hoy = explode('/',$hoy);
 
 
-     switch($desde) {
-       # Hoy
-       case 1:
+    switch($desde) {
+      # Hoy
+      case 1:
         return date('d/m/Y', time());
-       break;
-       # Ayer
-       case 2:
+
+      # Ayer
+      case 2:
         return date('d/m/Y', time() - (60*60*24));
-       break;
-       # Semana
-       case 3:
+        
+      # Semana
+      case 3:
         # Día de la semana actual
         switch($hoy[3]) {
           case 'Mon':
@@ -324,7 +337,7 @@ final class Functions extends \Twig_Extension {
           case 'Sat':
             $dia = intval($hoy[0]) - 5;
           break;
-          case 'Sun':
+          default: # 'Sun'
             $dia = intval($hoy[0]) - 6;
           break;
         }
@@ -341,20 +354,20 @@ final class Functions extends \Twig_Extension {
         }
         
         return $this->cero_izq($dia) .'/'. $this->cero_izq($hoy[1]) .'/' . $hoy[2];
-       break;
-       # Mes
-       case 4:
+
+      # Mes
+      case 4:
         return '01/'. $this->cero_izq($hoy[1]) .'/' . $hoy[2];
-       break;
-       # Año
-       case 5:
+       
+      # Año
+      case 5:
         return '01/01/' . $hoy[2];
-       break;
-       default:
+
+      default:
         throw new \RuntimeException('Problema con el valor $desde en desde_date()');
        break;
-     }
-   }
+    }
+  }
 
   //------------------------------------------------
 
@@ -363,18 +376,18 @@ final class Functions extends \Twig_Extension {
    *
    * @return int devuelve time()
   */
-   public function timestamp() : int {
+  final public function timestamp() : int {
      return time();
-   }
+  }
 
   //------------------------------------------------
 
   /**
    * Se obtiene de Twig_Extension y sirve para que cada función esté disponible como etiqueta en twig
     *
-   * @return array: Todas las funciones con sus respectivos nombres de acceso en plantillas twig
+   * @return array con todas las funciones con sus respectivos nombres de acceso en plantillas twig
   */
-   public function getFunctions() : array {
+  public function getFunctions() : array {
       return array(
        new \Twig_Function('percent', array($this, 'percent')),
        new \Twig_Function('convert', array($this, 'convert')),
@@ -395,12 +408,12 @@ final class Functions extends \Twig_Extension {
 
    //------------------------------------------------
 
-    /**
-        * Identificador único para la extensión de twig
-        *
-        * @return string: Nombre de la extensión
-    */
-    public function getName() : string {
+  /**
+      * Identificador único para la extensión de twig
+      *
+      * @return string con el nombre de la extensión
+  */
+  public function getName() : string {
         return 'ocrend_framework_func_class';
-    }
+  }
 }

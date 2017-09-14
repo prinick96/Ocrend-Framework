@@ -72,10 +72,10 @@ final class Strings extends \Twig_Extension {
     *
     * @example Strings::chash('$2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G','123456'); //return true
     *
-    * @return true si $s2 contiene la misma llave que $hash, por tanto el contenido de $hash es $s2, de lo contrario false
+    * @return bool true si $s2 contiene la misma llave que $hash, por tanto el contenido de $hash es $s2, de lo contrario false
   */
   final public static function chash(string $hash, string $s2) : bool  {
-    return ($hash == crypt($s2, substr($hash, 0, 29)));
+    return $hash == crypt($s2, substr($hash, 0, 29));
    }
    //------------------------------------------------
   /**
@@ -95,10 +95,10 @@ final class Strings extends \Twig_Extension {
     * @param string $ini: Fecha menor con el formato d-m-Y ó d/m/Y
     * @param string $fin: Fecha mayor con el formato d-m-Y ó d/m/Y
     *
-    * @return integer con la diferencia de tiempo en días
+    * @return double con la diferencia de tiempo en días
     *
   */
-  final public static function date_difference(string $ini, string $fin) : int {
+  final public static function date_difference(string $ini, string $fin) : double {
     $ini_i = explode('-',str_replace('/','-',$ini));
     $fin_i = explode('-',str_replace('/','-',$fin));
     return floor((mktime(0, 0, 0, $fin_i[1], $fin_i[0], $fin_i[2]) - mktime(0, 0, 0, $ini_i[1], $ini_i[0], $ini_i[2])) / 86400);
@@ -109,7 +109,7 @@ final class Strings extends \Twig_Extension {
     *
     * @param string $cumple: Fecha de nacimiento con el formato d-m-Y ó d/m/Y
     *
-    * @return integer con la edad
+    * @return int con la edad
     *
   */
   final public static function calculate_age(string $cumple) : int {
@@ -124,7 +124,7 @@ final class Strings extends \Twig_Extension {
     *
   */
   final public static function days_of_month() : int {
-    return cal_days_in_month(CAL_GREGORIAN, date('m',time()), date('Y',time()));
+    return cal_days_in_month(CAL_GREGORIAN, (int) date('m',time()), (int) date('Y',time()));
   }
   //------------------------------------------------
   /**
@@ -132,9 +132,9 @@ final class Strings extends \Twig_Extension {
     *
     * @param string $address: Cadena de texto con el email
     *
-    * @return bool devuelve TRUE si es un email y FALSE si no lo es
+    * @return mixed devuelve TRUE si es un email y FALSE si no lo es
   */
-  final public static function is_email(string $address) : bool {
+  final public static function is_email(string $address) {
     return filter_var($address, FILTER_VALIDATE_EMAIL);
   }
   //------------------------------------------------
@@ -256,7 +256,7 @@ final class Strings extends \Twig_Extension {
     * @param string $str: String a evaluar
     * @param bool $case_sensitive: Boolean para definir si será seible a mayúsculas o no
     *
-    * @return bool: True si comienza con el caracter especificado, False si no
+    * @return bool True si comienza con el caracter especificado, False si no
   */
   final public static function begin_with(string $sx, string $str) : bool {
     return (bool) (strlen($str) > 0 and $str[0] == $sx);
@@ -268,7 +268,7 @@ final class Strings extends \Twig_Extension {
     * @param string $sx: Caracter del final
     * @param string $str: String a evaluar
     *
-    * @return bool: True si termina con el caracter especificado, False si no
+    * @return bool True si termina con el caracter especificado, False si no
   */
   final public static function end_with(string $sx, string $str) : bool {
     return (bool) (strlen($str) > 0 and $str[strlen($str) - 1] == $sx);
@@ -280,7 +280,7 @@ final class Strings extends \Twig_Extension {
     * @param $s: String contenido en $str
     * @param $str: String a evaluar
     *
-    * @return bool: True si $s está dentro de $str, False si no
+    * @return bool True si $s está dentro de $str, False si no
   */
   final public static function contain(string $s, string $str) : bool {
     return (bool) (strpos($str, $s) !== false);
@@ -291,16 +291,16 @@ final class Strings extends \Twig_Extension {
     *
     * @param $str: String a evaluar
     *
-    * @return int: Cantidad de palabras
+    * @return int Cantidad de palabras
   */
   final public static function count_words(string $s) : int {
-    return str_word_count($s,0);
+    return (int) str_word_count($s,0);
   }
   //------------------------------------------------
   /**
     * Se obtiene de Twig_Extension y sirve para que cada función esté disponible como etiqueta en twig
     *
-    * @return array: Todas las funciones con sus respectivos nombres de acceso en plantillas twig
+    * @return array Todas las funciones con sus respectivos nombres de acceso en plantillas twig
   */
   public function getFunctions() : array {
     return array(
@@ -327,7 +327,7 @@ final class Strings extends \Twig_Extension {
   /**
     * Identificador único para la extensión de twig
     *
-    * @return string: Nombre de la extensión
+    * @return string Nombre de la extensión
   */
   public function getName() : string {
     return 'ocrend_framework_helper_strings';

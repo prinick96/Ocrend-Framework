@@ -305,7 +305,7 @@ class Users extends Models implements IModels {
       * Envía un correo electrónico al usuario que quiere recuperar la contraseña, con un token y una nueva contraseña.
       * Si el usuario no visita el enlace, el sistema no cambiará la contraseña.
       *
-      * @return void
+      * @return array<string,integer|string>
     */  
     public function lostpass() {
         try {
@@ -341,6 +341,7 @@ class Users extends Models implements IModels {
 					Para cambiar su contraseña por <b>'. $pass .'</b> haga <a href="'. $config['site']['url'] . 'lostpass/cambiar/&token='.$token.'&user='.$user_data[0]['id_user'].'" target="_blank">clic aquí</a>.';
 
             # Enviar el correo electrónico
+            $dest = array();
 			$dest[$email] = $user_data[0]['name'];
 			$email = Emails::send_mail($dest,Emails::plantilla($HTML),'Recuperar contraseña perdida');
 
@@ -372,9 +373,6 @@ class Users extends Models implements IModels {
     */  
     public function changeTemporalPass() {
         global $config, $http;
-
-        # Respuesta por defecto
-        $success = false;
         
         # Obtener los datos $_GET 
         $id_user = $http->query->get('user');
@@ -392,7 +390,7 @@ class Users extends Models implements IModels {
         }
         
         # Devolover al sitio de inicio
-        $this->functions->redir($config['site']['url'] . '?sucess=' . $succes);
+        $this->functions->redir($config['site']['url'] . '?sucess=' . (int) isset($success));
     }
 
     /**
@@ -442,12 +440,12 @@ class Users extends Models implements IModels {
       * @return array con datos del usuario conectado
     */
     public function getOwnerUser(string $select = '*') : array {
-        if(null != $this->id_user) {    
+        if(null !== $this->id_user) {    
                
             $user = $this->db->select($select,'users',"id_user='$this->id_user'",'LIMIT 1');
 
             # Si se borra al usuario desde la base de datos y sigue con la sesión activa
-            if(false == $user) {
+            if(false === $user) {
                 $this->logout();
             }
 

@@ -9,7 +9,7 @@
 
     {# Estilos #}
     <link href="views/app/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="views/app/css/framework.css" rel="stylesheet" />
+    <link href="views/app/css/framework.min.css" rel="stylesheet" />
     <link href="views/app/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
     {# Título #}
@@ -35,7 +35,7 @@
     {# Carga de jQuery #}
     {% if config.framework.debug %}
       {# jQuery para ver errores de ajax vía consola, no eliminar #}
-      <script src="views/app/js/jdev.js"></script>
+      <script src="views/app/js/jdev.min.js"></script>
     {% else %}
       {# jQuery para su plantilla, este puede ser modificado a voluntad #}
       <script src="views/app/vendor/jquery/jquery.min.js"></script>

@@ -1,0 +1,15 @@
+body { background-color: #F9F9F9; color: #222; font: 14px/1.4 Helvetica, Arial, sans-serif; margin: 0; padding-bottom: 45px }
+a { cursor: pointer; text-decoration: none }
+a:hover { text-decoration: underline }
+abbr[title] { border-bottom: none; cursor: help; text-decoration: none }
+table, tr, th, td { background: #FFF; border-collapse: collapse; vertical-align: top }
+table { background: #FFF; border: 1px solid #E0E0E0; box-shadow: 0px 0px 1px rgba(128, 128, 128, .2); margin: 1em 0; width: 100% }
+table th, table td { border: solid #E0E0E0; border-width: 1px 0; padding: 8px 10px }
+table th { background: #222; font-weight: bold; text-align: left; color: #FFF }
+.ocrend + .ocrend { margin-top: 30px }
+.ocrend-head .ocrend-class { color: white; font-size: 18px; font-weight: bold; line-height: 1.3; margin: 0; position: relative }
+.ocrend-message { font-size: 14px; font-weight: normal; margin: .5em 0 0 }
+.ocrend-file-path { margin-top: 3px; color: #181818; font-size: 13px }
+.ocrend-class { color: #181818 }
+.ocrend-method { color: #181818;  font-weight: bold }
+.ocrend-arguments { color: #222; font-weight: normal; padding-left: 2px }

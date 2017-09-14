@@ -160,28 +160,20 @@ final class Router implements IRouter {
         switch($this->routerCollectionRules[$index]) {
             case 'none':
                 return $ruta;
-            break;
             case 'letters':
                 return preg_match("/^[a-zA-Z ]*$/", $ruta) ? $ruta : null;
-            break;
             case 'alphanumeric':
                 return preg_match('/^[a-zA-Z0-9 ]*$/', $ruta) ? $ruta : null;
-            break;
             case 'url':
                 return preg_match('/^[a-zA-Z0-9- ]*$/', $ruta) ? $ruta : null;
-            break;
             case 'integer':
                 return is_numeric($ruta) ? (int) $ruta : null;
-            break;
             case 'float':
                 return is_numeric($ruta) ? (float) $ruta : null;
-            break;
             case 'integer_positive':
                 return (is_numeric($ruta) && $ruta >= 0) ? (int) $ruta : null;
-            break;
             case 'float_positive':
                 return (is_numeric($ruta) && $ruta >= 0) ? (float) $ruta : null;
-            break;
             default:
                 throw new \RuntimeException('La regla ' . $this->routerCollectionRules[$index] . ' existe en RULES pero no está implementada.');
             break;

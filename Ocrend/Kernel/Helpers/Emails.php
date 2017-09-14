@@ -26,7 +26,7 @@ final class Emails {
     *
     * @param bool $is_smtp: Define si se hará la conexión a través de SMTP o no
     *
-    * @return PHPMailer object, retorna un objeto de la clase PHPMailer
+    * @return \PHPMailer un objeto de la clase PHPMailer
   */
   final private static function init(bool $is_smtp = true) : \PHPMailer {
     global $config;
@@ -74,7 +74,7 @@ final class Emails {
     *                                                                                       'ruta archivo 2'
     *                                                                                       )
     *
-    * @return true si fue enviado correctamente, string con el Error descrito por PHPMailer
+    * @return string|bool true si fue enviado correctamente, string con el Error descrito por PHPMailer
   */
   final public static function send_mail(array $dest, string $HTML, string $titulo, bool $is_smtp = true, array $adj = []) {
     global $config;

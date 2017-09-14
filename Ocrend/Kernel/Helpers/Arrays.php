@@ -124,7 +124,7 @@ final class Arrays extends \Twig_Extension {
     *
     * @param array $a: Arreglo a evaluar
     *
-    * @return false si no lo es, true si lo es
+    * @return bool false si no lo es, true si lo es
   */
   final public static function is_assoc(array $a) : bool {
     if(sizeof($a) === 0) {
@@ -141,7 +141,7 @@ final class Arrays extends \Twig_Extension {
     *
     * @param array $a: Arreglo a evaluar
     *
-    * @return false si no lo es, true si lo es
+    * @return bool false si no lo es, true si lo es
   */
   final public static function is_numeric_array(array $a) : bool {
     return !self::is_assoc($a);
@@ -154,7 +154,7 @@ final class Arrays extends \Twig_Extension {
     *
     * @param array $a: Arreglo a evaluar
     *
-    * @return mixed, elemento random dentro del arreglo
+    * @return mixed elemento random dentro del arreglo
   */
   final public static function array_random_element(array $a) {
     return $a[array_rand($a)];
@@ -165,7 +165,7 @@ final class Arrays extends \Twig_Extension {
   /**
     * Se obtiene de Twig_Extension y sirve para que cada función esté disponible como etiqueta en twig
     *
-    * @return array: Todas las funciones con sus respectivos nombres de acceso en plantillas twig
+    * @return array con todas las funciones con sus respectivos nombres de acceso en plantillas twig
   */
   public function getFunctions() : array {
     return array(
@@ -183,7 +183,7 @@ final class Arrays extends \Twig_Extension {
   /**
     * Identificador único para la extensión de twig
     *
-    * @return string: Nombre de la extensión
+    * @return string con el nombre de la extensión
   */
   public function getName() : string {
     return 'ocrend_framework_helper_arrays';

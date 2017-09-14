@@ -32,7 +32,7 @@ abstract class Models  {
     /**
       * Contiene una instancia del helper para funciones
       *
-      * @var Ocrend\Kernel\Helpers\Functions
+      * @var \Ocrend\Kernel\Helpers\Functions
     */
     protected $functions;
 
@@ -62,7 +62,7 @@ abstract class Models  {
         $this->functions = new Functions();
 
         # Verificar sesión del usuario
-        if(null != $session->get('user_id') && $session->get('unique_session') == $config['sessions']['unique']) {
+        if(null !== $session->get('user_id') && $session->get('unique_session') == $config['sessions']['unique']) {
            $this->id_user = $session->get('user_id');
         }
     }

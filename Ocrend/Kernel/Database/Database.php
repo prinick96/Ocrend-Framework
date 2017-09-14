@@ -41,8 +41,8 @@ namespace Ocrend\Kernel\Database;
 
     if(!self::$inst instanceof self or $new_instance) {
       self::$inst = new self(
-          null == $name ? $config['database']['name'] : $name,
-          null == $motor ? $config['database']['motor'] : $motor
+          null === $name ? $config['database']['name'] : $name,
+          null === $motor ? $config['database']['motor'] : $motor
         );
     }
 
@@ -56,12 +56,18 @@ namespace Ocrend\Kernel\Database;
     * @param string|null $motor: Motor de la base de datos a conectar
     * @param bool $new_instance: true para iniciar una nueva instancia (al querer conectar a una DB distinta)
     *
-    * @throws RuntimeException si el motor no existe
-    * @throws RuntimeException si existe algún problema de conexión con la base de datos
+    * @throws \RuntimeException si el motor no existe
+    * @throws \RuntimeException si existe algún problema de conexión con la base de datos
     * @return Database : Instancia de conexión
   */
   final public function __construct(string $name, string $motor) {
     global $config;
+
+    # Configuración común
+    $comun_config = array(
+      \PDO::ATTR_EMULATE_PREPARES => false,
+      \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+    );
 
     try {
       switch ($motor) {
@@ -69,17 +75,21 @@ namespace Ocrend\Kernel\Database;
           parent::__construct('sqlite:'.$name);
         break;
         case 'cubrid':
-          parent::__construct('cubrid:host='.$config['database']['host'].';dbname='.$name.';port='.$config['database']['port'],$config['database']['user'],$config['database']['pass'],array(
-          \PDO::ATTR_EMULATE_PREPARES => false,
-          \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
+          parent::__construct('cubrid:host='.$config['database']['host'].';dbname='.$name.';port='.$config['database']['port'],
+          $config['database']['user'],
+          $config['database']['pass'],
+          $comun_config);
         break;
         case 'firebird':
-          parent::__construct('firebird:dbname='.$config['database']['host'].':'.$name,$config['database']['user'],$config['database']['pass'],array(
-          \PDO::ATTR_EMULATE_PREPARES => false,
-          \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
+          parent::__construct('firebird:dbname='.$config['database']['host'].':'.$name,
+          $config['database']['user'],
+          $config['database']['pass'],
+          $comun_config);
         break;
         case 'odbc';
-          parent::__construct('odbc:'.$name,$config['database']['user'],$config['database']['pass']);
+          parent::__construct('odbc:'.$name,
+          $config['database']['user'],
+          $config['database']['pass']);
         break;
         case 'oracle':
           parent::__construct('oci:dbname=(DESCRIPTION =
@@ -89,21 +99,22 @@ namespace Ocrend\Kernel\Database;
             (CONNECT_DATA =
               (SERVICE_NAME = '.$name.')
             )
-          );charset=utf8',$config['database']['user'],$config['database']['pass'],
-          array(\PDO::ATTR_EMULATE_PREPARES => false,
-          \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-          \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC));
+          );charset=utf8',
+          $config['database']['user'],
+          $config['database']['pass'],
+          array_merge(array(\PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC),$comun_config));
         break;
         case 'postgresql':
-          parent::__construct('pgsql:host='.$config['database']['host'].';dbname='.$name.';charset=utf8',$config['database']['user'],$config['database']['pass'],array(
-          \PDO::ATTR_EMULATE_PREPARES => false,
-          \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
+          parent::__construct('pgsql:host='.$config['database']['host'].';dbname='.$name.';charset=utf8',
+          $config['database']['user'],
+          $config['database']['pass'],
+          $comun_config);
         break;
         case 'mysql':
-          parent::__construct('mysql:host='.$config['database']['host'].';dbname='.$name,$config['database']['user'],$config['database']['pass'],array(
-          \PDO::ATTR_EMULATE_PREPARES => false,
-          \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-          \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
+          parent::__construct('mysql:host='.$config['database']['host'].';dbname='.$name,
+          $config['database']['user'],
+          $config['database']['pass'],
+          array_merge(array(\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'),$comun_config));
         break;
         case 'mssql':
           # Añadido por marc2684
@@ -111,11 +122,7 @@ namespace Ocrend\Kernel\Database;
           parent::__construct('sqlsrv:Server='.$config['database']['host'].';Database='.$name.';ConnectionPooling=0',
           $config['database']['user'],
           $config['database']['pass'],
-          array(\PDO::ATTR_EMULATE_PREPARES => false,
-                \PDO::SQLSRV_ENCODING_UTF8,
-                \PDO::ATTR_ERRMODE =>
-                \PDO::ERRMODE_EXCEPTION
-          ));
+          $comun_config);
         break;
         default:
           throw new \RuntimeException('Motor '. $motor .' de conexión no identificado.');
@@ -127,22 +134,22 @@ namespace Ocrend\Kernel\Database;
   }
 
   /**
-    * Devuelve un arreglo asociativo de todos los resultados arrojados por una query
+    * Convierte en arreglo asociativo de todos los resultados arrojados por una query
     *
-    * @param object PDOStatement $query, valor devuelto de la query
+    * @param object \PDOStatement $query, valor devuelto de la query
     *
-    * @return arreglo asociativo
+    * @return array arreglo asociativo
   */
   final public function fetch_array(\PDOStatement $query) : array {
     return $query->fetchAll(\PDO::FETCH_ASSOC);
   }
 
    /**
-    * Consigue el numero de filas encontradas después de un SELECT
+    * Cantidad de filas encontradas después de un SELECT
     *
-    * @param object PDOStatement $query, valor devuelto de la query
+    * @param object \PDOStatement $query, valor devuelto de la query
     *
-    * @return numero de filas encontradas
+    * @return int numero de filas encontradas
   */
   final public function rows(\PDOStatement $query) : int {
     return $query->rowCount();
@@ -153,7 +160,7 @@ namespace Ocrend\Kernel\Database;
     *
     * @param null/string/int/float a sanar
     *
-    * @return int/float/string sanados según sea el tipo de dato pasado por parámetro
+    * @return mixed elemento sano
   */
   final public function scape($e) {
     if(null === $e) {
@@ -177,7 +184,7 @@ namespace Ocrend\Kernel\Database;
     * @param string $where: Condición de borrado que define quien/quienes son dichos elementos
     * @param string $limit: Por defecto se limita a borrar un solo elemento que cumpla el $where
     *
-    * @return object PDOStatement
+    * @return \PDOStatement
   */
   final public function delete(string $table, string $where, string $limit = 'LIMIT 1') : \PDOStatement {
     return $this->query("DELETE FROM $table WHERE $where $limit;");
@@ -190,8 +197,8 @@ namespace Ocrend\Kernel\Database;
     * @param array $e: Arreglo asociativo de elementos, con la estrctura 'campo_en_la_tabla' => 'valor_a_insertar_en_ese_campo',
     *                  todos los elementos del arreglo $e, serán sanados por el método sin necesidad de hacerlo manualmente al crear el arreglo
     *
-    * @throws RuntimeException si el arreglo está vacío
-    * @return object PDOStatement
+    * @throws \RuntimeException si el arreglo está vacío
+    * @return \PDOStatement
   */
   final public function insert(string $table, array $e) : \PDOStatement {
       if (sizeof($e) == 0) {
@@ -220,8 +227,8 @@ namespace Ocrend\Kernel\Database;
     * @param string $where: Condición que indica quienes serán modificados
     * @param string $limite: Límite de elementos modificados, por defecto los modifica a todos
     *
-    * @throws RuntimeException si el arreglo está vacío
-    * @return object PDOStatement
+    * @throws \RuntimeException si el arreglo está vacío
+    * @return \PDOStatement
   */
   final public function update(string $table, array $e, string $where, string $limit = '') : \PDOStatement {
       if (sizeof($e) == 0) {
@@ -255,7 +262,7 @@ namespace Ocrend\Kernel\Database;
    /**
     * Realiza una query, ideal para trabajar con SELECTS, JOINS, etc
     *
-    * @return false si no encuentra ningún resultado, array asociativo/numérico si consigue al menos uno
+    * @return array|false si no encuentra ningún resultado, array asociativo/numérico si consigue al menos uno
   */
   final public function query_select(string $query) {
     $sql = $this->query($query);
@@ -272,7 +279,7 @@ namespace Ocrend\Kernel\Database;
   /**
     * Alert para evitar clonaciones
     *
-    * @throws RuntimeException si se intenta clonar la conexión
+    * @throws \RuntimeException si se intenta clonar la conexión
     * @return void
   */
   final public function __clone() {

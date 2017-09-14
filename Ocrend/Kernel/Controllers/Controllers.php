@@ -27,7 +27,7 @@ abstract class Controllers {
     /**
       * Obtiene el objeto del template 
       *
-      * @var Twig_Environment
+      * @var \Twig_Environment
     */
     protected $template;
 
@@ -48,7 +48,7 @@ abstract class Controllers {
     /**
       * Contiene una instancia del helper para funciones
       *
-      * @var Ocrend\Kernel\Helpers\Functions
+      * @var \Ocrend\Kernel\Helpers\Functions
     */
     protected $functions;
     
@@ -88,7 +88,7 @@ abstract class Controllers {
         global $config, $http, $session;
 
         # Instanciar las funciones
-        $this->functions = new Functions;
+        $this->functions = new Functions();
 
         # Verificar si está logeado el usuario
         $this->is_logged = null != $session->get('user_id') && $session->get('unique_session') == $config['sessions']['unique'];
@@ -127,7 +127,8 @@ abstract class Controllers {
 
         # Auxiliares
         $this->method = $router->getMethod();
-        $this->isset_id = (bool) (is_numeric($router->getID()) && $router->getID() >= 1);
+        $id_uri = $router->getID();
+        $this->isset_id = (bool) (is_numeric($id_uri) && $id_uri >= 1);
     }
 
     /**
