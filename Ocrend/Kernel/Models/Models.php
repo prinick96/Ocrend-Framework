@@ -20,7 +20,7 @@ use Ocrend\Kernel\Helpers\Functions;
  * @author Brayan Narváez <prinick@ocrend.com>
  */
 
-abstract class Models  {
+abstract class Models {
 
     /**
       * Tiene siempre el id pasado por la ruta, en caso de no haber ninguno, será cero.
@@ -53,7 +53,7 @@ abstract class Models  {
         global $session, $config;
         
         # Id captado por la ruta
-        if(null != $router) {
+        if (null != $router) {
             $this->id = $router->getId(true);
             $this->id = null == $this->id ? 0 : $this->id; 
         }
@@ -77,7 +77,7 @@ abstract class Models  {
       * @throws ModelsException
       */
     protected function setId($id, string $default_msg = 'No puedede asignarse el id.') {
-        if(null == $id || !is_numeric($id) || $id <= 0) {
+        if (null == $id || !is_numeric($id) || $id <= 0) {
             throw new ModelsException($default_msg);
         }
 
@@ -85,8 +85,8 @@ abstract class Models  {
     }
 
     /**
-      * Cierra el modelo
-    */
+     * Cierra el modelo
+     */
     protected function __destruct() {}
 
 }

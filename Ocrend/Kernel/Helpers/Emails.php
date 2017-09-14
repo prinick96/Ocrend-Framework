@@ -35,7 +35,7 @@ final class Emails {
     $mail->CharSet = "UTF-8";
     $mail->Encoding = "quoted-printable";
 
-    if($is_smtp) {
+    if ($is_smtp) {
       $mail->isSMTP();
       $mail->SMTPAuth = true;
       $mail->Host = $config['phpmailer']['host'];
@@ -88,13 +88,13 @@ final class Emails {
     $mail->Subject = $titulo;
     $mail->Body    = $HTML;
 
-    if(sizeof($adj)) {
+    if (sizeof($adj)) {
       foreach ($adj as $ruta) {
         $mail->AddAttachment($ruta);
       }
     }
 
-    if(!$mail->send()) {
+    if (!$mail->send()) {
       return $mail->ErrorInfo;
     }
 
@@ -104,12 +104,12 @@ final class Emails {
   //------------------------------------------------
 
   /**
-    * Plantilla estándar que muestra de forma amigable el texto, utiliza bootstrap
-    *
-    * @param string $content: Cadena de texto en HTML, puede ser en bootstrap
-    *
-    * @return string con el HTML para enviar
-  */
+   * Plantilla estándar que muestra de forma amigable el texto, utiliza bootstrap
+   *
+   * @param string $content: Cadena de texto en HTML, puede ser en bootstrap
+   *
+   * @return string con el HTML para enviar
+   */
   final public static function plantilla(string $content) : string {
     return '
     <html>
@@ -118,7 +118,7 @@ final class Emails {
     </head>
     <body style="font-family: Verdana;">
       <section>
-        '.$content.'
+        '.$content . '
       </section>
     </body>
     </html>';

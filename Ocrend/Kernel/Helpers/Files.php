@@ -22,12 +22,12 @@ final class Files extends \Twig_Extension {
   //------------------------------------------------
 
   /**
-    * Devuelve un string con el contenido de un archivo
-    *
-    * @param string $dir: Directorio del archivo a leer
-    *
-    * @return string con contenido del archivo
-  */
+   * Devuelve un string con el contenido de un archivo
+   *
+   * @param string $dir: Directorio del archivo a leer
+   *
+   * @return string con contenido del archivo
+   */
   final public static function read_file(string $dir) : string {
     $lines = '';
     $f = new \SplFileObject($dir);
@@ -55,14 +55,14 @@ final class Files extends \Twig_Extension {
   //------------------------------------------------
 
   /**
-    * Borra un archivo en un directorio
-    *
-    * @param string $route: Ruta del fichero
-    *
-    * @return bool true si borró el fichero, false si no (porque no existía)
-  */
+   * Borra un archivo en un directorio
+   *
+   * @param string $route: Ruta del fichero
+   *
+   * @return bool true si borró el fichero, false si no (porque no existía)
+   */
   final public static function delete_file(string $route) : bool {
-    if(file_exists($route)) {
+    if (file_exists($route)) {
       unlink($route);
 
       return true;
@@ -94,7 +94,7 @@ final class Files extends \Twig_Extension {
     * @return bool true si es una imagen, false si no lo es
   */
   final public static function is_image(string $file_name) : bool {
-    return (bool) in_array(self::get_file_ext($file_name),['jpg','png','jpeg','gif','JPG','PNG','JPEG','GIF']);
+    return (bool) in_array(self::get_file_ext($file_name), ['jpg', 'png', 'jpeg', 'gif', 'JPG', 'PNG', 'JPEG', 'GIF']);
   }
 
   //------------------------------------------------
@@ -135,7 +135,7 @@ final class Files extends \Twig_Extension {
   */
   final public static function get_files_in_dir(string $dir, string $types = '') : array {
     $array = array();
-    if(is_dir($dir)) {
+    if (is_dir($dir)) {
       foreach (glob($dir . '*' . $types) as $file) {
         $array[] = $file;
       }
@@ -164,18 +164,18 @@ final class Files extends \Twig_Extension {
   //------------------------------------------------
 
   /**
-    * Elimina de forma recursiva un directorio con su contenido
-    *
-    * @author brandonwamboldt
-    *
-    * @param string $dir: Directorio a borrar
-    *
-    * @return bool true si todo se borró con éxito
-  */
+   * Elimina de forma recursiva un directorio con su contenido
+   *
+   * @author brandonwamboldt
+   *
+   * @param string $dir: Directorio a borrar
+   *
+   * @return bool true si todo se borró con éxito
+   */
   final public static function rm_dir(string $dir) {
 
     # Evitar una desgracia
-    if(in_array($dir,[
+    if (in_array($dir, [
       'Ocrend/',
       'Ocrend/Kernel/',
       'Ocrend/vendor/',
@@ -188,10 +188,10 @@ final class Files extends \Twig_Extension {
       throw new \RuntimeException('No puede eliminar la ruta ' . $dir . ' ya que es crítica.');
     }
 
-    foreach(glob($dir . "/*") as $archivos_carpeta)   { 
-        if (is_dir($archivos_carpeta))   {
+    foreach (glob($dir . "/*") as $archivos_carpeta) { 
+        if (is_dir($archivos_carpeta)) {
             self::rm_dir($archivos_carpeta);
-        } else  {
+        } else {
             unlink($archivos_carpeta);
         }
     }
@@ -203,29 +203,29 @@ final class Files extends \Twig_Extension {
   //------------------------------------------------
 
   /**
-    * Devuelve la cantidad de imágenes contenidas dentro de un directorio
-    *
-    * @param string $dir: Directorio en donde están las imagenes
-    *
-    * @return int cantidad de  imágenes
-  */
+   * Devuelve la cantidad de imágenes contenidas dentro de un directorio
+   *
+   * @param string $dir: Directorio en donde están las imagenes
+   *
+   * @return int cantidad de  imágenes
+   */
   final public static function images_in_dir(string $dir) : int {
-    return sizeof(glob($dir . '{*.jpg,*.gif,*.png,*.gif,*.jpeg,*.JPG,*.GIF,*.PNG,*.JPEG}',GLOB_BRACE));
+    return sizeof(glob($dir . '{*.jpg,*.gif,*.png,*.gif,*.jpeg,*.JPG,*.GIF,*.PNG,*.JPEG}', GLOB_BRACE));
   }
 
   //------------------------------------------------
 
   /**
-    * Copia todos los ficheros de un directorio a un directorio nuevo, si el directorio nuevo no existe, es creado.
-    * Si en el directorio nuevo existe un archivo con el mismo nombre de alguno en el viejo, este será sobreescrito.
-    *
-    * @param string $old_dir: Ruta del directorio viejo (de donde se moverán los ficheros)
-    * @param string $new_dir: Ruta del directorio nuevo (hacia donde se moverán los ficheros)
-    * @param bool $only_images: Pasar como TRUE, si sólo quiere pasar imagenes
-    * @param bool $delete_old: Pasar como TRUE, si se quiere borrar todo el contenido del viejo directorio al pasarse
-    *
-    * @return void
-  */
+   * Copia todos los ficheros de un directorio a un directorio nuevo, si el directorio nuevo no existe, es creado.
+   * Si en el directorio nuevo existe un archivo con el mismo nombre de alguno en el viejo, este será sobreescrito.
+   *
+   * @param string $old_dir: Ruta del directorio viejo (de donde se moverán los ficheros)
+   * @param string $new_dir: Ruta del directorio nuevo (hacia donde se moverán los ficheros)
+   * @param bool $only_images: Pasar como TRUE, si sólo quiere pasar imagenes
+   * @param bool $delete_old: Pasar como TRUE, si se quiere borrar todo el contenido del viejo directorio al pasarse
+   *
+   * @return void
+   */
   final public static function move_from_dir(string $old_dir, string $new_dir, bool $only_images = false, bool $delete_old = false) {
 
     self::create_dir($new_dir);

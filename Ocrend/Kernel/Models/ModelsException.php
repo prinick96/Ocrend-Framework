@@ -20,15 +20,15 @@ namespace Ocrend\Kernel\Models;
 class ModelsException extends \Exception {
 
     /**
-      * __construct()
-    */
+     * __construct()
+     */
     public function __construct($message = null, $code = 1, \Exception $previous = null) {
         parent::__construct($message, $code, $previous);
     }
 
     /**
-      * Muestra el error con un formato u otro dependiendo desde donde se hace la petición.
-    */
+     * Muestra el error con un formato u otro dependiendo desde donde se hace la petición.
+     */
     public function errorResponse() {
         throw new \RuntimeException($this->getMessage());
     }
