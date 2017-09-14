@@ -127,8 +127,7 @@ abstract class Controllers {
 
         # Auxiliares
         $this->method = $router->getMethod();
-        $id_uri = $router->getID();
-        $this->isset_id = (bool) (is_numeric($id_uri) && $id_uri >= 1);
+        $this->isset_id = $router->getID(true);
     }
 
     /**
