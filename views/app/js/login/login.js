@@ -1,24 +1,22 @@
 /**
  * Ajax action to api rest
- * 
- * @param {*} e 
 */
-function login(e){
+function login(){
   $.ajax({
     type : "POST",
     url : "api/login",
     data : $('#login_form').serialize(),
     success : function(json) {
-      console.log(json.success);
-      console.log(json.message);
+      alert(json.success);
+      alert(json.message);
       if(json.success == 1) {
         setTimeout(function(){
             location.reload();
         },1000);
       }
     },
-    error : function(xhr, status) {
-      console.log('Ha ocurrido un problema.');
+    error : function(/*xhr, status*/) {
+      alert('Ha ocurrido un problema.');
     }
   });
 }
@@ -28,11 +26,11 @@ function login(e){
  */
 $('#login').click(function(e) {
   e.defaultPrevented;
-  login(e);
+  login();
 });
 $('#login_form').keypress(function(e) {
     e.defaultPrevented;
     if(e.which == 13) {
-        login(e);
+        login();
     }
 });

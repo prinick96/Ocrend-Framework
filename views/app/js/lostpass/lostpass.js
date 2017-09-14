@@ -1,24 +1,22 @@
 /**
  * Ajax action to api rest
- * 
- * @param {*} e 
 */
-function lostpass(e){
+function lostpass(){
   $.ajax({
     type : "POST",
     url : "api/lostpass",
     data : $('#lostpass_form').serialize(),
     success : function(json) {
-      console.log(json.success);
-      console.log(json.message);
+      alert(json.success);
+      alert(json.message);
       if(json.success == 1) {
         setTimeout(function(){
             location.reload();
         },1000);
       }
     },
-    error : function(xhr, status) {
-      console.log('Ha ocurrido un problema.');
+    error : function(/*xhr, status*/) {
+      alert('Ha ocurrido un problema.');
     }
   });
 }
@@ -28,11 +26,11 @@ function lostpass(e){
  */
 $('#lostpass').click(function(e) {
   e.defaultPrevented;
-  lostpass(e);
+  lostpass();
 });
 $('#lostpass_form').keypress(function(e) {
   e.defaultPrevented;
     if(e.which == 13) {
-        lostpass(e);
+        lostpass();
     }
 });

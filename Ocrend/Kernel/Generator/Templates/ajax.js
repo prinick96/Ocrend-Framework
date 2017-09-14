@@ -1,16 +1,14 @@
 /**
  * Ajax action to api rest
- * 
- * @param {*} e 
 */
-function {{view}}(e){
+function {{view}}(){
   $.ajax({
     type : "{{method}}",
     url : "api/{{rest}}",
     data : $('#{{view}}_form').serialize(),
     success : function(json) {
-      console.log(json.success);
-      console.log(json.message);
+      alert(json.success);
+      alert(json.message);
       if(json.success == 1) {
         setTimeout(function(){
             location.reload();
@@ -18,7 +16,7 @@ function {{view}}(e){
       }
     },
     error : function(xhr, status) {
-      console.log('Ha ocurrido un problema.');
+      alert('Ha ocurrido un problema.');
     }
   });
 }
@@ -30,11 +28,11 @@ function {{view}}(e){
  */
 $('#{{view}}').click(function(e) {
   e.defaultPrevented;
-  {{view}}(e);
+  {{view}}();
 });
 $('#{{view}}_form').keypress(function(e) {
     e.defaultPrevented;
     if(e.which == 13) {
-        {{view}}(e);
+        {{view}}();
     }
 });

@@ -386,7 +386,7 @@ class Users extends Models implements IModels {
             $this->db->query("UPDATE users SET pass=tmp_pass, tmp_pass='', token=''
             WHERE id_user='$id_user' AND token='$token' LIMIT 1;");
             # Éxito
-            $succes = true;
+            $success = true;
         }
         
         # Devolover al sitio de inicio

@@ -95,13 +95,13 @@ final class Strings extends \Twig_Extension {
     * @param string $ini: Fecha menor con el formato d-m-Y ó d/m/Y
     * @param string $fin: Fecha mayor con el formato d-m-Y ó d/m/Y
     *
-    * @return double con la diferencia de tiempo en días
+    * @return int con la diferencia de tiempo en días
     *
   */
-  final public static function date_difference(string $ini, string $fin) : double {
+  final public static function date_difference(string $ini, string $fin) : int {
     $ini_i = explode('-',str_replace('/','-',$ini));
     $fin_i = explode('-',str_replace('/','-',$fin));
-    return floor((mktime(0, 0, 0, $fin_i[1], $fin_i[0], $fin_i[2]) - mktime(0, 0, 0, $ini_i[1], $ini_i[0], $ini_i[2])) / 86400);
+    return (int) floor((mktime(0, 0, 0, $fin_i[1], $fin_i[0], $fin_i[2]) - mktime(0, 0, 0, $ini_i[1], $ini_i[0], $ini_i[2])) / 86400);
   }
   //------------------------------------------------
   /**

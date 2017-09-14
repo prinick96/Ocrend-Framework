@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-use Ocrend\Kernel\Generator\Generator;
+use Ocrend\Kernel\Generator as PHPGen;
 
 # Definir ruta de acceso permitida
 define('API_INTERFACE', '');
@@ -21,4 +21,4 @@ require 'Ocrend/autoload.php';
 require 'Ocrend/Kernel/Config/Start.php';
 
 # Lanzar el generador
-new Generator($argv);
+new PHPGen\Generator($argv);

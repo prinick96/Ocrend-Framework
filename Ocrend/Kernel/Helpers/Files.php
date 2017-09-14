@@ -104,10 +104,10 @@ final class Files extends \Twig_Extension {
     *
     * @param string $file: path del fichero
     *
-    * @return double con el tamaño del fichero
+    * @return int con el tamaño del fichero
   */
-  final public static function file_size(string $file) : double {
-  	return round(filesize($file)*0.0009765625, 1);
+  final public static function file_size(string $file) : int {
+  	return (int) round(filesize($file)*0.0009765625, 1);
   }
 
   //------------------------------------------------
@@ -236,7 +236,7 @@ final class Files extends \Twig_Extension {
       }
       
       $name = explode('/',$file);
-      $name = end($file);
+      $name = end($name);
       copy($file,$new_dir . $name);
 
       if($delete_old) {

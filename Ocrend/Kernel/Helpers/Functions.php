@@ -29,7 +29,7 @@ final class Functions extends \Twig_Extension {
       * @return bool con el resultado de la comparación
    */
   final private function check_str_to_time(int $index, array $detail, int $max) : bool {
-    return !array_key_exists($index0,$detail) || !is_numeric($detail[$index]) || intval($detail[$index]) < $max;
+    return !array_key_exists($index,$detail) || !is_numeric($detail[$index]) || intval($detail[$index]) < $max;
   }
 
    //------------------------------------------------

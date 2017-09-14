@@ -253,7 +253,7 @@ namespace Ocrend\Kernel\Database;
     * @param string $where: Condición que indica quienes son los que se extraen, si no se coloca extrae todos
     * @param string $limite: Límite de elemntos a traer, por defecto trae TODOS los que cumplan $where
     *
-    * @return false si no encuentra ningún resultado, array asociativo/numérico si consigue al menos uno
+    * @return mixed false si no encuentra ningún resultado, array asociativo/numérico si consigue al menos uno
   */
   final public function select(string $e, string $table, string $where = '1 = 1', string $limit = "") {    
     return $this->query_select("SELECT $e FROM $table WHERE $where $limit;");

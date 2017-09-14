@@ -75,7 +75,7 @@ abstract class Models  {
       * @param string $default_msg : Mensaje a mostrar en caso de que no se pueda asignar
       *
       * @throws ModelsException
-    */
+      */
     protected function setId($id, string $default_msg = 'No puedede asignarse el id.') {
         if(null == $id || !is_numeric($id) || $id <= 0) {
             throw new ModelsException($default_msg);

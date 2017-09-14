@@ -1,24 +1,22 @@
 /**
  * Ajax action to api rest
- * 
- * @param {*} e 
 */
-function register(e){
+function register(){
   $.ajax({
     type : "POST",
     url : "api/register",
     data : $('#register_form').serialize(),
     success : function(json) {
-      console.log(json.success);
-      console.log(json.message);
+      alert(json.success);
+      alert(json.message);
       if(json.success == 1) {
         setTimeout(function(){
             location.reload();
         },1000);
       }
     },
-    error : function(xhr, status) {
-      console.log('Ha ocurrido un problema.');
+    error : function(/*xhr, status*/) {
+      alert('Ha ocurrido un problema.');
     }
   });
 }
@@ -28,11 +26,11 @@ function register(e){
  */
 $('#register').click(function(e) {
   e.defaultPrevented;
-  register(e);
+  register();
 });
 $('#register_form').keypress(function(e) {
     e.defaultPrevented;
     if(e.which == 13) {
-        register(e);
+        register();
     }
 });
