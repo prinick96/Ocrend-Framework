@@ -65,6 +65,12 @@ Y luego accedemos desde la url a www.miweb.com/hola/
 
 ## Documentación
 
-[Github Wiki](https://github.com/prinick96/Ocrend-Framework/wiki) -
 [Web Oficial](http://framework.ocrend.com) -
 [Videos](https://www.youtube.com/playlist?list=PLDQZoQpLCoUAlWmnF8-b4KUT3-lzXAn4i)
+
+## Cómo contribuir
+
+- Realizar un fork
+- Crear una rama con el nombre del feature o bugfix
+- Realizar el pull request de la rama
+- Esperar por el merge
