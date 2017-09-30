@@ -2,11 +2,11 @@
 
 <p align="center"><img src="http://ocrend.com/views/app/images/logo.png"></p>
 <p align="center">
-<a href="https://scrutinizer-ci.com/g/prinick96/Ocrend-Framework/" target="_blank"><img src="https://scrutinizer-ci.com/g/prinick96/Ocrend-Framework/badges/quality-score.png?b=beta" alt="Scrutinizer 9.36" /></a>
+<a href="https://scrutinizer-ci.com/g/prinick96/Ocrend-Framework/" target="_blank"><img src="https://scrutinizer-ci.com/g/prinick96/Ocrend-Framework/badges/quality-score.png?b=master" alt="Scrutinizer 9.36" /></a>
 <img src="https://scrutinizer-ci.com/g/prinick96/Ocrend-Framework/badges/build.png?b=master" alt="Build Passed" />
 <img src="https://img.shields.io/packagist/l/doctrine/orm.svg" alt="Hecho en PHP 7" />
 <img src="https://img.shields.io/badge/php-7-blue.svg" alt="Licencia MIT" />
-<img src="https://img.shields.io/badge/stable-2.0.3-blue.svg" alt="Versión Estable" />
+<img src="https://img.shields.io/badge/stable-2.0.4-blue.svg" alt="Versión Estable" />
 </p>
 
 ## Introducción
@@ -66,6 +66,7 @@ Y luego accedemos desde la url a www.miweb.com/hola/
 ## Documentación
 
 [Web Oficial](http://framework.ocrend.com) -
+[Comunidad](http://foro.ocrend.com) -
 [Videos](https://www.youtube.com/playlist?list=PLDQZoQpLCoUAlWmnF8-b4KUT3-lzXAn4i)
 
 ## Cómo contribuir
