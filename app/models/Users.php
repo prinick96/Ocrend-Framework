@@ -466,8 +466,8 @@ class Users extends Models implements IModels {
                 `name` varchar(100) NOT NULL,
                 `email` varchar(150) NOT NULL,
                 `pass` varchar(90) NOT NULL,
-                `tmp_pass` varchar(90) NOT NULL,
-                `token` varchar(90) NOT NULL,
+                `tmp_pass` varchar(90) NOT NULL DEFAULT '',
+                `token` varchar(90) NOT NULL DEFAULT '',
                 PRIMARY KEY (`id_user`)
             ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
         ")) {
