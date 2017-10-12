@@ -610,9 +610,13 @@ $database_fields
       * @return array
     */
     final public function foo() : array {
-      global \$http;
+       try {
+            global \$http;
 
-      return array('success' => 1, 'message' => 'Funcionando');
+            return array('success' => 1, 'message' => 'Funcionando');
+       } catch(ModelsException \$e) {
+            return array('success' => 0, 'message' => \$e->getMessage());
+       } 
     }\n";
         }
         # Si hay una tabla nueva creada
