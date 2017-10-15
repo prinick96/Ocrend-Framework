@@ -66,7 +66,7 @@ Y luego accedemos desde la url a www.miweb.com/hola/
 ## Documentación
 
 [Web Oficial](http://framework.ocrend.com) -
-[Comunidad](http://foro.ocrend.com) -
+[Comunidad para Soporte](http://foro.ocrend.com) -
 [Videos](https://www.youtube.com/playlist?list=PLDQZoQpLCoUAlWmnF8-b4KUT3-lzXAn4i)
 
 ## Cómo contribuir
