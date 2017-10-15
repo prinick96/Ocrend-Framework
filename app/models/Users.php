@@ -127,8 +127,7 @@ class Users extends Models implements IModels {
     private function generateSession(array $user_data) {
         global $session, $config;
 
-        $session->set('user_id', (int) $user_data['id_user']);
-        $session->set('unique_session', $config['sessions']['unique']);
+        $session->set($config['sessions']['unique'] . '_user_id',(int) $user_data['id_user']);
     }
 
     /**
@@ -399,10 +398,10 @@ class Users extends Models implements IModels {
      * @return void
      */    
     public function logout() {
-        global $session;
+        global $session, $config;
 
-        if (null != $session->get('user_id')) {
-            $session->remove('user_id');
+        if(null != $session->get($config['sessions']['unique'] . '_user_id')) {
+            $session->remove($config['sessions']['unique'] . '_user_id');
         }
 
         $this->functions->redir();
@@ -467,8 +466,8 @@ class Users extends Models implements IModels {
                 `name` varchar(100) NOT NULL,
                 `email` varchar(150) NOT NULL,
                 `pass` varchar(90) NOT NULL,
-                `tmp_pass` varchar(90) NOT NULL,
-                `token` varchar(90) NOT NULL,
+                `tmp_pass` varchar(90) NOT NULL DEFAULT '',
+                `token` varchar(90) NOT NULL DEFAULT '',
                 PRIMARY KEY (`id_user`)
             ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
         ")) {

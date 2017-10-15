@@ -62,8 +62,8 @@ abstract class Models {
         $this->functions = new Functions();
 
         # Verificar sesión del usuario
-        if(null !== $session->get('user_id') && $session->get('unique_session') == $config['sessions']['unique']) {
-           $this->id_user = $session->get('user_id');
+        if(null !== $session->get($config['sessions']['unique'] . '_user_id')) {
+           $this->id_user = $session->get($config['sessions']['unique'] . '_user_id');
         }
     }
 

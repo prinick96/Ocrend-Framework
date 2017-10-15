@@ -91,7 +91,7 @@ abstract class Controllers {
         $this->functions = new Functions();
 
         # Verificar si está logeado el usuario
-        $this->is_logged = null != $session->get('user_id') && $session->get('unique_session') == $config['sessions']['unique'];
+        $this->is_logged = null != $session->get($config['sessions']['unique'] . '_user_id');
 
         # Establecer la configuración para el controlador
         $this->setControllerConfig($configController);
