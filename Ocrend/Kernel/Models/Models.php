@@ -60,10 +60,11 @@ abstract class Models  {
 
         # Instanciar las funciones
         $this->functions = new Functions();
-
+        
         # Verificar sesión del usuario
-        if(null !== $session->get($config['sessions']['unique'] . '_user_id')) {
-           $this->id_user = $session->get($config['sessions']['unique'] . '_user_id');
+        $session_name = $config['sessions']['unique'] . '_user_id';
+        if(null !== $session->get($session_name)) {
+           $this->id_user = $session->get($session_name);
         }
     }
 
