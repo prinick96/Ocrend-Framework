@@ -332,17 +332,33 @@ class Users extends Models implements IModels {
             # Generar token y contraseña 
             $token = md5(time());
             $pass = uniqid();
+            $link = $config['site']['url'] . 'lostpass/cambiar/&token='.$token.'&user='.$user_data[0]['id_user'];
 
             # Construir mensaje y enviar mensaje
             $HTML = 'Hola <b>'. $user_data[0]['name'] .'</b>, ha solicitado recuperar su contraseña perdida, si no ha realizado esta acción no necesita hacer nada.
 					<br />
 					<br />
-					Para cambiar su contraseña por <b>'. $pass .'</b> haga <a href="'. $config['site']['url'] . 'lostpass/cambiar/&token='.$token.'&user='.$user_data[0]['id_user'].'" target="_blank">clic aquí</a>.';
+					Para cambiar su contraseña por <b>'. $pass .'</b> haga <a href="'. $link .'" target="_blank">clic aquí</a> o en el botón de recuperar.';
 
             # Enviar el correo electrónico
             $dest = array();
 			$dest[$email] = $user_data[0]['name'];
-			$email = Emails::send_mail($dest,Emails::plantilla($HTML),'Recuperar contraseña perdida');
+            $email_send = Emails::send($dest,array(
+                # Título del mensaje
+                '{{title}}' => 'Recuperar contraseña de ' . $config['site']['name'],
+                # Url de logo
+                '{{url_logo}}' => $config['site']['url'],
+                # Logo
+                '{{logo}}' => $config['mailer']['logo'],
+                # Contenido del mensaje
+                '{{content}} ' => $HTML,
+                # Url del botón
+                '{{btn-href}}' => $link,
+                # Texto del boton
+                '{{btn-name}}' => 'Recuperar Contraseña',
+                # Copyright
+                '{{copyright}}' => '&copy; '.date('Y') .' <a href="'.$config['site']['url'].'">'.$config['site']['name'].'</a> - Todos los derechos reservados.'
+              ),0);
 
             # Verificar si hubo algún problema con el envío del correo
             if(false === $email) {

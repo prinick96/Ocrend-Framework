@@ -16,11 +16,12 @@ database:
   motor: mysql
   
 # Configuración de servidor SMTP
-phpmailer:
+mailer:
   host: 
   user: 
   pass: 
-  port: 465
+  port: 587
+  logo: https://ocrend.com/views/app/images/logo.png
 
 # Configuración de sesiones
 sessions:

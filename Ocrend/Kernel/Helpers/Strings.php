@@ -184,10 +184,9 @@ final class Strings extends \Twig_Extension {
     * @return string Cadena de texto con formato de url amigable
   */
   final public static function url_amigable(string $url) : string {
-    $url = strtolower($url);
     $url = str_replace(['á', 'é', 'í', 'ó', 'ú', 'ñ'], ['a', 'e', 'i', 'o', 'u', 'n'], $url);
     $url = str_replace([' ', '&', '\r\n', '\n', '+', '%'], '-', $url);
-    return preg_replace(['/[^a-z0-9\-<>]/', '/[\-]+/', '/<[^>]*>/'], ['', '-', ''], $url);
+    return strtolower(preg_replace(['/[^a-zA-Z0-9\-<>]/', '/[\-]+/', '/<[^>]*>/'], ['', '-', ''], $url));
   }
   //------------------------------------------------
   /**
@@ -288,7 +287,7 @@ final class Strings extends \Twig_Extension {
     * @return int Cantidad de palabras
   */
   final public static function count_words(string $s) : int {
-    return (int) str_word_count($s,0);
+    return (int) str_word_count($s,0,'0..9_');
   }
   //------------------------------------------------
   /**

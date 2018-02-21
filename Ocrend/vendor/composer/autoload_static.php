@@ -9,6 +9,7 @@ class ComposerStaticInit8717f8bd41e2851ee8528e88990f2038
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
+        '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -31,6 +32,10 @@ class ComposerStaticInit8717f8bd41e2851ee8528e88990f2038
         'P' => 
         array (
             'Psr\\Log\\' => 8,
+        ),
+        'E' => 
+        array (
+            'Egulias\\EmailValidator\\' => 23,
         ),
     );
 
@@ -79,6 +84,10 @@ class ComposerStaticInit8717f8bd41e2851ee8528e88990f2038
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
+        'Egulias\\EmailValidator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/egulias/email-validator/EmailValidator',
+        ),
     );
 
     public static $prefixesPsr0 = array (
@@ -96,17 +105,13 @@ class ComposerStaticInit8717f8bd41e2851ee8528e88990f2038
                 0 => __DIR__ . '/..' . '/pimple/pimple/src',
             ),
         ),
-    );
-
-    public static $classMap = array (
-        'EasyPeasyICS' => __DIR__ . '/..' . '/phpmailer/phpmailer/extras/EasyPeasyICS.php',
-        'PHPMailer' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.phpmailer.php',
-        'PHPMailerOAuth' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.phpmaileroauth.php',
-        'PHPMailerOAuthGoogle' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.phpmaileroauthgoogle.php',
-        'POP3' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.pop3.php',
-        'SMTP' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.smtp.php',
-        'ntlm_sasl_client_class' => __DIR__ . '/..' . '/phpmailer/phpmailer/extras/ntlm_sasl_client.php',
-        'phpmailerException' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.phpmailer.php',
+        'D' => 
+        array (
+            'Doctrine\\Common\\Lexer\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/doctrine/lexer/lib',
+            ),
+        ),
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -115,7 +120,6 @@ class ComposerStaticInit8717f8bd41e2851ee8528e88990f2038
             $loader->prefixLengthsPsr4 = ComposerStaticInit8717f8bd41e2851ee8528e88990f2038::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit8717f8bd41e2851ee8528e88990f2038::$prefixDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInit8717f8bd41e2851ee8528e88990f2038::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit8717f8bd41e2851ee8528e88990f2038::$classMap;
 
         }, null, ClassLoader::class);
     }

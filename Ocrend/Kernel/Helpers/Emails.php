@@ -18,44 +18,24 @@ namespace Ocrend\Kernel\Helpers;
  */
 
 final class Emails {
+  /**
+   * Ruta en la que están guardados los templates
+   * 
+   * @var string
+   * 
+   */
+  private static $template_route = API_INTERFACE . 'app/templates/email_templates/';
 
   /**
-    * FUNCIÓN NO ACCESIBLE, USO ESTRICTO PARA UNA FUNCIÓN INTERNA DEL HELPER
-    * Inicializa la clase PHPMailer y las configuraciones necesarias
-    * Método privado utilizado en todo el Helper
-    *
-    * @param bool $is_smtp: Define si se hará la conexión a través de SMTP o no
-    *
-    * @return \PHPMailer un objeto de la clase PHPMailer
-  */
-  final private static function init(bool $is_smtp = true) : \PHPMailer {
-    global $config;
-
-    $mail = new \PHPMailer;
-    $mail->CharSet = "UTF-8";
-    $mail->Encoding = "quoted-printable";
-
-    if ($is_smtp) {
-      $mail->isSMTP();
-      $mail->SMTPAuth = true;
-      $mail->Host = $config['phpmailer']['host'];
-      $mail->Username = $config['phpmailer']['user'];
-      $mail->Password = $config['phpmailer']['pass'];
-      $mail->Port = $config['phpmailer']['port'];
-      $mail->SMTPSecure = 'ssl';
-      $mail->SMTPOptions = array(
-          'ssl' => array(
-              'verify_peer' => false,
-              'verify_peer_name' => false,
-              'allow_self_signed' => true
-          )
-      );
-    } else {
-      $mail->isSendMail();
-    }
-
-    return $mail;
-  }
+   * Lista de plantillas
+   * 
+   * @var array
+   * 
+   */
+  const TEMPLATES = [
+    'tpl-btn.html',
+    'tpl-no-btn.html'
+  ];
 
   //------------------------------------------------
 
@@ -66,62 +46,94 @@ final class Emails {
     *                                           'email destinatario 1' => 'nombre destinatario 1',
     *                                           'email destinatario 2' => 'nombre destinatario 2'
     *                                            )
-    * @param string $HTML: Contenido en HTML del email
-    * @param string $titulo: Asunto del email
-    * @param bool $is_smtp: Define si se hará la conexión a través de SMTP o no
+    * @param array $content: sArreglo con el contenido por seciones con la forma
+    *                                             array(
+    *                                               '{{title}}' => 'Titulo',
+    *                                               '{{content}}' => '<p>Contenido</p><p>Etc...</p>'
+    *                                             )
+    * @param int $template: Template elegido, por defecto es el primero (0)
     * @param array $adj: Arreglo con direccion local de los adjuntos a enviar, con la forma array(
     *                                                                                       'ruta archivo 1',
     *                                                                                       'ruta archivo 2'
     *                                                                                       )
-    *
-    * @return string|bool true si fue enviado correctamente, string con el Error descrito por PHPMailer
+    * @throws \RuntimeException en caso de algúnproblema
+    * @return string|bool true si fue enviado correctamente, false si no
   */
-  final public static function send_mail(array $dest, string $HTML, string $titulo, bool $is_smtp = true, array $adj = []) {
+  final public static function send(array $dest, array $content, int $template = 0, array $adj = array()) {
     global $config;
+    
+    # Transporte
+    $transport = (new \Swift_SmtpTransport($config['mailer']['host'], $config['mailer']['port'], 'tls'))
+    ->setUsername($config['mailer']['user'])
+    ->setPassword($config['mailer']['pass'])
+    ->setStreamOptions(array('ssl' => array('allow_self_signed' => true, 'verify_peer' => false)));
 
-    $mail = self::init($is_smtp);
-    $mail->setFrom($config['phpmailer']['user'], $config['site']['name']);
-    foreach ($dest as $email => $name) {
-        $mail->addAddress($email, $name);
-    }
-    $mail->isHTML(true);
-    $mail->Subject = $titulo;
-    $mail->Body    = $HTML;
+    # Mailer
+    $mailer = new \Swift_Mailer($transport);
+    
+    # El mensaje
+    $message = new \Swift_Message();
+    $message->setSubject(array_key_exists('{{title}}', $content) ? $content['{{title}}'] : $config['site']['name']);
+    $message->setBody(self::loadTemplate($content, $template), 'text/html');
+    $message->setFrom([ $config['mailer']['user'] => $config['site']['name'] ]);
+    $message->setTo($dest);
 
     if (sizeof($adj)) {
       foreach ($adj as $ruta) {
-        $mail->AddAttachment($ruta);
+        $message->attach( \Swift_Attachment::fromPath($ruta) );
       }
     }
 
-    if (!$mail->send()) {
-      return $mail->ErrorInfo;
+    if ($mailer->send($message)) {
+      return true;
     }
 
-    return true;
+    return false;
+
+    
   }
 
   //------------------------------------------------
-
   /**
-   * Plantilla estándar que muestra de forma amigable el texto, utiliza bootstrap
-   *
-   * @param string $content: Cadena de texto en HTML, puede ser en bootstrap
-   *
-   * @return string con el HTML para enviar
+   * Carga un archivo para ser enviado por email
+   * 
+   * @param array $content: Contenido del archivo
+   * @param int $template: template a enviar
+   * 
+   * @return string con el template a enviar
    */
-  final public static function plantilla(string $content) : string {
-    return '
-    <html>
-    <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    </head>
-    <body style="font-family: Verdana;">
-      <section>
-        '.$content . '
-      </section>
-    </body>
-    </html>';
+  final private function loadTemplate(array $content, int $template) : string {
+    # Verificar que existe la plantilla
+    if (!array_key_exists($template, self::TEMPLATES)) {
+      throw new \RuntimeException('La plantilla seleccionada no se encuentra.');
+    }
+
+    # Cargar contenido
+    $tpl = Files::read_file(self::$template_route . self::TEMPLATES[$template]);
+
+    # Remplazar el contenido
+    foreach ($content as $index => $html) {
+      $tpl = str_replace($index, $html, $tpl);
+    }
+    return $tpl;
+  }
+
+  //------------------------------------------------
+  /**
+   * Cambia la ruta de donde deben tomarse los templates
+   * 
+   * @param string $new_route: Nueva ruta
+   * 
+   * @return void
+   */
+  final public static function setTemplateRoute(string $new_route) {
+    # Verificar que exista el nuevo directorio
+    if (!is_dir($new_route)) {
+      throw new \RuntimeException('la ruta '.$new_route .' no existe');
+    }
+
+    # Cambiamos el directorio de los template
+    self::$template_route = $new_route;
   }
 
 }

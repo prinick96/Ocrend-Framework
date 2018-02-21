@@ -145,6 +145,34 @@ final class Arrays extends \Twig_Extension {
   //------------------------------------------------
 
   /**
+    * Ordena una matriz de mayor a menor, o menor a mayor por el valor de un campo específico
+    *
+    * @param array $toOrderArray : Arreglo a evaluar
+    * @param string $field: Campo por el que se va a ordenar
+    * @param bool $inverse: Por defecto falso, cambia el orden
+    *
+    * @return mixed elemento random dentro del arreglo
+  */
+  final public static function order_multi_dimensional(array $toOrderArray, string $field, bool $inverse = false) : array {
+    $position = array();
+    $newRow = array();
+    foreach ($toOrderArray as $key => $row) {
+      $position[$key]  = $row[$field];
+      $newRow[$key] = $row;
+    }
+    $inverse ? arsort($position) : asort($position);
+    $returnArray = array();
+
+    foreach ($position as $key => $pos) {     
+      $returnArray[] = $newRow[$key];
+    }
+
+    return $returnArray;
+  }
+
+  //------------------------------------------------
+
+  /**
     * Se obtiene de Twig_Extension y sirve para que cada función esté disponible como etiqueta en twig
     *
     * @return array con todas las funciones con sus respectivos nombres de acceso en plantillas twig
