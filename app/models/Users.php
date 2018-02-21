@@ -399,9 +399,11 @@ class Users extends Models implements IModels {
      */    
     public function logout() {
         global $session, $config;
-
-        if(null != $session->get($config['sessions']['unique'] . '_user_id')) {
-            $session->remove($config['sessions']['unique'] . '_user_id');
+	    
+	$session_name = $config['sessions']['unique'] . '_user_id';
+	    
+        if(null != $session->get($session_name)) {
+            $session->remove($session_name);
         }
 
         $this->functions->redir();

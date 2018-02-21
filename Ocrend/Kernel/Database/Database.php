@@ -139,7 +139,7 @@ namespace Ocrend\Kernel\Database;
     * @param array $params: Lista de parámetros de configuración
   */
   final private function motor_postgresql(array $params) {
-    parent::__construct('pgsql:host='.$params['host'].';dbname='.$params['name'].';charset=utf8',
+    parent::__construct('pgsql:host='.$params['host'].';dbname='.$params['name'],
     $params['user'],
     $params['pass'],array(
       \PDO::ATTR_EMULATE_PREPARES => false,
