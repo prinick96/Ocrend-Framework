@@ -29,9 +29,9 @@ sessions:
   life_time: 3600 
 
 # Variables del framework
-framework:
+framework:  
   debug: false
-  version: 2.0.5
+  version: 3.0.0
 
 # Configuración del sitio
 site:

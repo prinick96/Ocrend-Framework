@@ -361,7 +361,7 @@ class Users extends Models implements IModels {
               ),0);
 
             # Verificar si hubo algún problema con el envío del correo
-            if(false === $email) {
+            if(false === $email_send) {
                 throw new ModelsException('No se ha podido enviar el correo electrónico.');
             }
 
@@ -393,6 +393,7 @@ class Users extends Models implements IModels {
         $id_user = $http->query->get('user');
         $token = $http->query->get('token');
 
+        $success = 'false';
         if (!$this->functions->emp($token) && is_numeric($id_user) && $id_user >= 1) {
             # Filtros a los datos
             $id_user = $this->db->scape($id_user);
@@ -401,11 +402,11 @@ class Users extends Models implements IModels {
             $this->db->query("UPDATE users SET pass=tmp_pass, tmp_pass='', token=''
             WHERE id_user='$id_user' AND token='$token' LIMIT 1;");
             # Éxito
-            $success = true;
+            $success = 'true';
         }
         
         # Devolover al sitio de inicio
-        $this->functions->redir($config['site']['url'] . '?sucess=' . (int) isset($success));
+        $this->functions->redir($config['site']['url'] . '?sucess=' . $success);
     }
 
     /**
