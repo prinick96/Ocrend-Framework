@@ -9,8 +9,51 @@
     Satisfy All
 </FilesMatch>
 
-RewriteEngine On
-# RerwiteBase / # 1&1 host y derviados que presenten problemas con el Router
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php?routing=$1 [QSA,L]
+<ifModule mod_rewrite.c>
+    Options +FollowSymLinks
+    RewriteEngine On
+
+    # --- FORZAR HTTPS EN SU SITIO --- #
+    #RewriteCond %{SERVER_PORT} 80 
+    #RewriteRule ^(.*)$ https://ocrend.com/$1 [R,L]
+    # --- FORZAR HTTPS EN SU SITIO --- #
+
+    # --- HELP PARA ROUTER DEL FRAMEWORK --- #
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php?routing=$1 [QSA,L]
+    # --- HELP PARA ROUTER DEL FRAMEWORK --- #
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Sirve archivos comprimidos gzip CSS si existen
+    # y el cliente acepta gzip.
+    RewriteCond "%{HTTP:Accept-encoding}" "gzip"
+    RewriteCond "%{REQUEST_FILENAME}\.gz" -s
+    RewriteRule "^(.*)\.css" "$1\.css\.gz" [QSA]
+
+    # Sirve archivos comprimidos gzip JS si existen
+    # y el cliente acepta gzip.
+    RewriteCond "%{HTTP:Accept-encoding}" "gzip"
+    RewriteCond "%{REQUEST_FILENAME}\.gz" -s
+    RewriteRule "^(.*)\.js" "$1\.js\.gz" [QSA]
+
+    # Sirve los tipos de contenido correctos y evita mod_deflate double gzip.
+    RewriteRule "\.css\.gz$" "-" [T=text/css,E=no-gzip:1]
+    RewriteRule "\.js\.gz$" "-" [T=text/javascript,E=no-gzip:1]
+
+    <FilesMatch "(\.js\.gz|\.css\.gz)$">
+      # Sirve el tipo de codificación correcto.
+      Header append Content-Encoding gzip
+
+      # Forzar proxies para almacenar en caché gzip y
+      # archivos css / js no comprimidos por separado.
+      Header append Vary Accept-Encoding
+    </FilesMatch>
+
+    # --- FORZAR CACHÉ POR 1 MES --- #
+    #<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|swf|js|xml|txt|css|svg)$">
+    #    Header set Cache-Control "max-age=2592000, public"
+    #</FilesMatch>
+
+</IfModule>

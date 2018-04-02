@@ -1,3 +1,5 @@
+Options -MultiViews
+
 <Files .htaccess>
     Order allow,deny
     Deny from all
@@ -9,10 +11,9 @@
     Satisfy All
 </FilesMatch>
 
-Options -MultiViews
-
-RewriteEngine On
-# RerwiteBase / # 1&1 host
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ index.php [QSA,L]
+<IfModule mod_headers.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>

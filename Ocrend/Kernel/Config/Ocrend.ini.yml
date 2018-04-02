@@ -23,23 +23,17 @@ mailer:
   port: 587
   logo: https://ocrend.com/views/app/images/logo.png
 
-# Configuración de sesiones
-sessions:
-  unique: 0CR3ND2017
-  life_time: 3600 
-
-# Variables del framework
-framework:  
-  debug: false
-  version: 3.0.0
-
 # Configuración del sitio
-site:
+build:
   name: Ocrend Framework 2
-  author: Brayan Narváez
-  author_email: prinick@ocrend.com
   timezone: America/Caracas
   url: http://localhost/Ocrend-Framework/
   router:
     path: localhost/Ocrend-Framework/
     protocol: http
+  sessions:
+    unique: 0CR3ND2018
+    life_time: 3600 
+  framework:  
+    developing: true
+    version: 3.0.0
