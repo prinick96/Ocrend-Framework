@@ -57,10 +57,4 @@ abstract class Models {
            $this->id_user = $session->get($session_name);
         }
     }
-
-    /**
-     * Cierra el modelo
-     */
-    protected function __destruct() {}
-
 }

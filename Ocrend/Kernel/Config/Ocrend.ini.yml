@@ -14,11 +14,11 @@ database:
       user: root
       pass:
       name: ocrend
+      port: default
+      socket: default
     sqlite3:
-      host: localhost
-      user: root
-      pass: 
       file: '__ROOT__Ocrend/Kernel/Database/Drivers/Sqlite/db.sqlite3'
+      encryption_key: 
       
 # Configuración de servidor SMTP
 mailer:
