@@ -30,13 +30,6 @@ abstract class Models {
     protected $id = 0;
 
     /**
-      * Contiene una instancia del helper para funciones
-      *
-      * @var \Ocrend\Kernel\Helpers\Functions
-    */
-    protected $functions;
-
-    /**
       * Contiene el id del usuario que tiene su sesión iniciada.
       *
       * @var int|null con id del usuario
@@ -57,32 +50,12 @@ abstract class Models {
             $this->id = $router->getId(true);
             $this->id = null == $this->id ? 0 : $this->id; 
         }
-
-        # Instanciar las funciones
-        $this->functions = new Functions();
         
         # Verificar sesión del usuario
-        $session_name = $config['sessions']['unique'] . '_user_id';
+        $session_name = 'user_id';
         if(null !== $session->get($session_name)) {
            $this->id_user = $session->get($session_name);
         }
-    }
-
-    /**
-      * Asigna el id desde un modelo, ideal para cuando queremos darle un valor numérico 
-      * que proviene de un formulario y puede ser inseguro.
-      *
-      * @param mixed $id : Id a asignar en $this->id
-      * @param string $default_msg : Mensaje a mostrar en caso de que no se pueda asignar
-      *
-      * @throws ModelsException
-      */
-    protected function setId($id, string $default_msg = 'No puedede asignarse el id.') {
-        if (null == $id || !is_numeric($id) || $id <= 0) {
-            throw new ModelsException($default_msg);
-        }
-
-        $this->id = (int) $id;
     }
 
     /**

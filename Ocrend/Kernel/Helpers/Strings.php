@@ -18,16 +18,16 @@ namespace Ocrend\Kernel\Helpers;
  */
 
 final class Strings extends \Twig_Extension {
-  //------------------------------------------------
+
   /**
-    * Convierte un tiempo dado al formato hace 1 minuto, hace 2 horas, hace 1 año ...
-    *
-    * @param int $from: Tiempo en segundo desde donde se desea contar
-    * @param int $to: Tiempo en segundo hasta donde se desea contar, si no se pasa por defecto es el tiempo actual
-    *
-    * @return string con la forma: hace 20 segundos, hace 1 minuto, hace 2 horas, hace 4 días, hace 1 semana, hace 3 meses, hace 1 año ...
+   * Convierte un tiempo dado al formato hace 1 minuto, hace 2 horas, hace 1 año ...
+   *
+   * @param int $from: Tiempo en segundo desde donde se desea contar
+   * @param int $to: Tiempo en segundo hasta donde se desea contar, si no se pasa por defecto es el tiempo actual
+   *
+   * @return string con la forma: hace 20 segundos, hace 1 minuto, hace 2 horas, hace 4 días, hace 1 semana, hace 3 meses, hace 1 año ...
   */
-  final public static function amigable_time(int $from, int $to = 0) : string {   
+  public static function amigable_time(int $from, int $to = 0) : string {   
     $intervalos = array("segundo", "minuto", "hora", "día", "semana", "mes", "año");
     $duraciones = array("60","60","24","7","4.35","12");
     $to = $to === 0 ? time() : $to;
@@ -57,81 +57,81 @@ final class Strings extends \Twig_Extension {
    
     return "$tiempo $diferencia $intervalos[$j]";
   }
-  //------------------------------------------------
+  
   /**
-    * Compara un string hash con un string sin hash, si el string sin hash al encriptar posee la misma llave que hash, son iguales
-    *
-    * @param string $hash: Hash con la forma $2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G
-    * @param string $s2: Cadena de texto a comparar
-    *
-    * @example Strings::chash('$2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G','123456'); //return true
-    *
-    * @return bool true si $s2 contiene la misma llave que $hash, por tanto el contenido de $hash es $s2, de lo contrario false
+   * Compara un string hash con un string sin hash, si el string sin hash al encriptar posee la misma llave que hash, son iguales
+   *
+   * @param string $hash: Hash con la forma $2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G
+   * @param string $s2: Cadena de texto a comparar
+   *
+   * @example Strings::chash('$2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G','123456'); //return true
+   *
+   * @return bool true si $s2 contiene la misma llave que $hash, por tanto el contenido de $hash es $s2, de lo contrario false
   */
-  final public static function chash(string $hash, string $s2) : bool  {
+  public static function chash(string $hash, string $s2) : bool  {
     return $hash == crypt($s2, substr($hash, 0, 29));
-   }
-   //------------------------------------------------
+  }
+
   /**
-    * Devuelve un hash DINÁMICO, para comparar un hash con un elemento se utiliza chash
-    *
-    * @param string $p: Cadena de texto a encriptar
-    *
-    * @return string Hash, con la forma $2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G
-  */
-  final public static function hash(string $p) : string {
+   * Devuelve un hash DINÁMICO, para comparar un hash con un elemento se utiliza chash
+   *
+   * @param string $p: Cadena de texto a encriptar
+   *
+   * @return string Hash, con la forma $2a$10$87b2b603324793cc37f8dOPFTnHRY0lviq5filK5cN4aMCQDJcC9G
+   */
+  public static function hash(string $p) : string {
     return crypt($p, '$2a$10$' . substr(sha1(mt_rand()), 0, 22));
   }
-  //------------------------------------------------
+  
   /**
-    * Calcula el tiempo de diferencia entre dos fechas
-    *
-    * @param string $ini: Fecha menor con el formato d-m-Y ó d/m/Y
-    * @param string $fin: Fecha mayor con el formato d-m-Y ó d/m/Y
-    *
-    * @return int con la diferencia de tiempo en días
-    *
-  */
-  final public static function date_difference(string $ini, string $fin) : int {
+   * Calcula el tiempo de diferencia entre dos fechas
+   *
+   * @param string $ini: Fecha menor con el formato d-m-Y ó d/m/Y
+   * @param string $fin: Fecha mayor con el formato d-m-Y ó d/m/Y
+   *
+   * @return int con la diferencia de tiempo en días
+   *
+   */
+  public static function date_difference(string $ini, string $fin) : int {
     $ini_i = explode('-',str_replace('/','-',$ini));
     $fin_i = explode('-',str_replace('/','-',$fin));
     return (int) floor((mktime(0, 0, 0, $fin_i[1], $fin_i[0], $fin_i[2]) - mktime(0, 0, 0, $ini_i[1], $ini_i[0], $ini_i[2])) / 86400);
   }
-  //------------------------------------------------
+
   /**
-    * Calcula la edad de una persona segun la fecha de nacimiento
-    *
-    * @param string $cumple: Fecha de nacimiento con el formato d-m-Y ó d/m/Y
-    *
-    * @return int con la edad
-    *
-  */
-  final public static function calculate_age(string $cumple) : int {
+   * Calcula la edad de una persona segun la fecha de nacimiento
+   *
+   * @param string $cumple: Fecha de nacimiento con el formato d-m-Y ó d/m/Y
+   *
+   * @return int con la edad
+   *
+   */
+  public static function calculate_age(string $cumple) : int {
     $age = explode('.', (string) (self::date_difference($cumple, date('d-m-Y', time()))/365));
     return (int) $age[0];
   }
-  //------------------------------------------------
+
   /**
-    * Calcula cuántos días tiene el mes actual
-    *
-    * @return integer con la cantidad de días del mes
-    *
-  */
-  final public static function days_of_month() : int {
+   * Calcula cuántos días tiene el mes actual
+   *
+   * @return integer con la cantidad de días del mes
+   *
+   */
+  public static function days_of_month() : int {
     return cal_days_in_month(CAL_GREGORIAN, (int) date('m',time()), (int) date('Y',time()));
   }
-  //------------------------------------------------
+
   /**
-    * Verifica si una cadena de texto tiene forma de email
-    *
-    * @param string $address: Cadena de texto con el email
-    *
-    * @return mixed devuelve TRUE si es un email y FALSE si no lo es
-  */
-  final public static function is_email(string $address) {
+   * Verifica si una cadena de texto tiene forma de email
+   *
+   * @param string $address: Cadena de texto con el email
+   *
+   * @return mixed devuelve TRUE si es un email y FALSE si no lo es
+   */
+  public static function is_email(string $address) {
     return filter_var($address, FILTER_VALIDATE_EMAIL);
   }
-  //------------------------------------------------
+
   /**
     * Remueve todos los espacios en blanco de un string
     *
@@ -139,56 +139,60 @@ final class Strings extends \Twig_Extension {
     *
     * @return string del texto sin espacios
   */
-  final public static function remove_spaces(string $s) : string {
+  public static function remove_spaces(string $s) : string {
     return trim(str_replace(' ', '', $s));
   }
-  //------------------------------------------------
+
   /**
-    * Analiza si una cadena de texto es alfanumérica
-    *
-    * @param string $s: Cadena de texto a verificar
-    *
-    * @return bool, verdadero si es alfanumerica, falso si no
+   * Analiza si una cadena de texto es alfanumérica
+   *
+   * @param string $s: Cadena de texto a verificar
+   *
+   * @return bool, verdadero si es alfanumerica, falso si no
   */
-  final public static function alphanumeric(string $s) : bool {
+  public static function alphanumeric(string $s) : bool {
     return ctype_alnum(self::remove_spaces($s));
   }
-  //------------------------------------------------
+
+
   /**
-    * Analiza si una cadena de texto verificando si sólamente tiene letras
-    *
-    * @param string $s: Cadena de texto a verificar
-    *
-    * @return bool, verdadero si sólamente tiene letras, falso si no
+   * Analiza si una cadena de texto verificando si sólamente tiene letras
+   *
+   * @param string $s: Cadena de texto a verificar
+   *
+   * @return bool, verdadero si sólamente tiene letras, falso si no
   */
-  final public static function only_letters(string $s) : bool {
+  public static function only_letters(string $s) : bool {
     return ctype_alpha(self::remove_spaces($s));
   }
-  //------------------------------------------------
+
+
   /**
-    * Analiza si una cadena de texto contiene sólamente letras y números
-    *
-    * @param string $s: Cadena de texto a verificar
-    *
-    * @return bool, verdadero si sólamente contiene letras y números, falso si no
-  */
-  final public static function letters_and_numbers(string $s) : bool {
+   * Analiza si una cadena de texto contiene sólamente letras y números
+   *
+   * @param string $s: Cadena de texto a verificar
+   *
+   * @return bool, verdadero si sólamente contiene letras y números, falso si no
+   */
+  public static function letters_and_numbers(string $s) : bool {
     return (boolean) preg_match('/^[\w.]*$/', self::remove_spaces($s));
   }
-  //------------------------------------------------
+
+
   /**
-    * Convierte una expresión de texto, a una compatible con url amigables
-    *
-    * @param string $url: Cadena de texto a convertir
-    *
-    * @return string Cadena de texto con formato de url amigable
+   * Convierte una expresión de texto, a una compatible con url amigables
+   *
+   * @param string $url: Cadena de texto a convertir
+   *
+   * @return string Cadena de texto con formato de url amigable
   */
-  final public static function url_amigable(string $url) : string {
+  public static function url_amigable(string $url) : string {
     $url = str_replace(['á', 'é', 'í', 'ó', 'ú', 'ñ'], ['a', 'e', 'i', 'o', 'u', 'n'], $url);
     $url = str_replace([' ', '&', '\r\n', '\n', '+', '%'], '-', $url);
     return strtolower(preg_replace(['/[^a-zA-Z0-9\-<>]/', '/[\-]+/', '/<[^>]*>/'], ['', '-', ''], $url));
   }
-  //------------------------------------------------
+ 
+
   /**
    * Convierte código BBCode en su equivalente HTML
    *
@@ -196,7 +200,7 @@ final class Strings extends \Twig_Extension {
    *
    * @return string del código BBCode transformado en HTML
    */
-  final public static function bbcode(string $string) : string {
+  public static function bbcode(string $string) : string {
     $BBcode = array(
         '/\[i\](.*?)\[\/i\]/is',
         '/\[b\](.*?)\[\/b\]/is',
@@ -241,60 +245,60 @@ final class Strings extends \Twig_Extension {
     );
     return nl2br(preg_replace($BBcode, $HTML, $string));
   }
-  //------------------------------------------------
+
   /**
-    * Dice si un string comienza con un caracter especificado
-    *
-    * @param string $sx: Caracter de inicio
-    * @param string $str: String a evaluar
-    * @param bool $case_sensitive: Boolean para definir si será seible a mayúsculas o no
-    *
-    * @return bool True si comienza con el caracter especificado, False si no
-  */
-  final public static function begin_with(string $sx, string $str) : bool {
+   * Dice si un string comienza con un caracter especificado
+   *
+   * @param string $sx: Caracter de inicio
+   * @param string $str: String a evaluar
+   * @param bool $case_sensitive: Boolean para definir si será seible a mayúsculas o no
+   *
+   * @return bool True si comienza con el caracter especificado, False si no
+   */
+  public static function begin_with(string $sx, string $str) : bool {
     return (bool) (strlen($str) > 0 and $str[0] == $sx);
   }
-  //------------------------------------------------
+ 
   /**
-    * Dice si un string termina con una caracter especificado
-    *
-    * @param string $sx: Caracter del final
-    * @param string $str: String a evaluar
-    *
-    * @return bool True si termina con el caracter especificado, False si no
-  */
-  final public static function end_with(string $sx, string $str) : bool {
+   * Dice si un string termina con una caracter especificado
+   *
+   * @param string $sx: Caracter del final
+   * @param string $str: String a evaluar
+   *
+   * @return bool True si termina con el caracter especificado, False si no
+   */
+  public static function end_with(string $sx, string $str) : bool {
     return (bool) (strlen($str) > 0 and $str[strlen($str) - 1] == $sx);
   }
-  //------------------------------------------------
+
   /**
-    * Ver si un string está contenido en otro
-    *
-    * @param $s: String contenido en $str
-    * @param $str: String a evaluar
-    *
-    * @return bool True si $s está dentro de $str, False si no
-  */
-  final public static function contain(string $s, string $str) : bool {
+   * Ver si un string está contenido en otro
+   *
+   * @param $s: String contenido en $str
+   * @param $str: String a evaluar
+   *
+   * @return bool True si $s está dentro de $str, False si no
+   */
+  public static function contain(string $s, string $str) : bool {
     return (bool) (strpos($str, $s) !== false);
   }
-  //------------------------------------------------
+
   /**
-    * Devuelve la cantidad de palabras en un string
-    *
-    * @param $str: String a evaluar
-    *
-    * @return int Cantidad de palabras
-  */
-  final public static function count_words(string $s) : int {
+   * Devuelve la cantidad de palabras en un string
+   *
+   * @param $str: String a evaluar
+   *
+   * @return int Cantidad de palabras
+   */
+  public static function count_words(string $s) : int {
     return (int) str_word_count($s,0,'0..9_');
   }
-  //------------------------------------------------
+
   /**
-    * Se obtiene de Twig_Extension y sirve para que cada función esté disponible como etiqueta en twig
-    *
-    * @return array Todas las funciones con sus respectivos nombres de acceso en plantillas twig
-  */
+   * Se obtiene de Twig_Extension y sirve para que cada función esté disponible como etiqueta en twig
+   *
+   * @return array Todas las funciones con sus respectivos nombres de acceso en plantillas twig
+   */
   public function getFunctions() : array {
     return array(
       new \Twig_Function('amigable_time', array($this, 'amigable_time')),
@@ -316,11 +320,11 @@ final class Strings extends \Twig_Extension {
       new \Twig_Function('count_words', array($this, 'count_words'))
     );
   }
-  //------------------------------------------------
+
   /**
-    * Identificador único para la extensión de twig
-    *
-    * @return string Nombre de la extensión
+   * Identificador único para la extensión de twig
+   *
+   * @return string Nombre de la extensión
   */
   public function getName() : string {
     return 'ocrend_framework_helper_strings';

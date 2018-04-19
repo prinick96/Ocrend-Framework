@@ -19,7 +19,7 @@ use Ocrend\Kernel\Router\IRouter;
  * @author Brayan Narváez <prinick@ocrend.com>
  */
 
-  interface IModels {
-      public function __construct(IRouter $router = null);
-      public function __destruct();
-  }
+interface IModels {
+    public function __construct(IRouter $router = null);
+    public function __destruct();
+}

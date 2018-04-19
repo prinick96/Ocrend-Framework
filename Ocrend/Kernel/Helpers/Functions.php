@@ -19,41 +19,37 @@ namespace Ocrend\Kernel\Helpers;
 
 final class Functions extends \Twig_Extension {
 
-   /**
-      * Verifica parte de una fecha, método privado usado en str_to_time
-      * 
-      * @param int $index: Índice del arreglo
-      * @param array $detail: Arreglo
-      * @param int $max: Valor a comparar
-      *
-      * @return bool con el resultado de la comparación
-   */
-  final private function check_str_to_time(int $index, array $detail, int $max) : bool {
+  /**
+   * Verifica parte de una fecha, método privado usado en str_to_time
+   * 
+   * @param int $index: Índice del arreglo
+   * @param array $detail: Arreglo
+   * @param int $max: Valor a comparar
+   *
+   * @return bool con el resultado de la comparación
+  */
+  private static function check_str_to_time(int $index, array $detail, int $max) : bool {
     return !array_key_exists($index,$detail) || !is_numeric($detail[$index]) || intval($detail[$index]) < $max;
   }
 
-   //------------------------------------------------
-
-    /**
-     * Redirecciona a una URL
-     *
-     * @param string $url: Sitio a donde redireccionará, si no se pasa, por defecto
-     * se redirecciona a la URL principal del sitio
-     *
-     * @return void
-     */
-  final public function redir($url = null) {
+  /**
+  * Redirecciona a una URL
+  *
+  * @param string $url: Sitio a donde redireccionará, si no se pasa, por defecto
+  * se redirecciona a la URL principal del sitio
+  *
+  * @return void
+  */
+  public static function redir($url = null) : void {
     global $config;
     
     if (null == $url) {
-      $url = $config['site']['url'];
+      $url = $config['build']['url'];
     }
     
     \Symfony\Component\HttpFoundation\RedirectResponse::create($url)->send();
-    exit(1);
+    exit;
   }
-
-  //------------------------------------------------
 
   /**
    * Calcula el porcentaje de una cantidad
@@ -63,11 +59,9 @@ final class Functions extends \Twig_Extension {
    *
    * @return float con el porcentaje correspondiente
    */
-  final public function percent(float $por, float $n) : float {
+  public static function percent(float $por, float $n) : float {
     return $n*($por/100);
   }
-
-  //------------------------------------------------
 
   /**
    * Da unidades de peso a un integer según sea su tamaño asumida en bytes
@@ -76,36 +70,33 @@ final class Functions extends \Twig_Extension {
    *
    * @return string del tamaño $size convertido a la unidad más adecuada
    */
-  final public function convert(int $size) : string {
-      $unit = array('bytes', 'kb', 'mb', 'gb', 'tb', 'pb');
-      return round($size/pow(1024, ($i = floor(log($size, 1024)))), 2) . ' ' . $unit[$i];
+  public static function convert(int $size) : string {
+    $unit = array('bytes', 'kb', 'mb', 'gb', 'tb', 'pb');
+    return round($size/pow(1024, ($i = floor(log($size, 1024)))), 2) . ' ' . $unit[$i];
   }
 
-  //------------------------------------------------
+  /**
+   * Retorna la URL de un gravatar, según el email
+   *
+   * @param string  $email: El email del usuario a extraer el gravatar
+   * @param int $size: El tamaño del gravatar
+   * @return string con la URl
+  */
+  public static function get_gravatar(string $email, int $size = 35) : string  {
+    return 'http://www.gravatar.com/avatar/' . md5($email) . '?s=' . (int) abs($size) . '?d=robohash';
+  }
+
 
   /**
-    * Retorna la URL de un gravatar, según el email
-    *
-    * @param string  $email: El email del usuario a extraer el gravatar
-    * @param int $size: El tamaño del gravatar
-    * @return string con la URl
-  */
-   final public function get_gravatar(string $email, int $size = 32) : string  {
-       return 'http://www.gravatar.com/avatar/' . md5($email) . '?s=' . (int) abs($size);
-   }
-
-   //------------------------------------------------
-
-   /**
-     * Alias de Empty, más completo
-     *
-     * @param mixed $var: Variable a analizar
-     *
-     * @return bool con true si está vacío, false si no, un espacio en blanco cuenta como vacío
+   * Alias de Empty, más completo
+   *
+   * @param mixed $var: Variable a analizar
+   *
+   * @return bool con true si está vacío, false si no, un espacio en blanco cuenta como vacío
    */
-   final public function emp($var) : bool {
-     return (null === $var || empty(trim(str_replace(' ','',$var))));
-   }
+  public static function emp($var) : bool {
+    return (null === $var || empty(trim(str_replace(' ','',$var))));
+  }
 
    //------------------------------------------------
 
@@ -117,7 +108,7 @@ final class Functions extends \Twig_Extension {
      *
      * @return bool con true si están todos llenos, false si al menos uno está vacío
    */
-   final public function all_full(array $array) : bool {
+   public static function all_full(array $array) : bool {
      foreach($array as $e) {
        if($this->emp($e) and $e != '0') {
          return false;
@@ -126,35 +117,33 @@ final class Functions extends \Twig_Extension {
      return true;
    }
 
-   //------------------------------------------------
-
-   /**
-     * Alias de Empty() pero soporta más de un parámetro (infinitos)
-     *
-     * @return bool con true si al menos uno está vacío, false si todos están llenos
-   */
-    final public function e() : bool  {
-      for ($i = 0, $nargs = func_num_args(); $i < $nargs; $i++) {
-        if($this->emp(func_get_arg($i)) && func_get_arg($i) != '0') {
-          return true;
-        }
+  /**
+   * Alias de Empty() pero soporta más de un parámetro (infinitos)
+   *
+   * @return bool con true si al menos uno está vacío, false si todos están llenos
+  */
+  public static function e() : bool  {
+    for ($i = 0, $nargs = func_num_args(); $i < $nargs; $i++) {
+      if($this->emp(func_get_arg($i)) && func_get_arg($i) != '0') {
+        return true;
       }
-      return false;
     }
+    
+    return false;
+  }
 
-    //------------------------------------------------
 
-    /**
-      * Alias de date() pero devuele días y meses en español
-      *
-      * @param string $format: Formato de salida (igual que en date())
-      * @param int $time: Tiempo, por defecto es time() (igual que en date())
-      *
-      * @return string con la fecha en formato humano (y en español)
-    */
-    final public function fecha(string $format, int $time = 0) : string  {
-       $date = date($format,$time == 0 ? time() : $time);
-       $cambios = array(
+  /**
+   * Alias de date() pero devuele días y meses en español
+   *
+   * @param string $format: Formato de salida (igual que en date())
+   * @param int $time: Tiempo, por defecto es time() (igual que en date())
+   *
+   * @return string con la fecha en formato humano (y en español)
+  */
+  public static function fecha(string $format, int $time = 0) : string  {
+    $date = date($format,$time == 0 ? time() : $time);
+    $cambios = array(
          'Monday'=> 'Lunes',
          'Tuesday'=> 'Martes',
          'Wednesday'=> 'Miércoles',
@@ -185,38 +174,46 @@ final class Functions extends \Twig_Extension {
          'Aug'=> 'Ago',
          'Apr'=> 'Abr',
          'Dec'=> 'Dic'
-       );
-       return str_replace(array_keys($cambios), array_values($cambios), $date);
-     }
-
-   //------------------------------------------------
+    );
+    return str_replace(array_keys($cambios), array_values($cambios), $date);
+  }
 
   /**
-    *  Devuelve la etiqueta <base> html adecuada para que los assets carguen desde allí.
-    *  Se adapta a la configuración del dominio en general.
-    *
-    * @return string <base href="ruta" />
+   *  Devuelve la etiqueta <base> html adecuada para que los assets carguen desde allí.
+   *  Se adapta a la configuración del dominio en general.
+   *
+   * @return string <base href="ruta" />
   */
-  final public function base_assets() : string {
+  public static function base_assets() : string {
     global $config, $http;
 
-    # Revisar subdominio
-    $server = $http->server->get('SERVER_NAME');
-    $www = $server[0] . $server[1] . $server[2];
     # Revisar protocolo
-    $base = $config['site']['router']['protocol'] . '://';
+    $http = 'http://';
+    if($config['router']['ssl']) {
+      # Revisar el protocolo
+      if(true == $http->server->get('HTTPS')
+        || $http->server->get('HTTPS') == 'on' 
+        || $http->server->get('HTTPS') == 1) {
+        $http = 'https://';
+      }
+    }
 
+    # Revisar el path
+    $path = $config['router']['path'];
+    if('/' != substr($path, -1)) {
+      $path .= '/';
+    }
+
+    # Revisar subdominio
+    $www = substr($http->server->get('SERVER_NAME'), 0, 2);
+    $base = $path;
     if (strtolower($www) == 'www') {
-      $base .= 'www.' . $config['site']['router']['path'];
-    } else {
-      $base .= $config['site']['router']['path'];
+      $base = 'www.' . $path;
     }
   
-    return '<base href="' . $base . '" />';
+    return '<base href="' . $http . $base . '" />';
   }
   
-  //------------------------------------------------
-
   /**
    * Obtiene el último día de un mes específico
    *
@@ -225,11 +222,9 @@ final class Functions extends \Twig_Extension {
    *
    * @return string con el número del día
   */
-  final public function last_day_month(int $mes, int $anio) : string {
+  public static function last_day_month(int $mes, int $anio) : string {
     return date('d', (mktime(0,0,0,$mes + 1, 1, $anio) - 1));
   }
-
-  //------------------------------------------------
   
   /**
    * Pone un cero a la izquierda si la cifra es menor a diez
@@ -237,26 +232,20 @@ final class Functions extends \Twig_Extension {
    * @param int $num: cifra
    *
    * @return string cifra con cero a la izquirda
-  */
-  final public function cero_izq(int $num) : string {
-    if($num < 10) {
-      return '0' . $num;
-    }
-
-    return $num;
+   */
+  public static function cero_izq(int $num) : string {
+    return (string) ($num < 10 ? '0' . $num : $num);
   }
 
-  //------------------------------------------------
-
-   /**
-    * Devuelve el timestamp de una fecha, y null si su formato es incorrecto.
-    * 
-    * @param string|null $fecha: Fecha con formato dd/mm/yy
-    * @param string $hora: Hora de inicio de la $fecha
-    *
-    * @return int|null con el timestamp
-  */
-  final public function str_to_time($fecha, string $hora = '00:00:00') {
+  /**
+   * Devuelve el timestamp de una fecha, y null si su formato es incorrecto.
+   * 
+   * @param string|null $fecha: Fecha con formato dd/mm/yy
+   * @param string $hora: Hora de inicio de la $fecha
+   *
+   * @return int|null con el timestamp
+   */
+  public static function str_to_time($fecha, string $hora = '00:00:00') {
     if(null == $fecha) {
       return null;
     }
@@ -284,16 +273,14 @@ final class Functions extends \Twig_Extension {
     return strtotime($detail[0] . '-' . $detail[1] . '-' . $detail[2] . ' ' . $hora);
   }
 
-  //------------------------------------------------
-
   /**
    * Devuelve la fecha en format dd/mm/yyy desde el principio de la semana, mes o año actual.
    *
    * @param int $desde: Desde donde
    *
    * @return mixed
-  */
-  final public function desde_date(int $desde) {
+   */
+  public static function desde_date(int $desde) {
     # Obtener esta fecha
     $hoy = date('d/m/Y/D',time());
     $hoy = explode('/',$hoy);
@@ -341,26 +328,22 @@ final class Functions extends \Twig_Extension {
     throw new \RuntimeException('Problema con el valor $desde en desde_date()');
   }
 
-  //------------------------------------------------
-
   /**
    * Obtiene el tiempo actual
    *
    * @return int devuelve time()
-  */
-  final public function timestamp() : int {
-     return time();
+   */
+  public static function timestamp() : int {
+    return time();
   }
-
-  //------------------------------------------------
 
   /**
    * Se obtiene de Twig_Extension y sirve para que cada función esté disponible como etiqueta en twig
-    *
+   *
    * @return array con todas las funciones con sus respectivos nombres de acceso en plantillas twig
-  */
+   */
   public function getFunctions() : array {
-      return array(
+    return array(
        new \Twig_Function('percent', array($this, 'percent')),
        new \Twig_Function('convert', array($this, 'convert')),
        new \Twig_Function('get_gravatar', array($this, 'get_gravatar')),
@@ -375,16 +358,14 @@ final class Functions extends \Twig_Extension {
        new \Twig_Function('last_day_month', array($this, 'last_day_month')),
        new \Twig_Function('str_to_time', array($this, 'str_to_time')),
        new \Twig_Function('desde_date', array($this, 'desde_date'))
-     );
+    );
    }
 
-   //------------------------------------------------
-
   /**
-      * Identificador único para la extensión de twig
-      *
-      * @return string con el nombre de la extensión
-  */
+   * Identificador único para la extensión de twig
+   *
+   * @return string con el nombre de la extensión
+   */
   public function getName() : string {
         return 'ocrend_framework_func_class';
   }

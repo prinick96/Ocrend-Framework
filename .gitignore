@@ -1,1 +1,1 @@
-/app/templates/.cache/**/*.php
+/app/templates/.compiled/**/*.php

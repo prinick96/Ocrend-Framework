@@ -15,8 +15,7 @@ namespace Ocrend\Kernel\Router;
  * Mínimos requisitos para que un Router funcione adentro del framework.
  *
  * @author Brayan Narváez <prinick@ocrend.com>
- */
-
+*/
 interface IRouter {
     public function setRoute(string $index, string $rule);
     public function getRoute(string $index);

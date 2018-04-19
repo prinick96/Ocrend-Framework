@@ -19,13 +19,15 @@ use Ocrend\Kernel\Router\Rules;
  * Define por defecto 3 rutas escenciales, controlador, método e id.
  *
  * @author Brayan Narváez <prinick@ocrend.com>
- */
+*/
 
 final class Router implements IRouter {
 
     /**
+     * Reglas definidas en Rules.php 
+     *
      * @var array CONSTANTE con las reglas permitidas
-     */
+    */
     const RULES = [
         'none', # Sin ninguna regla
         'letters', # Sólamente letras
@@ -41,7 +43,7 @@ final class Router implements IRouter {
      * Colección de rutas existentes
      *
      * @var array 
-     */
+    */
     private $routerCollection = array(
         '/controller' => 'home', # controlador por defecto
         '/method' => null, # método por defecto
@@ -52,7 +54,7 @@ final class Router implements IRouter {
      * Colección de reglas para cada ruta existente
      *
      * @var array 
-     */
+    */
     private $routerCollectionRules = array(
         '/controller' => 'letters',
         '/method' => 'none',
@@ -60,18 +62,22 @@ final class Router implements IRouter {
     );
 
     /**
+     * Petición real estructurada
+     * 
      * @var array
-     */
+    */
     private $real_request = array();
 
     /**
+     * Uri requerida por el cliente final 
+     * 
      * @var string
-     */
+    */
     private $requestUri;
 
     /**
      * __construct() 
-     */
+    */
     public function __construct() {
         global $http;
         
@@ -89,7 +95,7 @@ final class Router implements IRouter {
      * @param string $rule : Nombre de la regla
      *
      * @throws \RuntimeException si la regla no existe
-     */
+    */
     final private function setCollectionRule(string $index, string $rule) {
         # Verificar si la regla existe
         if (!in_array($rule, self::RULES)) {
@@ -101,7 +107,7 @@ final class Router implements IRouter {
 
     /**
      * Verifica las peticiones por defecto
-     */
+    */
     final private function checkRequests() {
         # Verificar si existe peticiones
         if (null !== $this->requestUri) {
@@ -121,7 +127,7 @@ final class Router implements IRouter {
      * @param string $rule : Nombre de la regla, por defecto es ninguna "none"
      *
      * @throws \RuntimeException si no puede definirse la ruta
-     */
+    */
     final public function setRoute(string $index, string $rule = 'none') {
         # Nombres de rutas no permitidos
         if (in_array($index, ['/controller', '/method', '/id'])) {

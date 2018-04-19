@@ -12,8 +12,8 @@
 namespace Ocrend\Kernel\Controllers;
 
 use app\models as Model;
+use Ocrend\Kernel\Helpers as Helper;
 use Ocrend\Kernel\Router\IRouter;
-use Ocrend\Kernel\Helpers\Functions;
 
 /**
  * Clase para conectar todos los controladores del sistema y compartir la configuración.
@@ -44,13 +44,6 @@ abstract class Controllers {
       * @var string|null
     */
     protected $method;
-
-    /**
-      * Contiene una instancia del helper para funciones
-      *
-      * @var \Ocrend\Kernel\Helpers\Functions
-    */
-    protected $functions;
     
     /**
       * Arreglo con la información del usuario conectado actualmente.
@@ -87,9 +80,6 @@ abstract class Controllers {
     protected function __construct(IRouter $router, $configController = null) {
         global $config, $http, $session;
 
-        # Instanciar las funciones
-        $this->functions = new Functions();
-
         # Verificar si está logeado el usuario
         $this->is_logged = null != $session->get($config['sessions']['unique'] . '_user_id');
 
@@ -120,7 +110,7 @@ abstract class Controllers {
         }
 
         # Extensiones
-        $this->template->addExtension($this->functions);
+        $this->template->addExtension(new Helper\Functions);
 
         # Debug disponible en twig
         if($config['framework']['debug']) {
@@ -174,12 +164,12 @@ abstract class Controllers {
     private function knowVisitorPermissions() {
       # Sólamente usuarios logeados
       if ($this->controllerConfig['users_logged'] && !$this->is_logged) {
-        $this->functions->redir();
+        Helper\Functions::redir();
       }
 
       # Sólamente usuarios no logeados
       if ($this->controllerConfig['users_not_logged'] && $this->is_logged) {
-        $this->functions->redir();
+        Helper\Functions::redir();
       }
     }
 
