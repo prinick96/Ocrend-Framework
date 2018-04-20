@@ -30,7 +30,10 @@ mailer:
 # Configuración de twig
 twig:
   cache: false
-  compress: true
+  compiled_dir: ./app/templates/.compiled/
+  charset: UTF-8
+  strict_variables: false
+  autoescape: html
   
 # Configuración del sitio
 build:

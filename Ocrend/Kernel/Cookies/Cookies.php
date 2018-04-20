@@ -49,6 +49,15 @@ class Cookies {
     }
 
     /**
+     * Obtiene todas las cookies
+     * 
+     * @return array
+     */
+    public function all() : array {
+        return $_COOKIE;
+    }
+
+    /**
      * Elimina una cookie
      * 
      * @param string $cookie : Nombre

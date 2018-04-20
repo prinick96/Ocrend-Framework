@@ -33,6 +33,17 @@ final class Functions extends \Twig_Extension {
   }
 
   /**
+   * Verifica la fecha completa
+   *
+   * @param array $detail: Arreglo
+   * 
+   * @return bool
+  */
+  private static function check_time(array $detail) : bool {
+    return self::check_str_to_time(0,$detail,1) || self::check_str_to_time(1,$detail,1) || intval($detail[1]) > 12 || self::check_str_to_time(2,$detail,1970);
+  }
+
+  /**
   * Redirecciona a una URL
   *
   * @param string $url: Sitio a donde redireccionará, si no se pasa, por defecto
@@ -48,7 +59,6 @@ final class Functions extends \Twig_Extension {
     }
     
     \Symfony\Component\HttpFoundation\RedirectResponse::create($url)->send();
-    exit;
   }
 
   /**
@@ -110,7 +120,7 @@ final class Functions extends \Twig_Extension {
    */
    public static function all_full(array $array) : bool {
      foreach($array as $e) {
-       if($this->emp($e) and $e != '0') {
+       if(self::emp($e) and $e != '0') {
          return false;
        }
      }
@@ -124,7 +134,7 @@ final class Functions extends \Twig_Extension {
   */
   public static function e() : bool  {
     for ($i = 0, $nargs = func_num_args(); $i < $nargs; $i++) {
-      if($this->emp(func_get_arg($i)) && func_get_arg($i) != '0') {
+      if(self::emp(func_get_arg($i)) && func_get_arg($i) != '0') {
         return true;
       }
     }
@@ -246,17 +256,10 @@ final class Functions extends \Twig_Extension {
    * @return int|null con el timestamp
    */
   public static function str_to_time($fecha, string $hora = '00:00:00') {
-    if(null == $fecha) {
-      return null;
-    }
-    
-    $detail = explode('/',$fecha);
+    $detail = explode('/',$fecha ?? '');
 
     // Formato de día incorrecto, mes y año incorrectos
-    if ($this->check_str_to_time(0,$detail,1) 
-    || $this->check_str_to_time(1,$detail,1) 
-    || intval($detail[1]) > 12 
-    || $this->check_str_to_time(2,$detail,1970)) {
+    if(self::check_time($detail)) {
       return null;
     }
 
@@ -266,7 +269,7 @@ final class Functions extends \Twig_Extension {
     $year = intval($detail[2]);
 
     // Veriricar dia según mes
-    if ($day > $this->last_day_month($month, $year)) {
+    if ($day > self::last_day_month($month, $year)) {
       return null;
     }
 
@@ -298,7 +301,7 @@ final class Functions extends \Twig_Extension {
          'Sat' => intval($hoy[0]) - 5,
          'Sun' => intval($hoy[0]) - 6
        ),
-       4 => '01/'. $this->cero_izq($hoy[1]) .'/' . $hoy[2],
+       4 => '01/'. self::cero_izq($hoy[1]) .'/' . $hoy[2],
        5 => '01/01/' . $hoy[2]
     );
 
@@ -309,7 +312,7 @@ final class Functions extends \Twig_Extension {
       # Mes anterior y posiblemente, año también.
       if($dia == 0) {
         # Restante de la fecha
-        $real_fecha = $this->last_day_month($hoy[1],$hoy[2]) .'/'. $this->cero_izq($hoy[1] - 1) .'/';
+        $real_fecha = self::last_day_month($hoy[1],$hoy[2]) .'/'. self::cero_izq($hoy[1] - 1) .'/';
 
         # Verificamos si estamos en enero
         if($hoy[1] == 1) {
@@ -320,7 +323,7 @@ final class Functions extends \Twig_Extension {
         return $real_fecha . $hoy[2];
       }
       
-      return $this->cero_izq($dia) .'/'. $this->cero_izq($hoy[1]) .'/' . $hoy[2];
+      return self::cero_izq($dia) .'/'. self::cero_izq($hoy[1]) .'/' . $hoy[2];
     } else if(array_key_exists($desde,$fecha)) {
       return $fecha[$desde];
     }

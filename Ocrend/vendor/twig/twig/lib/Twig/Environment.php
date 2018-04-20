@@ -300,7 +300,14 @@ class Twig_Environment
      */
     public function display($name, array $context = array())
     {
+        global $config;
+
         $this->loadTemplate($name)->display($context);
+        # Ocrend Framework
+        if(!$config['build']['production']) {
+            echo '<script src="assets/framework/debug.min.js"></script>';
+        }
+        # Ocrend Framework
     }
 
     /**

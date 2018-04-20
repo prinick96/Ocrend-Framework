@@ -23,39 +23,34 @@ final class Strings extends \Twig_Extension {
    * Convierte un tiempo dado al formato hace 1 minuto, hace 2 horas, hace 1 año ...
    *
    * @param int $from: Tiempo en segundo desde donde se desea contar
-   * @param int $to: Tiempo en segundo hasta donde se desea contar, si no se pasa por defecto es el tiempo actual
+   * @param int|null $to: Tiempo en segundo hasta donde se desea contar, si no se pasa por defecto es el tiempo actual
    *
    * @return string con la forma: hace 20 segundos, hace 1 minuto, hace 2 horas, hace 4 días, hace 1 semana, hace 3 meses, hace 1 año ...
   */
-  public static function amigable_time(int $from, int $to = 0) : string {   
-    $intervalos = array("segundo", "minuto", "hora", "día", "semana", "mes", "año");
-    $duraciones = array("60","60","24","7","4.35","12");
-    $to = $to === 0 ? time() : $to;
+  public static function amigable_time(int $from, $to = null) : string {   
+    $intervalos = ['segundo', 'minuto', 'hora', 'día', 'semana', 'mes', 'año'];
+    $duraciones = ['60','60','24','7','4.35','12'];
+    $to = $to ?? time();
 
-    if(empty($from)) {   
-        return "Fecha incorracta";
-    }
-
+    $diferencia = $from - $to;
+    $tiempo = 'Dentro de';
     if($to > $from) {   
         $diferencia = $to - $from;
-        $tiempo = "Hace";
-    } else {
-        $diferencia = $from - $to;
-        $tiempo = "Dentro de";
+        $tiempo = 'Hace';
     }
     
-    for($j = 0; $diferencia >= $duraciones[$j] && $j < count($duraciones)-1; $j++) {
+    for($j = 0; $diferencia >= $duraciones[$j] && $j < sizeof($duraciones) - 1 ; $j++) {
       $diferencia /= $duraciones[$j];
     }
     
     $diferencia = round($diferencia);
     
     if($diferencia != 1) {
-      $intervalos[5].="e"; //MESES
-      $intervalos[$j].= "s";
+      $intervalos[5].= 'e'; //MESES
+      $intervalos[$j].= 's';
     }
    
-    return "$tiempo $diferencia $intervalos[$j]";
+    return $tiempo . ' ' . $diferencia . ' ' . $intervalos[$j];
   }
   
   /**

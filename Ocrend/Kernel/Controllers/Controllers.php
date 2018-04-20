@@ -71,13 +71,12 @@ abstract class Controllers {
       * Configuración inicial de cualquier controlador
       *
       * @param IRouter $router: Instancia de un Router
-      * @param array|null $configController: Arreglo de configuración con la forma  
-      *     'twig_cache_reload' => bool, # Configura el autoreload del caché de twig
+      * @param array $configController: Arreglo de configuración con la forma  
       *     'users_logged' => bool, # Configura el controlador para solo ser visto por usuarios logeados
       *     'users_not_logged' => bool, # Configura el controlador para solo ser visto por !(usuarios logeados)
       *
     */
-    protected function __construct(IRouter $router, $configController = null) {
+    protected function __construct(IRouter $router, $configController = []) {
         global $config, $http, $session, $cookie;
 
         # Verificar si está logeado el usuario
@@ -89,17 +88,24 @@ abstract class Controllers {
         # Twig Engine http://gitnacho.github.io/Twig/
         $this->template = new \Twig_Environment(new \Twig_Loader_Filesystem('./app/templates/'), array(
             # ruta donde se guardan los archivos compilados
-            'cache' => './app/templates/.cache/',
+            'cache' => $config['twig']['compiled_dir'],
             # false para caché estricto, cero actualizaciones, recomendado para páginas 100% estáticas
-            'auto_reload' => $this->controllerConfig['twig_cache_reload'],
+            'auto_reload' => !$config['twig']['cache'],
             # en true, las plantillas generadas tienen un método __toString() para mostrar los nodos generados
-            'debug' => $config['framework']['debug']
+            'debug' => !$config['build']['production'],
+            # el charset utilizado por los templates
+            'charset' => $config['twig']['charset'],
+            # true para evitar ignorar las variables no definidas en el template
+            'strict_variables' => $config['twig']['strict_variables'],
+            # false para evitar el auto escape de html por defecto (no recomendado)
+            'autoescape' => $config['twig']['autoescape']
         )); 
         
         # Request global
         $this->template->addGlobal('get', $http->query->all());
         $this->template->addGlobal('server', $http->server->all());
         $this->template->addGlobal('session', $session->all());
+        $this->template->addGlobal('cookie', $cookie->all());
         $this->template->addGlobal('config', $config);
         $this->template->addGlobal('is_logged', $this->is_logged);
 
@@ -113,7 +119,7 @@ abstract class Controllers {
         $this->template->addExtension(new Helper\Functions);
 
         # Debug disponible en twig
-        if($config['framework']['debug']) {
+        if(!$config['build']['production']) {
           $this->template->addExtension(new \Twig_Extension_Debug());
         }
 
@@ -134,26 +140,10 @@ abstract class Controllers {
      * @return void
      */
     private function setControllerConfig($config) {
-      # Configuración por defecto
-      $this->controllerConfig['twig_cache_reload'] = true;
-      $this->controllerConfig['users_logged'] = false;
-      $this->controllerConfig['users_not_logged'] = false;
-
-      # Establecer las configuraciones pasadas
-      if (null != $config) {
-        # Configura el autoreload del caché de twig
-        if (array_key_exists('twig_cache_reload', $config)) {
-          $this->controllerConfig['twig_cache_reload'] = (bool) $config['twig_cache_reload'];
-        }
-        # Configura el controlador para solo ser visto por usuarios logeados
-        if (array_key_exists('users_logged', $config)) {
-          $this->controllerConfig['users_logged'] = (bool) $config['users_logged'];
-        }
-        # Configura el controlador para solo ser visto por usuario no logeados
-        if (array_key_exists('users_not_logged', $config)) {
-          $this->controllerConfig['users_not_logged'] = (bool) $config['users_not_logged'];
-        }
-      }
+      $this->controllerConfig = array_merge(array(
+        'users_logged' => false,
+        'users_not_logged' => false
+      ), $config);
     }
     
     /**
@@ -162,9 +152,11 @@ abstract class Controllers {
      * @return void
      */
     private function knowVisitorPermissions() {
+      global $config;
+
       # Sólamente usuarios logeados
       if ($this->controllerConfig['users_logged'] && !$this->is_logged) {
-        Helper\Functions::redir();
+        Helper\Functions::redir($config['build']['url'] . 'login');
       }
 
       # Sólamente usuarios no logeados
