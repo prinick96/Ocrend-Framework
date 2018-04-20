@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Ocrend Framewok 2 package.
+ * This file is part of the Ocrend Framewok 3 package.
  *
  * (c) Ocrend Software <info@ocrend.com>
  *
@@ -34,7 +34,7 @@ trait DBModel {
      * 
      * @return void
      */
-    protected function startDBConexion() : void {
+    protected function startDBConexion()  {
         global $config;
         $this->db = Database::resolveDriver($config['database']['default_driver']);
     }

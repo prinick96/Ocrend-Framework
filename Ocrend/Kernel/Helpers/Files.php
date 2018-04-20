@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Ocrend Framewok 2 package.
+ * This file is part of the Ocrend Framewok 3 package.
  *
  * (c) Ocrend Software <info@ocrend.com>
  *
@@ -213,7 +213,7 @@ class Files extends \Twig_Extension {
    *
    * @return void
    */
-  public static function move_from_dir(string $old_dir, string $new_dir, bool $only_images = false, bool $delete_old = false) : void {
+  public static function move_from_dir(string $old_dir, string $new_dir, bool $only_images = false, bool $delete_old = false)  {
     self::create_dir($new_dir);
 
     foreach(glob($old_dir . ($only_images ? '{*.jpg,*.gif,*.png,*.gif,*.jpeg,*.JPG,*.GIF,*.PNG,*.JPEG}' : '*'),GLOB_BRACE) as $file) {

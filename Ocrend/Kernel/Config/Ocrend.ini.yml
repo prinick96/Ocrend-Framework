@@ -37,12 +37,14 @@ build:
   production: false
   name: Ocrend Framework 3
   url: http://localhost/Ocrend-Framework
+  timezone: America/Caracas
 
 # Configuración de cookies
 sessions:
   lifetime: 3600
   user_cookie:
-    enable: false
+    enable: true
+    key_encrypt: X8f3p@9Vde0WvKauzI8C
     lifetime: 3600
 
 # Configuración de la api

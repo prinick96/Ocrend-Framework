@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Ocrend Framewok 2 package.
+ * This file is part of the Ocrend Framewok 3 package.
  *
  * (c) Ocrend Software <info@ocrend.com>
  *

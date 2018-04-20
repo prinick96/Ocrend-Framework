@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Ocrend Framewok 2 package.
+ * This file is part of the Ocrend Framewok 3 package.
  *
  * (c) Ocrend Software <info@ocrend.com>
  *
@@ -70,6 +70,55 @@ final class Strings extends \Twig_Extension {
   */
   public static function chash(string $hash, string $s2) : bool  {
     return $hash == crypt($s2, substr($hash, 0, 29));
+  }
+
+  /**
+   * Encripta un string, utilizando una llave para posteriormente poder desencriptar
+   *
+   * @param string $str: Cadena a encriptar
+   * @param string $key: Llave única para poder encriptar
+   * 
+   * @return string : Texto encriptado
+   */
+  public static function ocrend_encode(string $str, string $key) : string {
+    $___s___ = mcrypt_create_iv(
+      mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC),
+      MCRYPT_DEV_URANDOM
+    );
+    
+    return base64_encode(
+      $___s___ .
+      mcrypt_encrypt(
+        MCRYPT_RIJNDAEL_128,
+        hash('sha256', $key, true),
+        $str,
+        MCRYPT_MODE_CBC,
+        $___s___
+      )
+    );
+  }
+
+  /**
+   * Desencripta un string, utilizando una llave que se ocupó al encriptar
+   *
+   * @param string $str: Cadena a desencriptar
+   * @param string $key: Llave única para poder desencriptar
+   * 
+   * @return string : Texto desencriptado
+   */
+  public static function oncred_decode(string $str, string $key) : string {
+    $data = base64_decode($str );
+    $___s___  = substr($data, 0, mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
+    return rtrim(
+        mcrypt_decrypt(
+            MCRYPT_RIJNDAEL_128,
+            hash('sha256', $key, true),
+            substr($data, mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC)),
+            MCRYPT_MODE_CBC,
+            $___s___
+        ),
+        "\0"
+    );
   }
 
   /**

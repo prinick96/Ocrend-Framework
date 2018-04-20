@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Ocrend Framewok 2 package.
+ * This file is part of the Ocrend Framewok 3 package.
  *
  * (c) Ocrend Software <info@ocrend.com>
  *
@@ -9,23 +9,53 @@
  * file that was distributed with this source code.
 */
 
-# Definir ruta de acceso permitida
-define('API_INTERFACE', '../');
+# Definir el path
+define('___ROOT___', '../');
 
 # Cargadores principales
-require '../Ocrend/vendor/autoload.php';
-require '../Ocrend/autoload.php';
-require '../Ocrend/Kernel/Config/Start.php';
+require ___ROOT___ . 'Ocrend/Kernel/Config/Config.php';
 
-# Preparar la API
-$app = new Silex\Application();
-unset($app['exception_handler']);
+/**
+ * Lanza un error público
+ * 
+ * @return void
+ */
+function ___catchApi() {
+    header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+    header('Content-Type: application/json');
+    echo json_encode(array(
+        'success' => 0,
+        'message' => 'Ha ocurrido un problema interno'
+    ));
+}
 
-# Verbos HTTP
-require 'http/get.php';
-require 'http/post.php';
-require 'http/put.php';
-require 'http/delete.php';
+/**
+ * Carga la api
+ * 
+ * @return void
+ */
+function ___loadApi() {
+    # Preparar la API
+    $app = new Silex\Application();
+    unset($app['exception_handler']);
+
+    # Verbos HTTP
+    require 'controllers/ini.app.php';
+    require 'controllers/get.controllers.php';
+    require 'controllers/post.controllers.php';
+
+    $app->run();
+}
 
 # Arrancar
-$app->run();
+if($config['build']['production']) {
+    try { 
+        ___loadApi();  
+    } catch(\Throwable $e) {
+        ___catchApi();
+    } catch(\Exception $e) {
+        ___catchApi();
+    }
+} else {
+    ___loadApi();
+}

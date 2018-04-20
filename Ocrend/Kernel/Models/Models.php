@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Ocrend Framewok 2 package.
+ * This file is part of the Ocrend Framewok 3 package.
  *
  * (c) Ocrend Software <info@ocrend.com>
  *
@@ -19,7 +19,6 @@ use Ocrend\Kernel\Helpers\Functions;
  *
  * @author Brayan Narváez <prinick@ocrend.com>
  */
-
 abstract class Models {
 
     /**
@@ -43,7 +42,7 @@ abstract class Models {
       *                                    
     */
     protected function __construct(IRouter $router = null) {
-        global $session, $config;
+        global $session, $cookie;
         
         # Id captado por la ruta
         if (null != $router) {
@@ -52,7 +51,7 @@ abstract class Models {
         }
         
         # Verificar sesión del usuario
-        $session_name = 'user_id';
+        $session_name = $cookie->get('session_hash') . '__user_id';
         if(null !== $session->get($session_name)) {
            $this->id_user = $session->get($session_name);
         }

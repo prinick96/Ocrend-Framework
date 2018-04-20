@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Ocrend Framewok 2 package.
+ * This file is part of the Ocrend Framewok 3 package.
  *
  * (c) Ocrend Software <info@ocrend.com>
  *
@@ -95,6 +95,7 @@ final class Router implements IRouter {
      * @param string $rule : Nombre de la regla
      *
      * @throws \RuntimeException si la regla no existe
+     * @return void
     */
     final private function setCollectionRule(string $index, string $rule) {
         # Verificar si la regla existe
@@ -108,7 +109,7 @@ final class Router implements IRouter {
     /**
      * Verifica las peticiones por defecto
     */
-    final private function checkRequests() {
+    final private function checkRequests()  {
         # Verificar si existe peticiones
         if (null !== $this->requestUri) {
             $this->real_request = explode('/', $this->requestUri);
@@ -128,7 +129,7 @@ final class Router implements IRouter {
      *
      * @throws \RuntimeException si no puede definirse la ruta
     */
-    final public function setRoute(string $index, string $rule = 'none') {
+    final public function setRoute(string $index, string $rule = 'none')  {
         # Nombres de rutas no permitidos
         if (in_array($index, ['/controller', '/method', '/id'])) {
             throw new \RuntimeException('No puede definirse ' . $index . ' como índice en la ruta.');
@@ -209,14 +210,16 @@ final class Router implements IRouter {
         }
 
         return $id;
-    }
+    }   
 
     /**
-     * Ejecuta el controlador solicitado por la URL.
+     * Encargado de cargar un controlador
      * Si este no existe, ejecutará errorController.
      * Si no se solicita ningún controlador, ejecutará homeController.
+     * 
+     * @return void
      */
-    final public function executeController() {
+    final private function loadController()  {
         # Definir controlador
         if (null != ($controller = $this->getController())) {
             $controller = $controller . 'Controller';
@@ -231,7 +234,44 @@ final class Router implements IRouter {
 
         $controller = 'app\\controllers\\' . $controller;    
 
-        new $controller($this);      
+        new $controller($this);
+    }
+
+    /**
+     * Error a mostrar en producción
+     * 
+     * @return void
+     */
+    final private function productionError() {
+        global $http;
+
+        header($http->server->get('SERVER_PROTOCOL') . ' 500 Internal Server Error', true, 500);
+        header('Content-Type: text/html; charset=utf-8');
+        header('Content-language: es');
+
+        $output = file_get_contents('assets/error/catch.html', FILE_USE_INCLUDE_PATH);
+        echo $output;
+    }
+
+    /**
+     * Ejecuta el controlador solicitado por la URL.
+     * 
+     * @return void
+     */
+    final public function executeController()  {
+        global $config;
+
+        if($config['build']['production']) {
+            try {
+                $this->loadController();
+            } catch(\Throwable $e) {
+                $this->productionError();
+            } catch(\Exception $e) {
+                $this->productionError();
+            }
+        } else {
+            $this->loadController();
+        }
     }
 
 }

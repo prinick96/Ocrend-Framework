@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Ocrend Framewok 2 package.
+ * This file is part of the Ocrend Framewok 3 package.
  *
  * (c) Ocrend Software <info@ocrend.com>
  *
@@ -40,7 +40,7 @@ final class Functions extends \Twig_Extension {
   *
   * @return void
   */
-  public static function redir($url = null) : void {
+  public static function redir($url = null)  {
     global $config;
     
     if (null == $url) {

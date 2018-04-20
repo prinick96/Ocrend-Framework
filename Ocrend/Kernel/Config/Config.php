@@ -17,6 +17,7 @@ use Symfony\Component\Debug\ExceptionHandler;
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
+use Ocrend\Kernel\Cookies\Cookies;
 
 # Cargadores iniciales
 require ___ROOT___ . 'Ocrend/vendor/autoload.php';
@@ -60,8 +61,12 @@ $session = new Session(new NativeSessionStorage(
 ));
 $session->start();
 
+# Cargador de cookies
+$cookie = new Cookies;
+$cookie->reviveSessions();
+
 # Peticiones HTTP
 $http = Request::createFromGlobals(); 
 
 # Define el timezone actual
-date_default_timezone_set($config['site']['timezone']);
+date_default_timezone_set($config['build']['timezone']);

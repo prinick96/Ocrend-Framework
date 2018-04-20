@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>¡Ups!</title>
+    <style>
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #container {
+            position: fixed;
+            display: flex;
+            top: 0;
+            left: 0;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            background-color: #1d3364; 
+        }
+        #container h1, #container p {
+            opacity: 0;
+            color: white;
+            animation: fadeIn 1s ease-in 0.2s forwards;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div>
+            <h1>¡UPS! ERROR 500</h1>
+            <p>Esto es inesperado, ha ocurrido un error interno en la aplicación.</p>
+        </div>
+    </div>
+</body>
+</html>

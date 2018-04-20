@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Ocrend Framewok 2 package.
+ * This file is part of the Ocrend Framewok 3 package.
  *
  * (c) Ocrend Software <info@ocrend.com>
  *
@@ -78,10 +78,10 @@ abstract class Controllers {
       *
     */
     protected function __construct(IRouter $router, $configController = null) {
-        global $config, $http, $session;
+        global $config, $http, $session, $cookie;
 
         # Verificar si está logeado el usuario
-        $this->is_logged = null != $session->get($config['sessions']['unique'] . '_user_id');
+        $this->is_logged = null != $session->get($cookie->get('session_hash') . '__user_id');
 
         # Establecer la configuración para el controlador
         $this->setControllerConfig($configController);
