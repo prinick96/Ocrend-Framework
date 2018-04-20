@@ -198,13 +198,13 @@ final class Functions extends \Twig_Extension {
     global $config, $http;
 
     # Revisar protocolo
-    $http = 'http://';
+    $https = 'http://';
     if($config['router']['ssl']) {
       # Revisar el protocolo
       if(true == $http->server->get('HTTPS')
         || $http->server->get('HTTPS') == 'on' 
         || $http->server->get('HTTPS') == 1) {
-        $http = 'https://';
+        $https = 'https://';
       }
     }
 
@@ -221,7 +221,7 @@ final class Functions extends \Twig_Extension {
       $base = 'www.' . $path;
     }
   
-    return '<base href="' . $http . $base . '" />';
+    return '<base href="' . $https . $base . '" />';
   }
   
   /**
