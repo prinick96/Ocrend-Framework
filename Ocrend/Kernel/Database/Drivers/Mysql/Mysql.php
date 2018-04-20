@@ -158,13 +158,13 @@ class Mysql extends \mysqli implements Driver {
      * Elimina elementos de una tabla y devuelve la cantidad de filas afectadas
      * 
      * @param string $table: Tabla a la cual se le quiere remover un elemento
-     * @param string $where: Condición de borrado que define quien/quienes son dichos elementos
+     * @param null|string $where: Condición de borrado que define quien/quienes son dichos elementos
      * @param null|string $limit: Por defecto se limita a borrar un solo elemento que cumpla el $where
      * 
      * @return int cantidad de filas afectadas
      */
-    public function delete(string $table, string $where, $limit = null) : int {
-        $this->real_query("DELETE FROM $table WHERE $where " . (null !== $limit ? "LIMIT $limit" : ''));
+    public function delete(string $table, $where = null, $limit = null) : int {
+        $this->real_query("DELETE FROM $table " . (null != $where ? "WHERE $where" : ' ') . (null !== $limit ? "LIMIT $limit" : ''));
         
         return $this->affected_rows;
     }

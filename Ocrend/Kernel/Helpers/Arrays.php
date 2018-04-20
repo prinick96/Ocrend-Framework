@@ -101,7 +101,7 @@ class Arrays extends \Twig_Extension {
     * @return bool false si no lo es, true si lo es
   */
   public static function is_assoc(array $a) : bool {
-    if (sizeof($a) === 0) {
+    if (sizeof($a) == 0) {
       return false;
     }
 

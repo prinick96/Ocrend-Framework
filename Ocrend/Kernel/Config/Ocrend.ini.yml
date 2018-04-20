@@ -17,8 +17,7 @@ database:
       port: default
       socket: default
     sqlite3:
-      file: '__ROOT__Ocrend/Kernel/Database/Drivers/Sqlite/db.sqlite3'
-      encryption_key: 
+      file: '___ROOT___Ocrend/Kernel/Database/Drivers/Sqlite/db.sqlite3'
       
 # Configuración de servidor SMTP
 mailer:
