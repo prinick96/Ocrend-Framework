@@ -1,0 +1,5 @@
+/**
+ * Estilo definido por defecto para presentar el framework.
+ * No es necesaria la existencia de este archivo, puede ser borrado.
+*/
+*{margin:0;padding:0;-webkit-box-sizing:border-box;box-sizing:border-box}@-webkit-keyframes ocrendhi{0%{opacity:0}to{opacity:1}}@keyframes ocrendhi{0%{opacity:0}to{opacity:1}}body{font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif}a,a:focus{color:#0068a6;-webkit-transition:color 0.3s;-o-transition:color 0.3s;transition:color 0.3s}a:hover{color:#067ebd}.box-ocrend{opacity:0;-webkit-animation:ocrendhi 1s ease-out 0s forwards;animation:ocrendhi 1s ease-out 0s forwards;position:fixed;top:0;left:0;width:100%;height:100%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-ms-flex-wrap:nowrap;flex-wrap:nowrap}.box-ocrend>div{padding-top:10px}.box-ocrend>h1,.box-ocrend>p{color:#041830}
