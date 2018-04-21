@@ -95,9 +95,9 @@ class Emails {
 
         # El mensaje
         $message = new \Swift_Message();
-        $message->setSubject(array_key_exists('{{title}}',$content) ? $content['{{title}}'] : $config['site']['name']);
+        $message->setSubject(array_key_exists('{{title}}',$content) ? $content['{{title}}'] : $config['build']['name']);
         $message->setBody(self::loadTemplate($content,$template), 'text/html');
-        $message->setFrom([ $config['mailer']['user'] => $config['site']['name']]);
+        $message->setFrom([ $config['mailer']['user'] => $config['build']['name']]);
         $message->setTo($dest);
 
         # Adjuntos

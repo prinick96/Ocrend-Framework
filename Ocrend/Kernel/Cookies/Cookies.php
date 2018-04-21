@@ -87,9 +87,12 @@ class Cookies {
             $encrypt = $this->get('appencrypt');
 
             # Verificar que no estén vacías y coincidan
-            if(null == $user_session && Helper\Strings::chash($salt ?? '_', $encrypt ?? '/$')) {
+            if(null == $user_session && null != $salt && null != $encrypt && Helper\Strings::chash($salt ?? '_', $encrypt ?? '/$')) {
+                # Generar un nuevo session hash
+                $this->set('session_hash', md5(time()) , time() + $config['sessions']['user_cookie']['lifetime']);
+
                 # Desencriptar el id del usuario
-                $id_user = Helper\Strings::oncred_decode($encrypt, $config['sessions']['user_cookie']['key_encrypt']);
+                $id_user = Helper\Strings::ocrend_decode($encrypt, $config['sessions']['user_cookie']['key_encrypt']);
 
                 # Reestablecer la sesión
                 $session->set($this->get('session_hash') . '__user_id',(int) $id_user);

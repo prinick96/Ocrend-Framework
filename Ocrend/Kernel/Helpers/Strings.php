@@ -101,7 +101,7 @@ final class Strings extends \Twig_Extension {
    * 
    * @return string : Texto desencriptado
    */
-  public static function oncred_decode(string $str, string $key) : string {
+  public static function ocrend_decode(string $str, string $key) : string {
     $data = base64_decode($str );
     $___s___  = substr($data, 0, mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
     return rtrim(
