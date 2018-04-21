@@ -82,7 +82,7 @@ class Model extends Command {
             global \$http;
                     
             return array('success' => 0, 'message' => 'Funcionando');
-        } catch(ModelsExceptions \$e) {
+        } catch(ModelsException \$e) {
             return array('success' => 0, 'message' => \$e->getMessage());
         }
     }\n";

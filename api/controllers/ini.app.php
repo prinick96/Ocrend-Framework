@@ -18,19 +18,19 @@ use Ocrend\Kernel\Models\ModelsException;
 /**
  * Convertir esta api en RESTFULL para recibir JSON
  */
-$app->before(function (Request $request) use ($app) {
+$app->before(function () use ($app) {
     try {
-        global $config;
-
+        global $config, $http;
+        
         # Verificar si la api no está activa
         if(!$config['api']['active']) {
             throw new ModelsException('Servicio inactivo');
         }
 
         # Recibir JSON
-        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
-            $data = json_decode($request->getContent(), true);
-            $request->request->replace(is_array($data) ? $data : array());
+        if (0 === strpos($http->headers->get('Content-Type'), 'application/json')) {
+            $data = json_decode($http->getContent(), true);
+            $http->request->replace(is_array($data) ? $data : array());
         }
     } catch(ModelsException $e) {
         return $app->json(array(
