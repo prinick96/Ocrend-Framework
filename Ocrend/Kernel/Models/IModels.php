@@ -21,5 +21,4 @@ use Ocrend\Kernel\Router\IRouter;
 
 interface IModels {
     public function __construct(IRouter $router = null);
-    public function __destruct();
 }

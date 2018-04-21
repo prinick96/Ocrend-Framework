@@ -1,0 +1,10 @@
+/**
+ * Endpoint para {{view}}
+ *
+ * @return json
+*/
+$app->post('/{{view}}', function() use($app) {
+    ${{model_var}} = new Model\{{model}}; 
+
+    return $app->json(${{model_var}}->foo());   
+});

@@ -6,6 +6,7 @@
         "silex/silex": "~2.0",
         "symfony/debug": "^3.3",
         "symfony/var-dumper": "^3.3",
-        "swiftmailer/swiftmailer": "^6.0"
+        "swiftmailer/swiftmailer": "^6.0",
+        "symfony/console": "^3.3"
     }
 }

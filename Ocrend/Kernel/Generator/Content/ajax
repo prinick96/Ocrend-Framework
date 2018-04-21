@@ -1,0 +1,56 @@
+/**
+ * Ajax action to api rest
+*/
+function {{view}}(){
+    var $ocrendForm = $(this),
+    formData = new FormData($('#{{view}}_form'));
+
+    var __data = {};
+    formData.forEach(function(value, key){
+        __data[key] = value;
+    });
+    var __dataJson = JSON.stringify(__data);
+
+    if(undefined == $ocrendForm.data('locked') || false == $ocrendForm.data('locked')) {
+        $.ajax({
+            type : "POST",
+            url : "api/{{view}}",
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            data : __dataJson,
+            beforeSend: function(){ 
+                $ocrendForm.data('locked', true) 
+            },
+            success : function(json) {
+                if(json.success == 1) {
+                    alert(json.message);
+                } else {
+                    alert(json.message);
+                }
+            },
+            error : function(xhr, status) {
+                alert('Ha ocurrido un problema interno');
+            },
+            complete: function(){ 
+                $ocrendForm.data('locked', false);
+            } 
+        });
+    }
+} 
+
+/**
+ * Events
+ */
+$('#{{view}}').click(function(e) {
+    e.defaultPrevented;
+    {{view}}();
+});
+$('form#{{view}}_form input').keypress(function(e) {
+    e.defaultPrevented;
+    if(e.which == 13) {
+        {{view}}();
+
+        return false;
+    }
+});

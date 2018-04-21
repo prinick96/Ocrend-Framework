@@ -1,0 +1,7 @@
+{% extends 'overall/layout' %}
+{% block appBody %}
+    Hola mundo
+{% endblock %}
+{% block appFooter %}
+    {{ajax_content}}
+{% endblock %}

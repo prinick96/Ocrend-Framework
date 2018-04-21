@@ -32,10 +32,12 @@ trait DBModel {
      * Constructor inicial del modelo.
      * Arranca la base de datos
      * 
+     * @param $driver : Driver para establecer la conexión de este modelo
+     * 
      * @return void
      */
-    protected function startDBConexion()  {
+    protected function startDBConexion($driver = null)  {
         global $config;
-        $this->db = Database::resolveDriver($config['database']['default_driver']);
+        $this->db = Database::resolveDriver($driver ?? $config['database']['default_driver']);
     }
 }

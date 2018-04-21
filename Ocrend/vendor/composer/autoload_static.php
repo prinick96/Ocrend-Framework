@@ -27,6 +27,7 @@ class ComposerStaticInit8717f8bd41e2851ee8528e88990f2038
             'Symfony\\Component\\HttpFoundation\\' => 33,
             'Symfony\\Component\\EventDispatcher\\' => 34,
             'Symfony\\Component\\Debug\\' => 24,
+            'Symfony\\Component\\Console\\' => 26,
             'Silex\\' => 6,
         ),
         'P' => 
@@ -75,6 +76,10 @@ class ComposerStaticInit8717f8bd41e2851ee8528e88990f2038
         'Symfony\\Component\\Debug\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/debug',
+        ),
+        'Symfony\\Component\\Console\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/console',
         ),
         'Silex\\' => 
         array (

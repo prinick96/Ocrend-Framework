@@ -50,6 +50,19 @@ class Files extends \Twig_Extension {
   }
 
   /**
+   * Escribe un string al final, en un archivo existente
+   *
+   * @param string $dir: Directorio del archivo sobre el cual se va a escribir
+   * @param string $content: Contenido a escribir
+   *
+   * @return int : catidad de bytes escritos en el archivo
+   */
+  public static function write_in_file(string $dir, string $content) : int {
+    $f = new \SplFileObject($dir,'a+');
+    return (int) $f->fwrite("\n\r" . $content);
+  }
+
+  /**
    * Borra un archivo en un directorio
    *
    * @param string $route: Ruta del fichero
@@ -132,7 +145,7 @@ class Files extends \Twig_Extension {
    * Crea un directorio
    *
    * @param string $dir: Directorio a crear
-   * @param int $permisos: Permisos del directorio a crear, por defecto es "todos los permisos"
+   * @param int $permisos: Permisos del directorio a crear, por defecto es 0655
    *
    * @return bool con true si fue creado con éxito, false si el directorio ya existía o hubo algún error
   */
