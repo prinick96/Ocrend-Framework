@@ -35,6 +35,8 @@ class Controller extends Command {
         ->addArgument('extra', InputArgument::OPTIONAL, 'Otras entidades a crear')
         ->addOption('db', null, InputOption::VALUE_OPTIONAL, 'Si se especifica un modelo, saber si se conectara con la base de datos', 1)
         ->addOption('ajax', null, InputOption::VALUE_OPTIONAL, 'Si se especifica un modelo, define si se quiere establecer una conexión con la api', 1)
+        ->addOption('nocreatemodel', null, InputOption::VALUE_OPTIONAL, 'Ignora la creacion de una modelo', false)
+        ->addOption('nocreateview', null, InputOption::VALUE_OPTIONAL, 'Ignora la creacion de una modelo', false)
         ;
     }
 
@@ -69,44 +71,51 @@ class Controller extends Command {
 
         # Analizar las opciones
         if($options > 0) {
+            $database = false;
+            $ajax = false;
+            $model = false;
+
             # Crear un modelo
             if(strpos($input->getArgument('extra'), 'm') !== false) {
-                # Nombre del modelo
-                $modelName = ucfirst($controllerName);
-
-                $database = false;
+                $model = true;
+                
                 if(1 != $input->getOption('db')) {
                     $database = true;
-                    # Crea el modelo con la base de datos
                 }
-
-                $ajax = false;
+                
                 if(1 != $input->getOption('ajax')) {
                     $ajax = true;
-                    # Crea el javascript y el endpoint de la api
                 }
 
-                $create_model = $this->getApplication()->find('app:m');
-                $arguments = array(
-                    'command' => 'app:m',
-                    'modelname' => $modelName,
-                );
-                if($database) {
-                    $arguments['--db'] = 0;
-                }
-                if($ajax) {
-                    $arguments['--ajax'] = 0;
-                }
-                $greetInput = new ArrayInput($arguments);
-                $returnCode = $create_model->run($greetInput, $output);
+                if(false == $input->getOption('nocreatemodel')) {
+                    # Nombre del modelo
+                    $modelName = ucfirst($controllerName);
 
-                $model_var = $controllerName[0];
-                $extra_functions = '$'.$model_var.' = new Model\\' . $modelName . ";\n\t\t";
+                    $create_model = $this->getApplication()->find('app:m');
+                    $arguments = array(
+                        'command' => 'app:m',
+                        'modelname' => $modelName,
+                    );
+                    if($database) {
+                        $arguments['--db'] = 0;
+                    }
+                    if($ajax) {
+                        $arguments['--ajax'] = 0;
+                    }
+                    $greetInput = new ArrayInput($arguments);
+                    $returnCode = $create_model->run($greetInput, $output);
+
+                    $model_var = $controllerName[0];
+                    $extra_functions = '$'.$model_var.' = new Model\\' . $modelName . ";\n\t\t";
+                }  
             }
 
             # Crear una vista
             if(strpos($input->getArgument('extra'), 'v') !== false) {
                 $extra_functions .= '$this->template->display(\''. $controllerName .'/'. $controllerName .'\');';
+                if(false == $input->getOption('nocreateview')) {
+                    # Crear la vista físicamente
+                }
             }
             
         }

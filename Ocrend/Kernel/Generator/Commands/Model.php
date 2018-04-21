@@ -35,6 +35,8 @@ class Model extends Command {
         ->addArgument('extra', InputArgument::OPTIONAL, 'Otras entidades a crear')
         ->addOption('db', null, InputOption::VALUE_OPTIONAL, 'Saber si se conectara con la base de datos', 1)
         ->addOption('ajax', null, InputOption::VALUE_OPTIONAL, 'Define si se quiere establecer una conexión con la api', 1)
+        ->addOption('nocreateview', null, InputOption::VALUE_OPTIONAL, 'Ignora la creacion de una vista', false)
+        ->addOption('nocreatecontroller', null, InputOption::VALUE_OPTIONAL, 'Ignora la creacion de un controlador', false)
         ;
     }
 
@@ -106,10 +108,14 @@ class Model extends Command {
             $view = false;
             if(strpos($input->getArgument('extra'), 'v') !== false) {
                 $view = true;
+
+                if(false == $input->getOption('nocreateview')) {
+                    # Crear la vista físicamente
+                }
             }
 
             # Crear un controlador
-            if(strpos($input->getArgument('extra'), 'c') !== false) {
+            if(strpos($input->getArgument('extra'), 'c') !== false && false == $this->getOption('nocreatecontroller')) {
                 $create_controller = $this->getApplication()->find('app:c');
                 $arguments = array(
                     'command' => 'app:c',

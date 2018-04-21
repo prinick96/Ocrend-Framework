@@ -73,12 +73,14 @@ class View extends Command {
         if($options > 0) {
             # Crear un modelo
             $model = false;
+            $database = false;
+            $ajax_content = '';
+            
             if(strpos($input->getArgument('extra'), 'm') !== false) {
                 $model = true;
                 # Nombre del modelo
                 $modelName = ucfirst($viewname);
 
-                $database = false;
                 if(1 != $input->getOption('db')) {
                     $database = true;
                 }
@@ -88,12 +90,15 @@ class View extends Command {
                     $ajax = true;
                     $script = '<script src="'.$viewAjax.'"></script>';
                 }
-                $viewContent = str_replace('{{ajax_content}}',$script,$viewContent);
+                $ajax_content = $script;
+                
 
                 $create_model = $this->getApplication()->find('app:m');
                 $arguments = array(
                     'command' => 'app:m',
-                    'modelname' => $modelName
+                    'modelname' => $modelName,
+                    '--nocreatecontroller' => true,
+                    '--nocreateview' => true
                 );
                 if($database) {
                     $arguments['--db'] = 0;
@@ -104,6 +109,7 @@ class View extends Command {
                 $greetInput = new ArrayInput($arguments);
                 $returnCode = $create_model->run($greetInput, $output);
             }
+            $viewContent = str_replace('{{ajax_content}}',$ajax_content,$viewContent);
 
             # Crear un controlador
             if(strpos($input->getArgument('extra'), 'c') !== false) {
@@ -111,7 +117,9 @@ class View extends Command {
                 $arguments = array(
                     'command' => 'app:c',
                     'controllername' => $viewname,
-                    'extra' => 'v' . ($model ? 'm' : '')
+                    'extra' => 'v' . ($model ? 'm' : ''),
+                    '--nocreatemodel' => true,
+                    '--nocreateview' => true
                 );
                 if($database) {
                     $arguments['--db'] = 0;
