@@ -35,6 +35,11 @@ class Usersinstall extends Command {
     protected function execute(InputInterface $input, OutputInterface $output) {
         global $config;
 
+        # Salto de linea
+        $output->writeln([
+            '',
+        ]);
+
         $progressBar = new ProgressBar($output, 5);
         $progressBar->start();
 
@@ -192,6 +197,7 @@ class lostpassController extends Controllers implements IControllers {
         $progressBar->advance();
 
         # Crear vista login
+        Helper\Files::create_dir('./app/templates/login/');
         Helper\Files::write_file('./app/templates/login/login.twig','{% extends \'overall/layout\' %}
 {% block appBody %}
     <form role="form" id="login_form">
@@ -211,6 +217,7 @@ class lostpassController extends Controllers implements IControllers {
 {% endblock %}');
 
         # Crear vista registro
+        Helper\Files::create_dir('./app/templates/register/');
         Helper\Files::write_file('./app/templates/register/register.twig','{% extends \'overall/layout\' %}
 {% block appBody %}
     <form role="form" id="register_form">
@@ -392,5 +399,12 @@ $(\'form#lostpass_form input\').keypress(function(e) {
         
         # 100% de progreso
         $progressBar->finish();
+
+        # Exito
+        $output->writeln([
+            '',
+            '',
+            ' Sistema de usuarios agregado'
+        ]);
     }
 }

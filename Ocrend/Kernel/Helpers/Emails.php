@@ -89,6 +89,11 @@ class Emails {
         $https['ssl']['verify_peer'] = false;
         $https['ssl']['verify_peer_name'] = false;
 
+        # Verificar si están llenos los campos
+        if(!$config['build']['production'] && Functions::emp($config['mailer']['host'])) {
+            throw new \RuntimeException('Los datos de mailer, en Ocrend.ini.yml están vacíos.');
+        }
+
         # Transporte
         $transport = (new \Swift_SmtpTransport($config['mailer']['host'], $config['mailer']['port'], 'tls'))
         ->setUsername($config['mailer']['user'])
