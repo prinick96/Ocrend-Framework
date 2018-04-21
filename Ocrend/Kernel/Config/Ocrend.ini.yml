@@ -39,7 +39,7 @@ twig:
 build:
   production: false
   name: Ocrend Framework 3
-  url: http://localhost/Ocrend-Framework
+  url: http://localhost/Ocrend-Framework/
   timezone: America/Caracas
 
 # Configuración de cookies
@@ -58,4 +58,4 @@ api:
 # Configuración de ruta
 router:
   ssl: false
-  path: localhost/Ocrend-Framework
+  path: localhost/Ocrend-Framework/

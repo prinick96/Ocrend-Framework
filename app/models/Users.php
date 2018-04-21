@@ -80,7 +80,7 @@ class Users extends Models implements IModels {
      */
     private function checkEmail(string $email) {
         # Formato de email
-        if (!Strings::is_email($email)) {
+        if (!Helper\Strings::is_email($email)) {
             throw new ModelsException('El email no tiene un formato válido.');
         }
         # Existencia de email
@@ -120,7 +120,7 @@ class Users extends Models implements IModels {
         global $session, $cookie, $config;
         
         # Generar un session hash
-        $cookie->set('session_hash', md5(time()), time() + $config['sessions']['user_cookie']['lifetime']);
+        $cookie->set('session_hash', md5(time()), $config['sessions']['user_cookie']['lifetime']);
         
         # Generar la sesión del usuario
         $session->set($cookie->get('session_hash') . '__user_id',(int) $user_data['id_user']);
@@ -131,8 +131,8 @@ class Users extends Models implements IModels {
             $encrypt = Helper\Strings::ocrend_encode($user_data['id_user'], $config['sessions']['user_cookie']['key_encrypt']);
 
             # Generar cookies para prolongar la vida de la sesión
-            $cookie->set('appsalt', Helper\Strings::hash($encrypt));
-            $cookie->set('appencrypt', $encrypt);
+            $cookie->set('appsalt', Helper\Strings::hash($encrypt), $config['sessions']['user_cookie']['lifetime']);
+            $cookie->set('appencrypt', $encrypt, $config['sessions']['user_cookie']['lifetime']);
         }
     }
 
@@ -150,7 +150,7 @@ class Users extends Models implements IModels {
         $query = $this->db->select('id_user,pass','users',null, "email='$email'",1);
         
         # Incio de sesión con éxito
-        if(false !== $query && Strings::chash($query[0]['pass'],$pass)) {
+        if(false !== $query && Helper\Strings::chash($query[0]['pass'],$pass)) {
 
             # Restaurar intentos
             $this->restoreAttempts($email);
@@ -339,7 +339,7 @@ class Users extends Models implements IModels {
             $id_user = $this->db->insert('users', array(
                 'name' => $name,
                 'email' => $email,
-                'pass' => Strings::hash($pass)
+                'pass' => Helper\Strings::hash($pass)
             ));
 
             # Iniciar sesión
@@ -385,7 +385,7 @@ class Users extends Models implements IModels {
             # Generar token y contraseña 
             $token = md5(time());
             $pass = uniqid();
-            $link = $config['build']['url'] . 'lostpass/cambiar/&token='.$token.'&user='.$user_data[0]['id_user'];
+            $link = $config['build']['url'] . 'lostpass?token='.$token.'&user='.$user_data[0]['id_user'];
 
             # Construir mensaje y enviar mensaje
             $HTML = 'Hola <b>'. $user_data[0]['name'] .'</b>, ha solicitado recuperar su contraseña perdida, si no ha realizado esta acción no necesita hacer nada.
@@ -396,7 +396,7 @@ class Users extends Models implements IModels {
             # Enviar el correo electrónico
             $dest = array();
 			$dest[$email] = $user_data[0]['name'];
-            $email_send = Emails::send($dest,array(
+            $email_send = Helper\Emails::send($dest,array(
                 # Título del mensaje
                 '{{title}}' => 'Recuperar contraseña de ' . $config['build']['name'],
                 # Url de logo
@@ -421,7 +421,7 @@ class Users extends Models implements IModels {
             # Actualizar datos 
             $id_user = $user_data[0]['id_user'];
             $this->db->update('users',array(
-                'tmp_pass' => Strings::hash($pass),
+                'tmp_pass' => Helper\Strings::hash($pass),
                 'token' => $token
             ),"id_user='$id_user'",1);
 
@@ -440,9 +440,9 @@ class Users extends Models implements IModels {
         global $session, $cookie;
 	    
         $session->remove($cookie->get('session_hash') . '__user_id');
-        $cookie->remove('session_hash');
-        $cookie->remove('appsalt');
-        $cookie->remove('appencrypt');
+        foreach($cookie->all() as $name => $value) {
+            $cookie->remove($name);
+        }
 
         Helper\Functions::redir();
     }
@@ -451,7 +451,7 @@ class Users extends Models implements IModels {
      * Cambia la contraseña de un usuario en el sistema, luego de que éste haya solicitado cambiarla.
      * Luego retorna al sitio de inicio con la variable GET success=(bool)
      *
-     * La URL debe tener la forma URL/lostpass/cambiar/&token=TOKEN&user=ID
+     * La URL debe tener la forma URL/lostpass?token=TOKEN&user=ID
      *
      * @return void
      */  
@@ -468,7 +468,7 @@ class Users extends Models implements IModels {
             $id_user = $this->db->scape($id_user);
             $token = $this->db->scape($token);
             # Ejecutar el cambio
-            $this->db->real_query("UPDATE users SET pass=tmp_pass, tmp_pass='', token=''
+            $this->db->query("UPDATE users SET pass=tmp_pass, tmp_pass=NULL, token=NULL
             WHERE id_user='$id_user' AND token='$token' LIMIT 1;");
             # Éxito
             $success = true;

@@ -82,7 +82,7 @@ class Mysql extends \mysqli implements Driver {
         . (null !== $limit ? "LIMIT $limit" : '')
         );
 
-        if($result->num_rows) {
+        if(false != $result && $result->num_rows) {
             $matriz = (array) $result->fetch_all(MYSQLI_ASSOC);
             $result->free();
 

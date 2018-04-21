@@ -84,11 +84,16 @@ class Emails {
      */
     public static function send(array $dest, array $content, int $template = 0, array $adj = []) : bool {
         global $config;
-        
+
+        # Hack para cuando algun servidor tenga un SSL no válido, por ejemplo localhost
+        $https['ssl']['verify_peer'] = false;
+        $https['ssl']['verify_peer_name'] = false;
+
         # Transporte
         $transport = (new \Swift_SmtpTransport($config['mailer']['host'], $config['mailer']['port'], 'tls'))
         ->setUsername($config['mailer']['user'])
-        ->setPassword($config['mailer']['pass']);
+        ->setPassword($config['mailer']['pass'])
+        ->setStreamOptions($https);
 
         # Mailer
         $mailer = new \Swift_Mailer($transport);
