@@ -2,23 +2,15 @@
  * Ajax action to api rest
 */
 function {{view}}(){
-    var $ocrendForm = $(this),
-    formData = new FormData($('#{{view}}_form'));
-
-    var __data = {};
-    formData.forEach(function(value, key){
-        __data[key] = value;
-    });
-    var __dataJson = JSON.stringify(__data);
+    var $ocrendForm = $(this), __data = {};
+    $('#{{view}}_form').serializeArray().map(function(x){__data[x.name] = x.value;}); 
 
     if(undefined == $ocrendForm.data('locked') || false == $ocrendForm.data('locked')) {
         $.ajax({
             type : "POST",
             url : "api/{{view}}",
             dataType: 'json',
-            contentType: false,
-            processData: false,
-            data : __dataJson,
+            data : __data,
             beforeSend: function(){ 
                 $ocrendForm.data('locked', true) 
             },
