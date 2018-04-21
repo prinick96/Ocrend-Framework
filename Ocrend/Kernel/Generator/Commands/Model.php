@@ -94,7 +94,7 @@ class Model extends Command {
         $trait_db_model_construct = '';
         if(1 != $input->getOption('db')) {
             $trait_db_model = 'use DBModel;';
-            $trait_db_model_construct = '$this->startDBConexion();';
+            $trait_db_model_construct = "\n\t\t\$this->startDBConexion();";
         }        
         $modelContent = str_replace('{{trait_db_model}}', $trait_db_model, $modelContent);
         $modelContent = str_replace('{{trait_db_model_construct}}', $trait_db_model_construct, $modelContent);
@@ -110,17 +110,31 @@ class Model extends Command {
                 $view = true;
 
                 if(false == $input->getOption('nocreateview')) {
-                    # Crear la vista físicamente
+                    $create_controller = $this->getApplication()->find('app:v');
+                    $arguments = array(
+                        'command' => 'app:v',
+                        'viewname' => $controllerName,
+                        'extra'  => 'm',
+                        '--nocreatemodel' => true,
+                        '--nocreatecontroller' => true
+                    );
+                    if($ajax) {
+                        $arguments['--ajax'] = 0;
+                    }
+                    $greetInput = new ArrayInput($arguments);
+                    $returnCode = $create_controller->run($greetInput, $output);
                 }
             }
 
             # Crear un controlador
-            if(strpos($input->getArgument('extra'), 'c') !== false && false == $this->getOption('nocreatecontroller')) {
+            if(strpos($input->getArgument('extra'), 'c') !== false && false == $input->getOption('nocreatecontroller')) {
                 $create_controller = $this->getApplication()->find('app:c');
                 $arguments = array(
                     'command' => 'app:c',
                     'controllername' => $controllerName,
-                    'extra'  => 'm' . ($view ? 'v' : '')
+                    'extra'  => 'm' . ($view ? 'v' : ''),
+                    '--nocreatemodel' => true,
+                    '--nocreateview' => true
                 );
                 $greetInput = new ArrayInput($arguments);
                 $returnCode = $create_controller->run($greetInput, $output);

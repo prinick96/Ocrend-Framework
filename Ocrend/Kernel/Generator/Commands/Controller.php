@@ -87,14 +87,16 @@ class Controller extends Command {
                     $ajax = true;
                 }
 
-                if(false == $input->getOption('nocreatemodel')) {
-                    # Nombre del modelo
-                    $modelName = ucfirst($controllerName);
+                # Nombre del modelo
+                $modelName = ucfirst($controllerName);
 
+                if(false == $input->getOption('nocreatemodel')) {
                     $create_model = $this->getApplication()->find('app:m');
                     $arguments = array(
                         'command' => 'app:m',
                         'modelname' => $modelName,
+                        '--nocreateview' => true,
+                        '--nocreatecontroller' => true
                     );
                     if($database) {
                         $arguments['--db'] = 0;
@@ -103,18 +105,30 @@ class Controller extends Command {
                         $arguments['--ajax'] = 0;
                     }
                     $greetInput = new ArrayInput($arguments);
-                    $returnCode = $create_model->run($greetInput, $output);
-
-                    $model_var = $controllerName[0];
-                    $extra_functions = '$'.$model_var.' = new Model\\' . $modelName . ";\n\t\t";
-                }  
+                    $returnCode = $create_model->run($greetInput, $output); 
+                }
+                
+                $model_var = $controllerName[0];    
+                $extra_functions = '$'.$model_var.' = new Model\\' . $modelName . ";\n\t\t";
             }
 
             # Crear una vista
             if(strpos($input->getArgument('extra'), 'v') !== false) {
                 $extra_functions .= '$this->template->display(\''. $controllerName .'/'. $controllerName .'\');';
                 if(false == $input->getOption('nocreateview')) {
-                    # Crear la vista físicamente
+                    $create_controller = $this->getApplication()->find('app:v');
+                    $arguments = array(
+                        'command' => 'app:v',
+                        'viewname' => $controllerName,
+                        'extra'  => 'm',
+                        '--nocreatemodel' => true,
+                        '--nocreatecontroller' => true
+                    );
+                    if($ajax) {
+                        $arguments['--ajax'] = 0;
+                    }
+                    $greetInput = new ArrayInput($arguments);
+                    $returnCode = $create_controller->run($greetInput, $output);
                 }
             }
             

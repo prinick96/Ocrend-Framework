@@ -35,6 +35,8 @@ class View extends Command {
         ->addArgument('extra', InputArgument::OPTIONAL, 'Otras entidades a crear')
         ->addOption('db', null, InputOption::VALUE_OPTIONAL, 'Si se especifica un modelo, saber si se conectara con la base de datos', 1)
         ->addOption('ajax', null, InputOption::VALUE_OPTIONAL, 'Si se especifica un modelo, define si se quiere establecer una conexión con la api', 1)
+        ->addOption('nocreatemodel', null, InputOption::VALUE_OPTIONAL, 'Ignora la creacion de una modelo', false)
+        ->addOption('nocreatecontroller', null, InputOption::VALUE_OPTIONAL, 'Ignora la creacion de un controlador', false)
         ;
     }
 
@@ -70,12 +72,12 @@ class View extends Command {
 
         # Analizar las opciones
         $ajax = false;
+        $ajax_content = '';
         if($options > 0) {
             # Crear un modelo
             $model = false;
             $database = false;
-            $ajax_content = '';
-            
+
             if(strpos($input->getArgument('extra'), 'm') !== false) {
                 $model = true;
                 # Nombre del modelo
@@ -92,27 +94,27 @@ class View extends Command {
                 }
                 $ajax_content = $script;
                 
-
-                $create_model = $this->getApplication()->find('app:m');
-                $arguments = array(
-                    'command' => 'app:m',
-                    'modelname' => $modelName,
-                    '--nocreatecontroller' => true,
-                    '--nocreateview' => true
-                );
-                if($database) {
-                    $arguments['--db'] = 0;
+                if(false == $input->getOption('nocreatemodel')) {
+                    $create_model = $this->getApplication()->find('app:m');
+                    $arguments = array(
+                        'command' => 'app:m',
+                        'modelname' => $modelName,
+                        '--nocreatecontroller' => true,
+                        '--nocreateview' => true
+                    );
+                    if($database) {
+                        $arguments['--db'] = 0;
+                    }
+                    if($ajax) {
+                        $arguments['--ajax'] = 0;
+                    }
+                    $greetInput = new ArrayInput($arguments);
+                    $returnCode = $create_model->run($greetInput, $output);
                 }
-                if($ajax) {
-                    $arguments['--ajax'] = 0;
-                }
-                $greetInput = new ArrayInput($arguments);
-                $returnCode = $create_model->run($greetInput, $output);
             }
-            $viewContent = str_replace('{{ajax_content}}',$ajax_content,$viewContent);
 
             # Crear un controlador
-            if(strpos($input->getArgument('extra'), 'c') !== false) {
+            if(strpos($input->getArgument('extra'), 'c') !== false && false == $input->getOption('nocreatecontroller')) {
                 $create_controller = $this->getApplication()->find('app:c');
                 $arguments = array(
                     'command' => 'app:c',
@@ -133,9 +135,15 @@ class View extends Command {
             
         }
 
+        $viewContent = str_replace('{{ajax_content}}',$ajax_content,$viewContent);
+
         # Crear vista
         Helper\Files::create_dir($routeViewFolder);
         Helper\Files::write_file($routeViewFolder . $viewname . '.twig', $viewContent);
+        $output->writeln([
+            '',
+            'Vista ' . $input->getArgument('viewname') . '.twig creada '
+        ]);
 
         # Crear javasript y escribir en la api restfull
         if($ajax) {
@@ -144,6 +152,10 @@ class View extends Command {
             $viewAjaxContent = str_replace('{{view}}',$viewname,$viewAjaxContent);
             Helper\Files::create_dir($viewAjaxFolder);
             Helper\Files::write_file($viewAjax, $viewAjaxContent);
+            $output->writeln([
+                '',
+                'Fichero javascript ' . $viewAjax . ' creado'
+            ]);
 
             # Escribir en la api
             $viewApiContent = Helper\Files::read_file('./Ocrend/Kernel/Generator/Content/api');
@@ -151,11 +163,10 @@ class View extends Command {
             $viewApiContent = str_replace('{{model}}',ucfirst($viewname),$viewApiContent);
             $viewApiContent = str_replace('{{model_var}}',$viewname[0],$viewApiContent);
             Helper\Files::write_in_file('./api/controllers/post.controllers.php', $viewApiContent);
+            $output->writeln([
+                '',
+                'Fichero ./api/controllers/post.controllers.php modificado'
+            ]);
         }
-
-        $output->writeln([
-            '',
-            'Vista ' . $input->getArgument('viewname') . '.twig creada '
-        ]);
     }
 }
