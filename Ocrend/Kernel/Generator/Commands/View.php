@@ -64,9 +64,6 @@ class View extends Command {
             }
         }
 
-        # Obtener contenido
-        $viewContent = Helper\Files::read_file('./Ocrend/Kernel/Generator/Content/view');
-
         # Verificar opciones
         $options = strlen($input->getArgument('extra'));
 
@@ -74,10 +71,10 @@ class View extends Command {
         $ajax = false;
         $ajax_content = '';
         if($options > 0) {
-            # Crear un modelo
             $model = false;
             $database = false;
 
+            # Crear un modelo
             if(strpos($input->getArgument('extra'), 'm') !== false) {
                 $model = true;
                 # Nombre del modelo
@@ -135,18 +132,12 @@ class View extends Command {
             
         }
 
-        $viewContent = str_replace('{{ajax_content}}',$ajax_content,$viewContent);
-
-        # Crear vista
-        Helper\Files::create_dir($routeViewFolder);
-        Helper\Files::write_file($routeViewFolder . $viewname . '.twig', $viewContent);
-        $output->writeln([
-            '',
-            'Vista ' . $input->getArgument('viewname') . '.twig creada '
-        ]);
-
-        # Crear javasript y escribir en la api restfull
+        # Crear la vista, javasript y escribir en la api restfull
         if($ajax) {
+            # Obtener contenido
+            $viewContent = Helper\Files::read_file('./Ocrend/Kernel/Generator/Content/viewform');
+            $viewContent = str_replace('{{view}}',$viewname,$viewContent);
+
             # Crear el javascript
             $viewAjaxContent = Helper\Files::read_file('./Ocrend/Kernel/Generator/Content/ajax');
             $viewAjaxContent = str_replace('{{view}}',$viewname,$viewAjaxContent);
@@ -167,6 +158,18 @@ class View extends Command {
                 '',
                 'Fichero ./api/controllers/post.controllers.php modificado'
             ]);
+        } else {
+            # Obtener contenido
+            $viewContent = Helper\Files::read_file('./Ocrend/Kernel/Generator/Content/view');
         }
+
+        # Crear vista
+        $viewContent = str_replace('{{ajax_content}}',$ajax_content,$viewContent);
+        Helper\Files::create_dir($routeViewFolder);
+        Helper\Files::write_file($routeViewFolder . $viewname . '.twig', $viewContent);
+        $output->writeln([
+            '',
+            'Vista ' . $input->getArgument('viewname') . '.twig creada '
+        ]);
     }
 }

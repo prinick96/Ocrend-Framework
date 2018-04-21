@@ -34,7 +34,21 @@ class Info extends Command {
 
         $output->writeln([
             '',
-            'COMANDOS - ' . $config['build']['name']
+            'COMANDOS - ' . $config['build']['name'],
+            '',
+            '--------------------------------------',
+            '',
+            'app:',
+            '   app:m [Nombre] [Argumentos] [Opciones] Crea un modelo',
+            '   app:v [Nombre] [Argumentos] [Opciones] Crea nueva vista',
+            '   app:c [Nombre] [Argumentos] [Opciones] Crea nuevo controlador',
+            '   argumentos: El orden es irrelevante y deben ir juntos, sin separacion entre ellos ',
+            '       m: Crea un modelo',
+            '       v: Crea una vista',
+            '       c: Crea un controlador',
+            '   opciones: El orden es irrelevante y deben estar separadas entre espacios',
+            '       --db: Si se crea un modelo, es capaz de conectar con la base de datos',
+            '       --ajax: Si se crea una vista y modelo, se realiza una conexion por ajax'
         ]);
     }
 }

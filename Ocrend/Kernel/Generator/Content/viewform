@@ -1,0 +1,10 @@
+{% extends 'overall/layout' %}
+{% block appBody %}
+    <form role="form" id="{{view}}_form">
+        <input type="hidden" name="test" value="1" />
+        <button type="button" id="{{view}}">¡Probar!</button>
+    </form>
+{% endblock %}
+{% block appFooter %}
+    {{ajax_content}}
+{% endblock %}
