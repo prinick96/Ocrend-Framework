@@ -21,6 +21,7 @@ require ___ROOT___ . 'Ocrend/Kernel/Config/Config.php';
 
 $info = new Command\Info;
 $app = new Application();
+$app->add(new Command\Usersinstall);
 $app->add(new Command\Controller);
 $app->add(new Command\Model);
 $app->add(new Command\View);

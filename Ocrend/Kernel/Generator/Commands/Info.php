@@ -48,7 +48,10 @@ class Info extends Command {
             '       c: Crea un controlador',
             '   opciones: El orden es irrelevante y deben estar separadas entre espacios',
             '       --db: Si se crea un modelo, es capaz de conectar con la base de datos',
-            '       --ajax: Si se crea una vista y modelo, se realiza una conexion por ajax'
+            '       --ajax: Si se crea una vista y modelo, se realiza una conexion por ajax',
+            '',
+            'users:',
+            '   users:install Instala todo el sistema de usuarios'
         ]);
     }
 }

@@ -45,7 +45,7 @@ class View extends Command {
         $viewname = strtolower($input->getArgument('viewname'));
 
         # Nombre para el posible javascript de ajax
-        $viewAjaxFolder = 'assets/jscontrollers/'.$viewname .'/';
+        $viewAjaxFolder = './assets/jscontrollers/'.$viewname .'/';
         $viewAjax = $viewAjaxFolder . $viewname .'.js';
         if(file_exists($viewAjax)) {
             $viewAjax = $viewAjaxFolder . $viewname . '_' . time() .'.js';

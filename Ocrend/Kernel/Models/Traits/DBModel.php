@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-  namespace Ocrend\Kernel\Models\Traits;
+namespace Ocrend\Kernel\Models\Traits;
 
-  use Ocrend\Kernel\Database\Database;
+use Ocrend\Kernel\Database\Database;
  
 /**
  * Añade características a un modelo para que pueda conectarse a una base de datos.
