@@ -243,7 +243,7 @@ class Users extends Models implements IModels {
      * @return false|array con información de los usuarios
      */  
     public function getUsers(string $select = '*') {
-        return $this->db->select($select,'users');
+        return $this->db->select($select, 'users');
     }
 
     /**

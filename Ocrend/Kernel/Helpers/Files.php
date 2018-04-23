@@ -229,26 +229,26 @@ class Files extends \Twig_Extension {
   public static function move_from_dir(string $old_dir, string $new_dir, bool $only_images = false, bool $delete_old = false)  {
     self::create_dir($new_dir);
 
-    foreach(glob($old_dir . ($only_images ? '{*.jpg,*.gif,*.png,*.gif,*.jpeg,*.JPG,*.GIF,*.PNG,*.JPEG}' : '*'),GLOB_BRACE) as $file) {
-      if(file_exists($file)) {
+    foreach (glob($old_dir . ($only_images ? '{*.jpg,*.gif,*.png,*.gif,*.jpeg,*.JPG,*.GIF,*.PNG,*.JPEG}' : '*'), GLOB_BRACE) as $file) {
+      if (file_exists($file)) {
           unlink($file);
       }
       
-      $name = explode('/',$file);
+      $name = explode('/', $file);
       $name = end($name);
-      copy($file,$new_dir . $name);
+      copy($file, $new_dir . $name);
 
-      if($delete_old) {
+      if ($delete_old) {
         unlink($file);
       }
     }
   }
 
   /**
-    * Se obtiene de Twig_Extension y sirve para que cada función esté disponible como etiqueta en twig
-    *
-    * @return array con todas las funciones con sus respectivos nombres de acceso en plantillas twig
-  */
+   * Se obtiene de Twig_Extension y sirve para que cada función esté disponible como etiqueta en twig
+   *
+   * @return array con todas las funciones con sus respectivos nombres de acceso en plantillas twig
+   */
   public function getFunctions() : array {
     return array(
       new \Twig_Function('images_in_dir', array($this, 'images_in_dir')),
@@ -261,10 +261,10 @@ class Files extends \Twig_Extension {
   }
 
   /**
-    * Identificador único para la extensión de twig
-    *
-    * @return string con el nombre de la extensión
-  */
+   * Identificador único para la extensión de twig
+   *
+   * @return string con el nombre de la extensión
+   */
   public function getName() : string {
     return 'ocrend_framework_helper_files';
   }
