@@ -285,8 +285,8 @@ final class Functions extends \Twig_Extension {
    */
   public static function desde_date(int $desde) {
     # Obtener esta fecha
-    $hoy = date('d/m/Y/D',time());
-    $hoy = explode('/',$hoy);
+    $hoy = date('d/m/Y/D', time());
+    $hoy = explode('/', $hoy);
 
     # Arreglo de condiciones y subcondiciones
     $fecha = array(

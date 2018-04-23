@@ -166,7 +166,7 @@ final class Router implements IRouter {
         $rules = new Rules;
 
         # Retornar ruta con la regla definida aplicada
-        if(method_exists($rules, $this->routerCollectionRules[$index])) {
+        if (method_exists($rules, $this->routerCollectionRules[$index])) {
             return $rules->{$this->routerCollectionRules[$index]}($ruta);
         } 
 
@@ -205,7 +205,7 @@ final class Router implements IRouter {
      */
     final public function getId(bool $with_rules = false) {
         $id = $this->routerCollection['/id'];
-        if($with_rules && (!is_numeric($id) || $id <= 0)) {
+        if ($with_rules && (!is_numeric($id) || $id <= 0)) {
             return null;
         }
 

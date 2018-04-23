@@ -48,12 +48,12 @@ class Arrays extends \Twig_Extension {
     }
 
     # Recorrer el segundo arreglo
-    foreach($b as $llave => $contenido) {
+    foreach ($b as $llave => $contenido) {
       # Verificar que no hay desnivel
-      if(!is_array($a[$llave]) && !is_array($b[$llave])) {
+      if (!is_array($a[$llave]) && !is_array($b[$llave])) {
         $a[$llave] += $b[$llave];
       } else {
-        throw new \RuntimeException('Existe un problema para operar en la llave '.$llave.'.');
+        throw new \RuntimeException('Existe un problema para operar en la llave ' . $llave . '.');
         break;
       }
     }
@@ -157,10 +157,10 @@ class Arrays extends \Twig_Extension {
   }
 
   /**
-    * Se obtiene de Twig_Extension y sirve para que cada función esté disponible como etiqueta en twig
-    *
-    * @return array con todas las funciones con sus respectivos nombres de acceso en plantillas twig
-  */
+   * Se obtiene de Twig_Extension y sirve para que cada función esté disponible como etiqueta en twig
+   *
+   * @return array con todas las funciones con sus respectivos nombres de acceso en plantillas twig
+   */
   public function getFunctions() : array {
     return array(
       new \Twig_Function('get_key_by_index', array($this, 'get_key_by_index')),
@@ -173,10 +173,10 @@ class Arrays extends \Twig_Extension {
   }
 
   /**
-    * Identificador único para la extensión de twig
-    *
-    * @return string con el nombre de la extensión
-  */
+   * Identificador único para la extensión de twig
+   *
+   * @return string con el nombre de la extensión
+   */
   public function getName() : string {
     return 'ocrend_framework_helper_arrays';
   }
