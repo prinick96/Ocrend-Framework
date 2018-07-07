@@ -6,7 +6,7 @@
 <img src="https://scrutinizer-ci.com/g/prinick96/Ocrend-Framework/badges/build.png?b=master" alt="Build Passed" />
 <img src="https://img.shields.io/packagist/l/doctrine/orm.svg" alt="Hecho en PHP 7" />
 <img src="https://img.shields.io/badge/php-7-blue.svg" alt="Licencia MIT" />
-<img src="https://img.shields.io/badge/stable-3.0.0-blue.svg" alt="Versión Estable" />
+<img src="https://img.shields.io/badge/stable-3.0.1-blue.svg" alt="Versión Estable" />
 </p>
 
 ## Introducción
