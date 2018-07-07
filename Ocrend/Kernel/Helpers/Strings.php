@@ -76,21 +76,11 @@ final class Strings extends \Twig_Extension {
    * @return string : Texto encriptado
    */
   public static function ocrend_encode(string $str, string $key) : string {
-    $___s___ = mcrypt_create_iv(
-      mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC),
-      MCRYPT_DEV_URANDOM
-    );
-    
-    return base64_encode(
-      $___s___ .
-      mcrypt_encrypt(
-        MCRYPT_RIJNDAEL_128,
-        hash('sha256', $key, true),
-        $str,
-        MCRYPT_MODE_CBC,
-        $___s___
-      )
-    );
+    $___s___ = openssl_encrypt($str,
+    "AES-128-ECB",
+    $key);
+
+    return base64_encode($___s___);
   }
 
   /**
@@ -102,18 +92,11 @@ final class Strings extends \Twig_Extension {
    * @return string : Texto desencriptado
    */
   public static function ocrend_decode(string $str, string $key) : string {
-    $data = base64_decode($str );
-    $___s___  = substr($data, 0, mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
-    return rtrim(
-        mcrypt_decrypt(
-            MCRYPT_RIJNDAEL_128,
-            hash('sha256', $key, true),
-            substr($data, mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC)),
-            MCRYPT_MODE_CBC,
-            $___s___
-        ),
-        "\0"
-    );
+    $data = base64_decode($str);
+    
+    return openssl_decrypt($data,
+    "AES-128-ECB",
+    $key);
   }
 
   /**
